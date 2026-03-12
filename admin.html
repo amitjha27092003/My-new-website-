@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>EduSphere Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Sora:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --indigo:#4f46e5;--indigo2:#4338ca;--indigo-light:#818cf8;
+  --bg:#07051a;--card:#0f0d2e;--card2:#141138;--border:rgba(99,102,241,0.22);--border2:rgba(129,140,248,0.35);
+  --text:#f0f0ff;--text2:#c7d2fe;--muted:#6b7280;
+  --green:#10b981;--coral:#f43f5e;--gold:#f59e0b;
+  --glow-indigo:0 0 24px rgba(99,102,241,0.55),0 0 60px rgba(99,102,241,0.2);
+  --glow-green:0 0 20px rgba(16,185,129,0.5);
+  --glow-gold:0 0 20px rgba(245,158,11,0.4);
+  --shadow:0 4px 24px rgba(0,0,0,0.5);
+  --shadow-lg:0 12px 48px rgba(0,0,0,0.7),0 0 40px rgba(79,70,229,0.2);
+  --text3d:0 1px 0 rgba(255,255,255,0.12),0 2px 0 rgba(0,0,0,0.4);
+  --card3d:0 8px 0 rgba(0,0,0,0.35),0 16px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.08);
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:rgba(129,140,248,0.4);border-radius:4px}::-webkit-scrollbar-track{background:transparent}
+#app{display:flex;height:100vh;flex-direction:column}
+.topbar{height:62px;background:linear-gradient(90deg,#0d0b2e,#1a1660,#0d0b2e);padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:relative;z-index:100;border-bottom:1px solid var(--border2);box-shadow:0 4px 32px rgba(0,0,0,0.6)}
+.topbar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(129,140,248,0.7),transparent)}
+.logo-wrap{display:flex;align-items:center;background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:12px;padding:4px 14px 4px 10px;box-shadow:var(--glow-indigo),0 4px 12px rgba(0,0,0,0.4);border:1px solid var(--border2)}
+.logo-text{font-family:'Sora',sans-serif;font-size:20px;font-weight:900;background:linear-gradient(135deg,#a5b4fc,#6366f1,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sphere{-webkit-text-fill-color:#10b981}
+.logo-ai{background:linear-gradient(135deg,#6366f1,#a5b4fc);color:white;font-size:9px;font-weight:900;letter-spacing:2px;padding:2px 7px;border-radius:6px;margin-left:8px}
+.admin-badge{background:linear-gradient(135deg,#f59e0b,#f97316);color:#07051a;font-size:9px;font-weight:900;letter-spacing:2px;padding:3px 10px;border-radius:8px;margin-left:10px}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.live-badge{display:flex;align-items:center;gap:6px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);border-radius:20px;padding:6px 14px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#10b981;animation:lp 1.4s ease-in-out infinite}
+@keyframes lp{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.6),0 0 8px #10b981}50%{box-shadow:0 0 0 6px rgba(16,185,129,0),0 0 12px #10b981}}
+.live-badge span{font-size:10px;font-weight:900;color:#10b981;letter-spacing:1.5px}
+#liveTime{font-size:11px;color:var(--indigo-light);font-weight:700;background:rgba(99,102,241,0.12);border:1px solid var(--border);padding:6px 12px;border-radius:10px}
+.notif-btn{position:relative;width:36px;height:36px;border-radius:10px;background:rgba(99,102,241,0.12);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .2s}
+.notif-btn:hover{background:rgba(99,102,241,0.25)}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#f43f5e;border:2px solid var(--bg);display:none}
+.admin-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#f97316);display:flex;align-items:center;justify-content:center;color:#07051a;font-weight:900;font-size:14px;cursor:pointer}
+.body{display:flex;flex:1;overflow:hidden}
+.sidebar{width:230px;background:linear-gradient(180deg,#0d0b2e,#0a0820);border-right:1px solid var(--border);padding:14px 10px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;overflow-y:auto}
+.sb-sect{font-size:9px;font-weight:900;color:rgba(129,140,248,0.5);letter-spacing:2.5px;padding:12px 10px 5px;text-transform:uppercase}
+.ni{padding:9px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--text2);transition:all .2s;font-weight:700;user-select:none;position:relative}
+.ni:hover{background:rgba(99,102,241,0.12);color:var(--indigo-light)}
+.ni.on{background:linear-gradient(90deg,rgba(99,102,241,0.2),rgba(99,102,241,0.05));color:#a5b4fc;font-weight:800}
+.ni.on::before{content:'';position:absolute;left:0;top:10%;bottom:10%;width:3px;background:linear-gradient(180deg,#818cf8,#6366f1);border-radius:0 3px 3px 0;box-shadow:0 0 8px rgba(129,140,248,0.8)}
+.ni-icon{font-size:16px;width:22px;text-align:center}
+.ni-badge{margin-left:auto;font-size:9px;font-weight:900;padding:2px 7px;border-radius:10px}
+.sb-divider{height:1px;background:var(--border);margin:6px 10px}
+.sb-bottom{margin-top:auto;padding-top:10px;border-top:1px solid var(--border)}
+.page{flex:1;overflow-y:auto;padding:20px 24px;display:none;flex-direction:column;gap:16px;background:radial-gradient(ellipse at 30% 20%,rgba(79,70,229,0.08) 0%,transparent 60%),var(--bg)}
+.page.on{display:flex}
+.page-hdr{display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.page-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:900;color:var(--text)}
+.page-sub{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px}
+.hdr-actions{display:flex;gap:8px}
+.btn{padding:9px 18px;border-radius:10px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:12px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:linear-gradient(135deg,#4338ca,#6366f1);color:white;box-shadow:var(--glow-indigo)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-danger{background:linear-gradient(135deg,#be123c,#f43f5e);color:white}
+.btn-success{background:linear-gradient(135deg,#065f46,#10b981);color:white}
+.btn-ghost{background:rgba(99,102,241,0.1);color:var(--indigo-light);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(99,102,241,0.2)}
+.btn-sm{padding:6px 12px;font-size:11px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:16px;padding:18px;position:relative;overflow:hidden;box-shadow:var(--card3d)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(129,140,248,0.5),transparent)}
+.stat-icon{font-size:24px;margin-bottom:10px}
+.stat-label{font-size:10px;font-weight:900;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.stat-value{font-family:'Sora',sans-serif;font-size:28px;font-weight:900;color:var(--text);line-height:1}
+.stat-sub{font-size:10px;font-weight:700;margin-top:6px;color:var(--muted)}
+.stat-sub.up{color:var(--green)}
+.zero-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 20px;text-align:center;gap:8px}
+.zero-icon{font-size:44px;opacity:0.35}
+.zero-title{font-size:13px;font-weight:800;color:var(--muted)}
+.zero-sub{font-size:11px;color:rgba(107,114,128,0.65);font-weight:600;max-width:280px;line-height:1.7}
+.table-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--card3d)}
+.table-hdr{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.table-title{font-size:11px;font-weight:900;color:var(--indigo-light);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.search-inp{background:rgba(99,102,241,0.08);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-size:12px;outline:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;width:200px;transition:all .2s}
+.search-inp:focus{border-color:var(--indigo-light);background:rgba(99,102,241,0.15)}
+.search-inp::placeholder{color:var(--muted)}
+table{width:100%;border-collapse:collapse}
+thead tr{border-bottom:1px solid var(--border)}
+thead th{padding:11px 16px;text-align:left;font-size:10px;font-weight:900;color:rgba(129,140,248,0.7);letter-spacing:2px;text-transform:uppercase}
+tbody tr{border-bottom:1px solid rgba(99,102,241,0.07);transition:background .15s}
+tbody tr:hover{background:rgba(99,102,241,0.06)}
+tbody tr:last-child{border-bottom:none}
+td{padding:12px 16px;font-size:12.5px;font-weight:600;color:var(--text2)}
+.td-name{font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px}
+.uav{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0}
+.badge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:.5px}
+.badge-green{background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
+.badge-gold{background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3)}
+.badge-indigo{background:rgba(99,102,241,0.15);color:#818cf8;border:1px solid rgba(99,102,241,0.3)}
+.badge-coral{background:rgba(244,63,94,0.15);color:#f43f5e;border:1px solid rgba(244,63,94,0.3)}
+.badge-muted{background:rgba(107,114,128,0.12);color:var(--muted);border:1px solid rgba(107,114,128,0.2)}
+.action-btns{display:flex;gap:5px}
+.icon-btn{width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:rgba(99,102,241,0.08);color:var(--text2);font-size:13px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.icon-btn:hover{background:rgba(99,102,241,0.25);color:white}
+.icon-btn.danger:hover{background:rgba(244,63,94,0.25);color:#f43f5e;border-color:rgba(244,63,94,0.3)}
+.chart-grid{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.chart-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--card3d);position:relative;overflow:hidden}
+.chart-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(129,140,248,0.5),transparent)}
+.chart-title{font-size:11px;font-weight:900;color:var(--indigo-light);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.mini-chart{height:150px;display:flex;align-items:flex-end;gap:6px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar{border-radius:4px 4px 0 0;width:100%;transition:all .3s;cursor:pointer}
+.bar:hover{filter:brightness(1.3)}
+.bar-label{font-size:9px;color:var(--muted);font-weight:700;text-align:center}
+.bar-val{font-size:9px;color:var(--indigo-light);font-weight:900;text-align:center}
+.pie-legend{display:flex;flex-direction:column;gap:6px}
+.pie-item{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text2);font-weight:700}
+.pie-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.progress-bar{height:6px;border-radius:3px;background:rgba(99,102,241,0.15);overflow:hidden;margin-top:5px}
+.progress-fill{height:100%;border-radius:3px;transition:width .6s ease}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:10px;font-weight:900;color:var(--indigo-light);letter-spacing:2px;text-transform:uppercase}
+.form-inp{background:rgba(99,102,241,0.08);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;transition:all .2s;width:100%}
+.form-inp:focus{border-color:var(--indigo-light);background:rgba(99,102,241,0.14);box-shadow:0 0 0 3px rgba(99,102,241,0.12)}
+.form-inp::placeholder{color:var(--muted)}
+select.form-inp option{background:#0d0b2e}
+.form-textarea{min-height:80px;resize:vertical}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.plan-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:18px;padding:22px;position:relative;overflow:hidden;box-shadow:var(--card3d)}
+.plan-card.popular{border-color:var(--indigo-light);box-shadow:var(--glow-indigo),var(--card3d)}
+.plan-card.popular::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4338ca,#818cf8,#a5b4fc)}
+.plan-badge-top{position:absolute;top:14px;right:14px;font-size:9px;font-weight:900;padding:3px 10px;border-radius:20px}
+.plan-name{font-family:'Sora',sans-serif;font-size:16px;font-weight:900;color:var(--text);margin-bottom:6px}
+.plan-price{font-family:'Sora',sans-serif;font-size:32px;font-weight:900;color:var(--indigo-light);line-height:1.1}
+.plan-price span{font-size:13px;color:var(--muted);font-weight:600}
+.plan-users{font-size:11px;color:var(--muted);margin:8px 0 14px;font-weight:700}
+.plan-features{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+.pf{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--text2);font-weight:700}
+.plan-actions{display:flex;gap:7px}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.settings-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--card3d);position:relative}
+.settings-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(129,140,248,0.4),transparent)}
+.settings-card.full{grid-column:1/-1}
+.s-title{font-size:11px;font-weight:900;color:var(--indigo-light);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-of-type{border-bottom:none}
+.toggle-label{font-size:12.5px;font-weight:700;color:var(--text2)}
+.toggle-sub{font-size:10px;color:var(--muted);font-weight:600;margin-top:2px}
+.toggle{width:40px;height:22px;border-radius:11px;background:rgba(99,102,241,0.15);border:1px solid var(--border);cursor:pointer;position:relative;transition:all .25s;flex-shrink:0}
+.toggle.on{background:linear-gradient(135deg,#4338ca,#6366f1);border-color:var(--indigo-light)}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:rgba(129,140,248,0.5);transition:all .25s}
+.toggle.on::after{left:20px;background:white}
+.modal{display:none;position:fixed;inset:0;background:rgba(5,3,21,0.85);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(12px)}
+.modal.show{display:flex}
+.mbox{background:linear-gradient(135deg,#0d0b2e,#141138,#1a1660);border-radius:22px;padding:28px;max-width:520px;width:94%;position:relative;box-shadow:0 40px 100px rgba(0,0,0,0.8),var(--glow-indigo);border:1px solid var(--border2);max-height:90vh;overflow-y:auto}
+.mbox-top{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4338ca,#818cf8,#a5b4fc,#818cf8,#4338ca);border-radius:22px 22px 0 0}
+.mtitle{font-family:'Sora',sans-serif;font-size:18px;font-weight:900;color:var(--text);margin-bottom:4px}
+.msub{color:var(--muted);font-size:11px;margin-bottom:20px;font-weight:600}
+.mclose{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.3);color:#f43f5e;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.mclose:hover{background:rgba(244,63,94,0.25)}
+.mfooter{display:flex;justify-content:flex-end;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.activity-item{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(99,102,241,0.07)}
+.activity-item:hover{background:rgba(99,102,241,0.05)}
+.activity-item:last-child{border-bottom:none}
+.act-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.act-text{flex:1;font-size:12px;font-weight:700;color:var(--text2)}
+.act-text strong{color:var(--text)}
+.act-time{font-size:10px;color:var(--muted);font-weight:600}
+.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tab-row{display:flex;gap:4px;background:rgba(99,102,241,0.07);border-radius:10px;padding:4px;margin-bottom:16px}
+.tab-btn{padding:7px 16px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s;color:var(--muted);user-select:none}
+.tab-btn.on{background:linear-gradient(135deg,#4338ca,#6366f1);color:white;box-shadow:var(--glow-indigo)}
+.tab-btn:hover:not(.on){color:var(--text2);background:rgba(99,102,241,0.1)}
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.qa-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.qa-card:hover{border-color:var(--indigo-light);transform:translateY(-3px);box-shadow:var(--glow-indigo)}
+.qa-icon{font-size:24px;margin-bottom:7px}
+.qa-label{font-size:11px;font-weight:800;color:var(--text2)}
+.info-banner{background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.25);border-radius:12px;padding:14px 18px;display:flex;align-items:flex-start;gap:12px;font-size:12px;color:var(--text2);font-weight:600;line-height:1.7}
+.we-tab-panel{display:flex;flex-direction:column;gap:14px}
+.settings-grid .settings-card.full{grid-column:1/-1}
+input[type=color]{border-radius:8px;overflow:hidden;padding:2px;cursor:pointer}
+.toast{position:fixed;bottom:22px;right:22px;background:linear-gradient(135deg,#0d0b2e,#1e1b4b);color:white;border-radius:14px;padding:13px 18px;display:flex;align-items:center;gap:10px;font-size:13px;z-index:9999;transform:translateY(70px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--shadow-lg),var(--glow-indigo);border:1px solid var(--border2);font-weight:700}
+.toast.show{transform:translateY(0);opacity:1}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div class="logo-wrap">
+      <span class="logo-text">Edu<span class="logo-sphere">Sphere</span></span>
+      <div class="logo-ai">AI</div>
+    </div>
+    <div class="admin-badge">⚙️ ADMIN PANEL</div>
+  </div>
+  <div class="topbar-right">
+    <div class="live-badge"><div class="live-dot"></div><span>LIVE DATA</span></div>
+    <div id="liveTime">--:--:--</div>
+    <div class="notif-btn" id="notifBtn">🔔<div class="notif-dot" id="notifDot"></div></div>
+    <div class="admin-av">A</div>
+  </div>
+</div>
+
+<div class="body">
+<div class="sidebar">
+  <div class="sb-sect">OVERVIEW</div>
+  <div class="ni on" data-page="dashboard"><span class="ni-icon">📊</span>Dashboard</div>
+  <div class="ni" data-page="analytics"><span class="ni-icon">📈</span>Analytics</div>
+  <div class="sb-sect">LEARNERS</div>
+  <div class="ni" data-page="learners"><span class="ni-icon">👥</span>All Learners <span class="ni-badge badge-indigo" id="totalBadge">0</span></div>
+  <div class="ni" data-page="sessions"><span class="ni-icon">🎬</span>Sessions <span class="ni-badge badge-green" id="liveBadge">0</span></div>
+  <div class="ni" data-page="feedback_list"><span class="ni-icon">💬</span>Feedback <span class="ni-badge badge-gold" id="fbBadge">0</span></div>
+  <div class="sb-sect">CONTENT</div>
+  <div class="ni" data-page="website"><span class="ni-icon">🌐</span>Website Editor</div>
+  <div class="ni" data-page="topics"><span class="ni-icon">📚</span>Manage Topics</div>
+  <div class="ni" data-page="exams"><span class="ni-icon">🎯</span>Exam Categories</div>
+  <div class="sb-sect">MONETIZATION</div>
+  <div class="ni" data-page="plans"><span class="ni-icon">💎</span>Subscription Plans</div>
+  <div class="ni" data-page="revenue"><span class="ni-icon">💰</span>Revenue</div>
+  <div class="ni" data-page="coupons"><span class="ni-icon">🎟️</span>Coupons</div>
+  <div class="sb-divider"></div>
+  <div class="sb-sect">SYSTEM</div>
+  <div class="ni" data-page="settings"><span class="ni-icon">⚙️</span>Settings</div>
+  <div class="ni" data-page="notifs"><span class="ni-icon">📣</span>Notifications</div>
+  <div class="sb-bottom">
+    <div class="ni" onclick="showToast('🚪','Logged out.',2000)" style="color:var(--coral)"><span class="ni-icon">🚪</span>Logout</div>
+  </div>
+</div>
+
+<!-- ──────────── DASHBOARD ──────────── -->
+<div class="page on" id="page-dashboard">
+  <div class="page-hdr">
+    <div><div class="page-title">📊 Dashboard</div><div class="page-sub" id="dashUpdated">—</div></div>
+    <div class="hdr-actions">
+      <button class="btn btn-ghost btn-sm" onclick="fullRefresh()">🔄 Refresh</button>
+      <button class="btn btn-primary btn-sm" onclick="exportCSV()">📥 Export</button>
+    </div>
+  </div>
+  <div class="info-banner" id="connectBanner">
+    <span style="font-size:18px;flex-shrink:0">🔗</span>
+    <div>
+      <strong style="color:var(--text)">Website Integration:</strong>
+      Admin panel aur website dono ek hi browser mein same domain/file se open karo — woh localStorage share karti hain.
+      Website mein <code style="background:rgba(99,102,241,0.2);padding:1px 5px;border-radius:4px">window.eduAdmin.recordSession()</code> aur
+      <code style="background:rgba(99,102,241,0.2);padding:1px 5px;border-radius:4px">window.eduAdmin.registerLearner()</code> functions call karo.
+      <span style="color:var(--indigo-light);cursor:pointer;font-weight:800;margin-left:8px" onclick="document.getElementById('connectBanner').style.display='none'">✕</span>
+    </div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Total Learners</div><div class="stat-value" id="st_learners">0</div><div class="stat-sub" id="st_learners_sub">Abhi koi nahi</div></div>
+    <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-label">Active (30 min)</div><div class="stat-value" id="st_active">0</div><div class="stat-sub" id="st_active_sub">Koi active nahi</div></div>
+    <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-label">Total Sessions</div><div class="stat-value" id="st_sessions">0</div><div class="stat-sub" id="st_sessions_sub">0 sessions total</div></div>
+    <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Revenue (est.)</div><div class="stat-value" id="st_rev">₹0</div><div class="stat-sub" id="st_rev_sub">0 paid subscribers</div></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">⚡ QUICK ACTIONS</div>
+    <div class="quick-actions">
+      <div class="qa-card" onclick="nav('learners')"><div class="qa-icon">👤</div><div class="qa-label">Learners</div></div>
+      <div class="qa-card" onclick="nav('plans')"><div class="qa-icon">💎</div><div class="qa-label">Edit Plans</div></div>
+      <div class="qa-card" onclick="nav('website')"><div class="qa-icon">✏️</div><div class="qa-label">Edit Website</div></div>
+      <div class="qa-card" onclick="nav('notifs')"><div class="qa-icon">📣</div><div class="qa-label">Send Blast</div></div>
+    </div>
+  </div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">📈 SESSION ACTIVITY (Last 7 Days)</div>
+      <div id="dashChart"><div class="zero-state" style="padding:30px 0"><div class="zero-icon">📊</div><div class="zero-title">Koi session data nahi</div><div class="zero-sub">Jab learners sessions shuru karenge tab graph dikhega</div></div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">🎯 EXAM BREAKDOWN</div>
+      <div id="dashPie"><div class="zero-state" style="padding:30px 0"><div class="zero-icon">🎯</div><div class="zero-title">Koi data nahi</div></div></div>
+    </div>
+  </div>
+  <div class="section-grid">
+    <div class="table-card">
+      <div class="table-hdr"><div class="table-title">🆕 RECENT SIGNUPS</div><button class="btn btn-ghost btn-sm" onclick="nav('learners')">View All</button></div>
+      <div id="recentSignups"><div class="zero-state"><div class="zero-icon">👤</div><div class="zero-title">Koi signup nahi abhi tak</div><div class="zero-sub">Jab koi register karega yahan dikhega</div><div style="margin-top:8px"><button class="btn btn-primary btn-sm" onclick="nav('learners')">+ Add Manually</button></div></div></div>
+    </div>
+    <div class="table-card">
+      <div class="table-hdr"><div class="table-title">⚡ LIVE ACTIVITY LOG</div></div>
+      <div id="actFeed"><div class="zero-state"><div class="zero-icon">📡</div><div class="zero-title">Activity log empty</div><div class="zero-sub">Actions yahan real-time mein dikhenge</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── LEARNERS ──────────── -->
+<div class="page" id="page-learners">
+  <div class="page-hdr">
+    <div><div class="page-title">👥 All Learners</div><div class="page-sub" id="learnerCountText">—</div></div>
+    <div class="hdr-actions">
+      <input class="search-inp" id="learnerSearch" placeholder="🔍 Search..." oninput="filterLearners(this.value)">
+      <button class="btn btn-primary btn-sm" onclick="openModal('modal-addLearner')">+ Add Learner</button>
+    </div>
+  </div>
+  <div class="tab-row">
+    <div class="tab-btn on" onclick="setLF('all',this)">All</div>
+    <div class="tab-btn" onclick="setLF('Free',this)">Free</div>
+    <div class="tab-btn" onclick="setLF('Pro',this)">Pro</div>
+    <div class="tab-btn" onclick="setLF('Premium',this)">Premium</div>
+  </div>
+  <div class="table-card">
+    <table><thead><tr><th>Learner</th><th>Email</th><th>Exam</th><th>Plan</th><th>Sessions</th><th>Last Active</th><th>Joined</th><th>Actions</th></tr></thead>
+    <tbody id="learnersBody"></tbody></table>
+  </div>
+</div>
+
+<!-- ──────────── ANALYTICS ──────────── -->
+<div class="page" id="page-analytics">
+  <div class="page-hdr"><div><div class="page-title">📈 Analytics</div><div class="page-sub">Real data only</div></div></div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-label">Total Sessions</div><div class="stat-value" id="an_s">0</div></div>
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Total Learners</div><div class="stat-value" id="an_l">0</div></div>
+    <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-label">Avg Rating</div><div class="stat-value" id="an_r">—</div></div>
+    <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-label">Feedbacks</div><div class="stat-value" id="an_f">0</div></div>
+  </div>
+  <div class="section-grid">
+    <div class="chart-card"><div class="chart-title">🗣️ LANGUAGE USAGE</div><div id="anLang"><div class="zero-state" style="padding:30px 0"><div class="zero-icon">🌐</div><div class="zero-title">Koi session data nahi</div></div></div></div>
+    <div class="chart-card"><div class="chart-title">🎯 EXAM WISE</div><div id="anExam"><div class="zero-state" style="padding:30px 0"><div class="zero-icon">📚</div><div class="zero-title">Koi session data nahi</div></div></div></div>
+  </div>
+  <div class="chart-card"><div class="chart-title">🏆 TOP TOPICS</div><div id="anTopics"><div class="zero-state" style="padding:30px 0"><div class="zero-icon">🔍</div><div class="zero-title">Koi topic data nahi</div><div class="zero-sub">Jab learners topics search karenge tab dikhega</div></div></div></div>
+</div>
+
+<!-- ──────────── SESSIONS ──────────── -->
+<div class="page" id="page-sessions">
+  <div class="page-hdr"><div><div class="page-title">🎬 Sessions</div><div class="page-sub">Sab recorded sessions</div></div><div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="renderSessions()">🔄 Refresh</button></div></div>
+  <div class="table-card"><table><thead><tr><th>Learner</th><th>Topic</th><th>Exam</th><th>Language</th><th>Scenes</th><th>Time</th></tr></thead><tbody id="sessionsBody"></tbody></table></div>
+</div>
+
+<!-- ──────────── FEEDBACK ──────────── -->
+<div class="page" id="page-feedback_list">
+  <div class="page-hdr"><div><div class="page-title">💬 Feedback</div><div class="page-sub">Website se real feedback</div></div><div class="hdr-actions"><button class="btn btn-primary btn-sm" onclick="exportCSV()">📥 Export</button></div></div>
+  <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-label">Avg Rating</div><div class="stat-value" id="fb_avg">—</div></div>
+    <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-label">Total Responses</div><div class="stat-value" id="fb_total">0</div></div>
+    <div class="stat-card"><div class="stat-icon">😊</div><div class="stat-label">NPS Promoters (9-10)</div><div class="stat-value" id="fb_promo">0</div></div>
+  </div>
+  <div class="table-card"><table><thead><tr><th>Name</th><th>Rating</th><th>NPS</th><th>Liked</th><th>Exam</th><th>Submitted</th></tr></thead><tbody id="fbBody"></tbody></table></div>
+</div>
+
+<!-- ──────────── WEBSITE EDITOR ──────────── -->
+<div class="page" id="page-website">
+  <div class="page-hdr"><div><div class="page-title">🌐 Website Editor</div><div class="page-sub">Sab changes real-time mein website par apply hote hain</div></div>
+    <div class="hdr-actions">
+      <button class="btn btn-ghost btn-sm" onclick="previewWebsite()">👁️ Preview</button>
+      <button class="btn btn-success btn-sm" onclick="saveWebsite()">💾 Save All Changes</button>
+    </div>
+  </div>
+
+  <!-- Tab Navigation for Editor sections -->
+  <div class="tab-row" id="weTabs">
+    <div class="tab-btn on" onclick="weTab('hero',this)">🏠 Hero</div>
+    <div class="tab-btn" onclick="weTab('teacher',this)">👩‍🏫 AI Teacher</div>
+    <div class="tab-btn" onclick="weTab('features',this)">✨ Features</div>
+    <div class="tab-btn" onclick="weTab('chips',this)">⚡ Topics</div>
+    <div class="tab-btn" onclick="weTab('branding',this)">🎨 Branding</div>
+    <div class="tab-btn" onclick="weTab('meta',this)">🔧 Meta</div>
+  </div>
+
+  <!-- HERO TAB -->
+  <div id="wet-hero" class="we-tab-panel">
+    <div class="settings-grid">
+      <div class="settings-card">
+        <div class="s-title">🏠 HERO SECTION</div>
+        <div class="form-group"><div class="form-label">Main Headline</div><input class="form-inp" id="ws_heroTitle" placeholder="Welcome to EduSphere AI 🎬"></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Subtitle / Description</div><textarea class="form-inp form-textarea" id="ws_heroSub" style="min-height:90px"></textarea></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">CTA Button Text</div><input class="form-inp" id="ws_ctaText" placeholder="Start Learning Free 🚀"></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">CTA Button Link / Action</div><input class="form-inp" id="ws_ctaLink" placeholder="#start or https://..."></div>
+      </div>
+      <div class="settings-card">
+        <div class="s-title">🖼️ HERO IMAGE / BANNER</div>
+        <div id="heroImgPreview" style="width:100%;height:120px;border-radius:12px;background:rgba(99,102,241,0.1);border:2px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px;overflow:hidden">🖼️</div>
+        <div class="form-group"><div class="form-label">Upload Image</div>
+          <input type="file" accept="image/*" id="ws_heroImg" style="display:none" onchange="handleImgUpload('ws_heroImg','heroImgPreview','heroTitle')">
+          <button class="btn btn-ghost btn-sm" style="width:100%" onclick="document.getElementById('ws_heroImg').click()">📁 Choose Image</button>
+        </div>
+        <div class="form-group" style="margin-top:8px"><div class="form-label">OR Image URL</div><input class="form-inp" id="ws_heroImgUrl" placeholder="https://..." oninput="previewImgUrl(this,'heroImgPreview')"></div>
+        <div class="form-group" style="margin-top:8px">
+          <div class="toggle-row" style="border:none;padding:0"><div><div class="toggle-label" style="font-size:12px">Show Hero Image on Website</div></div><div class="toggle on" id="tog-heroImg" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+      </div>
+      <div class="settings-card full">
+        <div class="s-title">📊 STATS BAR (under hero)</div>
+        <div class="form-grid" id="statsEd"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHER TAB -->
+  <div id="wet-teacher" class="we-tab-panel" style="display:none">
+    <div class="settings-grid">
+      <div class="settings-card">
+        <div class="s-title">👩‍🏫 AI TEACHER CONFIG</div>
+        <div class="form-group"><div class="form-label">Teacher Name</div><input class="form-inp" id="ws_teacher" value="Jennie"></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Welcome Message</div><input class="form-inp" id="ws_welcome" placeholder="Jennie ready hain! Topic upload karo 🚀"></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Default Language</div>
+          <select class="form-inp" id="ws_lang"><option>Hinglish</option><option>English</option><option>Hindi</option></select>
+        </div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Teacher Tagline</div><input class="form-inp" id="ws_teacherTag" placeholder="AI-powered • Always available • Speaks Hinglish"></div>
+      </div>
+      <div class="settings-card">
+        <div class="s-title">🖼️ TEACHER AVATAR</div>
+        <div id="teacherImgPreview" style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#4338ca,#818cf8);border:3px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 14px;overflow:hidden">👩‍🏫</div>
+        <input type="file" accept="image/*" id="ws_teacherImg" style="display:none" onchange="handleImgUpload('ws_teacherImg','teacherImgPreview','teacherAvatar')">
+        <button class="btn btn-ghost btn-sm" style="width:100%" onclick="document.getElementById('ws_teacherImg').click()">📁 Upload Avatar</button>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">OR Image URL</div><input class="form-inp" id="ws_teacherImgUrl" placeholder="https://..." oninput="previewImgUrl(this,'teacherImgPreview')"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES TAB -->
+  <div id="wet-features" class="we-tab-panel" style="display:none">
+    <div class="settings-card full" style="margin-bottom:14px">
+      <div class="s-title" style="justify-content:space-between">✨ FEATURES SECTION <button class="btn btn-ghost btn-sm" onclick="addFeature()">+ Add Feature</button></div>
+      <div style="margin-bottom:10px;display:flex;align-items:center;gap:10px">
+        <div class="toggle-label" style="font-size:12px">Show Features Section on Website</div>
+        <div class="toggle on" id="tog-features" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="form-group"><div class="form-label">Section Title</div><input class="form-inp" id="ws_featTitle" placeholder="Why EduSphere?"></div>
+      <div class="form-group" style="margin-top:10px"><div class="form-label">Section Subtitle</div><input class="form-inp" id="ws_featSub" placeholder="AI-powered learning for every Indian student"></div>
+    </div>
+    <div class="settings-card full">
+      <div id="featuresEd" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>
+    </div>
+  </div>
+
+  <!-- CHIPS TAB -->
+  <div id="wet-chips" class="we-tab-panel" style="display:none">
+    <div class="settings-card full">
+      <div class="s-title" style="justify-content:space-between">⚡ QUICK TOPIC CHIPS <button class="btn btn-ghost btn-sm" onclick="addChip()">+ Add Chip</button></div>
+      <div class="form-sub" style="font-size:11px;color:var(--muted);margin-bottom:14px;font-weight:600">Ye chips website par "Try these topics" section mein dikhti hain</div>
+      <div class="form-grid" id="chipsEd"></div>
+    </div>
+  </div>
+
+  <!-- BRANDING TAB -->
+  <div id="wet-branding" class="we-tab-panel" style="display:none">
+    <div class="settings-grid">
+      <div class="settings-card">
+        <div class="s-title">🎨 COLORS</div>
+        <div class="form-group"><div class="form-label">Primary Color</div>
+          <div style="display:flex;gap:8px;align-items:center"><input type="color" id="ws_colorPrimary" value="#4f46e5" style="width:44px;height:36px;border:none;background:none;cursor:pointer;border-radius:8px"><input class="form-inp" id="ws_colorPrimaryHex" value="#4f46e5" placeholder="#4f46e5" style="flex:1" oninput="syncColorHex('Primary')"></div>
+        </div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Accent Color</div>
+          <div style="display:flex;gap:8px;align-items:center"><input type="color" id="ws_colorAccent" value="#10b981" style="width:44px;height:36px;border:none;background:none;cursor:pointer;border-radius:8px"><input class="form-inp" id="ws_colorAccentHex" value="#10b981" placeholder="#10b981" style="flex:1" oninput="syncColorHex('Accent')"></div>
+        </div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Background Color</div>
+          <div style="display:flex;gap:8px;align-items:center"><input type="color" id="ws_colorBg" value="#07051a" style="width:44px;height:36px;border:none;background:none;cursor:pointer;border-radius:8px"><input class="form-inp" id="ws_colorBgHex" value="#07051a" placeholder="#07051a" style="flex:1" oninput="syncColorHex('Bg')"></div>
+        </div>
+      </div>
+      <div class="settings-card">
+        <div class="s-title">🔤 TYPOGRAPHY</div>
+        <div class="form-group"><div class="form-label">Heading Font</div>
+          <select class="form-inp" id="ws_fontHeading"><option>Sora</option><option>Plus Jakarta Sans</option><option>Inter</option><option>Poppins</option><option>Raleway</option></select>
+        </div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Body Font</div>
+          <select class="form-inp" id="ws_fontBody"><option>Plus Jakarta Sans</option><option>Sora</option><option>Inter</option><option>Lato</option><option>Nunito</option></select>
+        </div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Border Radius Style</div>
+          <select class="form-inp" id="ws_radius"><option value="8">Slightly Rounded (8px)</option><option value="16">Medium Rounded (16px)</option><option value="24">Very Rounded (24px)</option><option value="0">Sharp / Square</option></select>
+        </div>
+      </div>
+      <div class="settings-card full">
+        <div class="s-title">🌓 SECTIONS VISIBILITY</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0">
+          <div class="toggle-row"><div><div class="toggle-label">Hero Section</div></div><div class="toggle on" id="tog-secHero" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Stats Bar</div></div><div class="toggle on" id="tog-secStats" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Features Section</div></div><div class="toggle on" id="tog-secFeatures" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Topic Chips</div></div><div class="toggle on" id="tog-secChips" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Pricing Plans</div></div><div class="toggle on" id="tog-secPlans" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Testimonials</div></div><div class="toggle on" id="tog-secTestimonials" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">FAQ Section</div></div><div class="toggle on" id="tog-secFaq" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Footer</div></div><div class="toggle on" id="tog-secFooter" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- META TAB -->
+  <div id="wet-meta" class="we-tab-panel" style="display:none">
+    <div class="settings-grid">
+      <div class="settings-card">
+        <div class="s-title">🔧 SITE META</div>
+        <div class="form-group"><div class="form-label">Site Title (browser tab)</div><input class="form-inp" id="ws_siteTitle" value="EduSphere – AI Hinglish Teacher"></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Meta Description (SEO)</div><textarea class="form-inp form-textarea" id="ws_metaDesc" placeholder="EduSphere se koi bhi topic AI se sikhein..."></textarea></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Support Email</div><input class="form-inp" id="ws_email" value="support@edusphere.ai"></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">WhatsApp Support Number</div><input class="form-inp" id="ws_whatsapp" placeholder="+91 98765 43210"></div>
+      </div>
+      <div class="settings-card">
+        <div class="s-title">🔗 SOCIAL LINKS</div>
+        <div class="form-group"><div class="form-label">Instagram URL</div><input class="form-inp" id="ws_instagram" placeholder="https://instagram.com/..."></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Twitter/X URL</div><input class="form-inp" id="ws_twitter" placeholder="https://x.com/..."></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">YouTube URL</div><input class="form-inp" id="ws_youtube" placeholder="https://youtube.com/..."></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">LinkedIn URL</div><input class="form-inp" id="ws_linkedin" placeholder="https://linkedin.com/..."></div>
+      </div>
+      <div class="settings-card full">
+        <div class="s-title">📜 FOOTER TEXT</div>
+        <div class="form-group"><div class="form-label">Footer Tagline</div><input class="form-inp" id="ws_footerTag" placeholder="India ka sabse smart AI teacher 🇮🇳"></div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Copyright Text</div><input class="form-inp" id="ws_copyright" placeholder="© 2025 EduSphere. All rights reserved."></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── TOPICS ──────────── -->
+<div class="page" id="page-topics">
+  <div class="page-hdr"><div><div class="page-title">📚 Manage Topics</div></div><div class="hdr-actions"><button class="btn btn-primary btn-sm" onclick="openModal('modal-addTopic')">+ Add Topic</button></div></div>
+  <div class="table-card"><table><thead><tr><th>Icon</th><th>Topic</th><th>Exam</th><th>Status</th><th>Actions</th></tr></thead><tbody id="topicsBody"></tbody></table></div>
+</div>
+
+<!-- ──────────── EXAMS ──────────── -->
+<div class="page" id="page-exams">
+  <div class="page-hdr"><div><div class="page-title">🎯 Exam Categories</div></div><div class="hdr-actions"><button class="btn btn-primary btn-sm" onclick="openModal('modal-addExam')">+ Add Exam</button></div></div>
+  <div class="table-card"><table><thead><tr><th>Icon</th><th>Name</th><th>Label</th><th>Sessions</th><th>Actions</th></tr></thead><tbody id="examsBody"></tbody></table></div>
+</div>
+
+<!-- ──────────── PLANS ──────────── -->
+<div class="page" id="page-plans">
+  <div class="page-hdr"><div><div class="page-title">💎 Subscription Plans</div></div><div class="hdr-actions"><button class="btn btn-primary btn-sm" onclick="openAddPlan(-1)">+ Add Plan</button></div></div>
+  <div class="plans-grid" id="plansGrid"></div>
+</div>
+
+<!-- ──────────── REVENUE ──────────── -->
+<div class="page" id="page-revenue">
+  <div class="page-hdr"><div><div class="page-title">💰 Revenue</div><div class="page-sub">Real subscriber data se calculated</div></div></div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Monthly Revenue</div><div class="stat-value" id="rev_total">₹0</div></div>
+    <div class="stat-card"><div class="stat-icon">💎</div><div class="stat-label">Pro Subscribers</div><div class="stat-value" id="rev_pro">0</div></div>
+    <div class="stat-card"><div class="stat-icon">👑</div><div class="stat-label">Premium Subscribers</div><div class="stat-value" id="rev_prem">0</div></div>
+    <div class="stat-card"><div class="stat-icon">👤</div><div class="stat-label">Free Users</div><div class="stat-value" id="rev_free">0</div></div>
+  </div>
+  <div class="table-card"><div class="table-hdr"><div class="table-title">💳 PAID SUBSCRIBERS</div></div><div id="revTable"><div class="zero-state"><div class="zero-icon">💳</div><div class="zero-title">Koi paid subscriber nahi</div><div class="zero-sub">Jab learner Pro/Premium le tab yahan dikhega</div></div></div></div>
+</div>
+
+<!-- ──────────── COUPONS ──────────── -->
+<div class="page" id="page-coupons">
+  <div class="page-hdr"><div><div class="page-title">🎟️ Coupons</div></div><div class="hdr-actions"><button class="btn btn-primary btn-sm" onclick="openModal('modal-addCoupon')">+ Create Coupon</button></div></div>
+  <div class="table-card"><table><thead><tr><th>Code</th><th>Discount</th><th>Plan</th><th>Used/Limit</th><th>Expiry</th><th>Status</th><th>Actions</th></tr></thead><tbody id="couponsBody"></tbody></table>
+  <div id="couponsEmpty"><div class="zero-state"><div class="zero-icon">🎟️</div><div class="zero-title">Koi coupon nahi</div></div></div></div>
+</div>
+
+<!-- ──────────── SETTINGS ──────────── -->
+<div class="page" id="page-settings">
+  <div class="page-hdr"><div><div class="page-title">⚙️ Settings</div></div><div class="hdr-actions"><button class="btn btn-success btn-sm" onclick="saveSettings()">💾 Save</button></div></div>
+  <div class="settings-grid">
+    <div class="settings-card"><div class="s-title">🔒 ACCESS</div>
+      <div class="toggle-row"><div><div class="toggle-label">Maintenance Mode</div><div class="toggle-sub">Block website access</div></div><div class="toggle" id="tog-maint" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div><div class="toggle-label">New Registrations</div></div><div class="toggle on" id="tog-reg" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div><div class="toggle-label">Free Plan Access</div></div><div class="toggle on" id="tog-free" onclick="this.classList.toggle('on')"></div></div>
+    </div>
+    <div class="settings-card"><div class="s-title">🤖 AI CONFIG</div>
+      <div class="toggle-row"><div><div class="toggle-label">AI Generation</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div><div class="toggle-label">Text-to-Speech</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div><div class="toggle-label">Image Upload</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="form-group" style="margin-top:12px"><div class="form-label">Max Scenes</div><input class="form-inp" id="set_scenes" type="number" value="8" min="1" max="20"></div>
+    </div>
+    <div class="settings-card"><div class="s-title">💳 PAYMENT</div>
+      <div class="form-group"><div class="form-label">Gateway</div><select class="form-inp" id="set_gw"><option>Razorpay</option><option>Stripe</option><option>PayU</option></select></div>
+      <div class="form-group" style="margin-top:10px"><div class="form-label">API Key</div><input class="form-inp" id="set_key" type="password" placeholder="rzp_live_..."></div>
+      <div class="toggle-row" style="margin-top:10px"><div><div class="toggle-label">Test Mode</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+    </div>
+    <div class="settings-card"><div class="s-title">🔑 ADMIN</div>
+      <div class="form-group"><div class="form-label">Admin Email</div><input class="form-inp" id="set_email" value="admin@edusphere.ai"></div>
+      <div class="form-group" style="margin-top:10px"><div class="form-label">New Password</div><input class="form-inp" type="password" placeholder="Blank = no change"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── NOTIFICATIONS ──────────── -->
+<div class="page" id="page-notifs">
+  <div class="page-hdr"><div><div class="page-title">📣 Notifications</div><div class="page-sub">Learners ko announcements bhejo</div></div></div>
+  <div class="settings-grid">
+    <div class="settings-card"><div class="s-title">📨 SEND</div>
+      <div class="form-group"><div class="form-label">Target</div><select class="form-inp" id="nf_target"><option>All Learners</option><option>Free Plan Only</option><option>Pro Only</option><option>Premium Only</option></select></div>
+      <div class="form-group" style="margin-top:10px"><div class="form-label">Title</div><input class="form-inp" id="nf_title" placeholder="e.g. New Feature 🚀"></div>
+      <div class="form-group" style="margin-top:10px"><div class="form-label">Message</div><textarea class="form-inp form-textarea" id="nf_msg" placeholder="Message yahan likhein..."></textarea></div>
+      <button class="btn btn-primary" style="margin-top:12px;width:100%" onclick="sendNotif()">📣 Send Now</button>
+    </div>
+    <div class="settings-card"><div class="s-title">📋 SENT LOG</div><div id="notifLog"><div class="zero-state" style="padding:30px 0"><div class="zero-icon">📭</div><div class="zero-title">Koi notification nahi bheja</div></div></div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- MODALS -->
+<div class="modal" id="modal-addLearner"><div class="mbox"><div class="mbox-top"></div><div class="mclose" onclick="closeModal('modal-addLearner')">✕</div>
+  <div class="mtitle">👤 Add Learner</div><div class="msub">Manually add karo</div>
+  <div class="form-grid">
+    <div class="form-group"><div class="form-label">Full Name</div><input class="form-inp" id="al_name" placeholder="Aarav Singh"></div>
+    <div class="form-group"><div class="form-label">Email</div><input class="form-inp" id="al_email" placeholder="email@example.com"></div>
+    <div class="form-group"><div class="form-label">Exam</div><select class="form-inp" id="al_exam"><option>Class 9-10</option><option>Class 11-12</option><option>JEE</option><option>NEET</option><option>UPSC</option><option>Competitive</option></select></div>
+    <div class="form-group"><div class="form-label">Plan</div><select class="form-inp" id="al_plan"><option>Free</option><option>Pro</option><option>Premium</option></select></div>
+  </div>
+  <div class="mfooter"><button class="btn btn-ghost" onclick="closeModal('modal-addLearner')">Cancel</button><button class="btn btn-primary" onclick="addLearner()">✅ Add</button></div>
+</div></div>
+
+<div class="modal" id="modal-editLearner"><div class="mbox"><div class="mbox-top"></div><div class="mclose" onclick="closeModal('modal-editLearner')">✕</div>
+  <div class="mtitle">✏️ Edit Learner</div><div class="msub">Details update karo</div>
+  <div class="form-grid">
+    <div class="form-group"><div class="form-label">Name</div><input class="form-inp" id="el_name"></div>
+    <div class="form-group"><div class="form-label">Email</div><input class="form-inp" id="el_email"></div>
+    <div class="form-group"><div class="form-label">Exam</div><select class="form-inp" id="el_exam"><option>Class 9-10</option><option>Class 11-12</option><option>JEE</option><option>NEET</option><option>UPSC</option><option>Competitive</option></select></div>
+    <div class="form-group"><div class="form-label">Plan</div><select class="form-inp" id="el_plan"><option>Free</option><option>Pro</option><option>Premium</option></select></div>
+  </div>
+  <input type="hidden" id="el_idx">
+  <div class="mfooter"><button class="btn btn-ghost" onclick="closeModal('modal-editLearner')">Cancel</button><button class="btn btn-primary" onclick="saveLearner()">💾 Save</button></div>
+</div></div>
+
+<div class="modal" id="modal-addPlan"><div class="mbox"><div class="mbox-top"></div><div class="mclose" onclick="closeModal('modal-addPlan')">✕</div>
+  <div class="mtitle" id="planMT">💎 New Plan</div><div class="msub">Plan configure karo</div>
+  <div class="form-grid">
+    <div class="form-group"><div class="form-label">Plan Name</div><input class="form-inp" id="pl_name" placeholder="Pro"></div>
+    <div class="form-group"><div class="form-label">Price ₹/month</div><input class="form-inp" id="pl_price" type="number" placeholder="299"></div>
+    <div class="form-group"><div class="form-label">Sessions Limit</div><input class="form-inp" id="pl_sess" placeholder="100 or Unlimited"></div>
+    <div class="form-group"><div class="form-label">Popular?</div><select class="form-inp" id="pl_pop"><option value="0">No</option><option value="1">Yes — Show HOT badge</option></select></div>
+    <div class="form-group full"><div class="form-label">Features (ek per line)</div><textarea class="form-inp form-textarea" id="pl_feat" placeholder="Unlimited uploads&#10;All exams&#10;Priority AI"></textarea></div>
+  </div>
+  <input type="hidden" id="pl_idx" value="-1">
+  <div class="mfooter"><button class="btn btn-ghost" onclick="closeModal('modal-addPlan')">Cancel</button><button class="btn btn-primary" onclick="savePlan()">💾 Save</button></div>
+</div></div>
+
+<div class="modal" id="modal-addCoupon"><div class="mbox"><div class="mbox-top"></div><div class="mclose" onclick="closeModal('modal-addCoupon')">✕</div>
+  <div class="mtitle">🎟️ New Coupon</div><div class="msub">Discount code banao</div>
+  <div class="form-grid">
+    <div class="form-group"><div class="form-label">Code</div><input class="form-inp" id="cp_code" placeholder="EDUFREE50" style="text-transform:uppercase"></div>
+    <div class="form-group"><div class="form-label">Discount %</div><input class="form-inp" id="cp_disc" type="number" placeholder="30"></div>
+    <div class="form-group"><div class="form-label">Applicable Plan</div><select class="form-inp" id="cp_plan"><option>All Plans</option><option>Pro</option><option>Premium</option></select></div>
+    <div class="form-group"><div class="form-label">Usage Limit</div><input class="form-inp" id="cp_limit" type="number" placeholder="100"></div>
+    <div class="form-group"><div class="form-label">Expiry Date</div><input class="form-inp" id="cp_exp" type="date"></div>
+  </div>
+  <div class="mfooter"><button class="btn btn-ghost" onclick="closeModal('modal-addCoupon')">Cancel</button><button class="btn btn-primary" onclick="saveCoupon()">💾 Save</button></div>
+</div></div>
+
+<div class="modal" id="modal-addTopic"><div class="mbox"><div class="mbox-top"></div><div class="mclose" onclick="closeModal('modal-addTopic')">✕</div>
+  <div class="mtitle">📚 Add Topic</div>
+  <div class="form-grid">
+    <div class="form-group"><div class="form-label">Emoji</div><input class="form-inp" id="tp_icon" placeholder="🔬"></div>
+    <div class="form-group"><div class="form-label">Topic Name</div><input class="form-inp" id="tp_name" placeholder="Cell Division"></div>
+    <div class="form-group"><div class="form-label">Exam</div><select class="form-inp" id="tp_exam"><option>All</option><option>Class 9-10</option><option>Class 11-12</option><option>JEE</option><option>NEET</option><option>UPSC</option></select></div>
+  </div>
+  <div class="mfooter"><button class="btn btn-ghost" onclick="closeModal('modal-addTopic')">Cancel</button><button class="btn btn-primary" onclick="saveTopic()">💾 Save</button></div>
+</div></div>
+
+<div class="modal" id="modal-addExam"><div class="mbox"><div class="mbox-top"></div><div class="mclose" onclick="closeModal('modal-addExam')">✕</div>
+  <div class="mtitle">🎯 Add Exam</div>
+  <div class="form-grid">
+    <div class="form-group"><div class="form-label">Icon</div><input class="form-inp" id="ex_icon" placeholder="📘"></div>
+    <div class="form-group"><div class="form-label">Name</div><input class="form-inp" id="ex_name" placeholder="Class 9-10"></div>
+    <div class="form-group"><div class="form-label">Label/Badge</div><input class="form-inp" id="ex_label" placeholder="CBSE"></div>
+  </div>
+  <div class="mfooter"><button class="btn btn-ghost" onclick="closeModal('modal-addExam')">Cancel</button><button class="btn btn-primary" onclick="saveExam()">💾 Save</button></div>
+</div></div>
+
+<div class="toast" id="toast"><span id="ti"></span><span id="tm"></span></div>
+
+<script>
+// ════════════════════════════════════════════
+// STORAGE KEYS
+// ════════════════════════════════════════════
+const K={
+  learners:'edu_learners', sessions:'edu_sessions',
+  feedback:'edu_feedback', activity:'edu_activity',
+  plans:'edu_plans',       coupons:'edu_coupons',
+  topics:'edu_topics',     exams:'edu_exams',
+  webCfg:'edu_website_config', settings:'edu_settings',
+  notifLog:'edu_notif_log'
+};
+const PAL=['#4338ca','#10b981','#f59e0b','#6366f1','#f43f5e','#8b5cf6','#0891b2','#dc2626','#c026d3','#0d9488'];
+
+function ld(k,d=[]){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function sv(k,d){try{localStorage.setItem(k,JSON.stringify(d));}catch(e){}}
+
+function initDefaults(){
+  if(!localStorage.getItem(K.plans)) sv(K.plans,[
+    {name:'Free',price:0,sessions:'5',popular:false,features:['5 sessions/month','Basic exam categories','Hinglish only','Community support']},
+    {name:'Pro',price:299,sessions:'100',popular:true,features:['100 sessions/month','All exam categories','3 languages','Priority AI','Download PDF','Email support']},
+    {name:'Premium',price:599,sessions:'Unlimited',popular:false,features:['Unlimited sessions','All exams','3 languages','Fastest AI','Download PDF','1-on-1 support','Offline access']}
+  ]);
+  if(!localStorage.getItem(K.topics)) sv(K.topics,[
+    {icon:'🌿',name:'Photosynthesis',exam:'Class 9-10',status:'Active'},
+    {icon:'⚙️',name:"Newton's Laws",exam:'JEE',status:'Active'},
+    {icon:'🗽',name:'French Revolution',exam:'Class 11-12',status:'Active'},
+    {icon:'🔬',name:'Cell Division',exam:'NEET',status:'Active'},
+    {icon:'📐',name:'Quadratic Equations',exam:'JEE',status:'Active'},
+    {icon:'⚡',name:"Ohm's Law",exam:'Class 9-10',status:'Active'}
+  ]);
+  if(!localStorage.getItem(K.exams)) sv(K.exams,[
+    {icon:'📘',name:'Class 9-10',label:'CBSE'},
+    {icon:'📗',name:'Class 11-12',label:'CBSE'},
+    {icon:'⚙️',name:'JEE Mains/Adv',label:'HOT'},
+    {icon:'🔬',name:'NEET UG',label:'HOT'},
+    {icon:'🏛️',name:'UPSC/IAS',label:''},
+    {icon:'🎯',name:'Competitive',label:''}
+  ]);
+}
+
+// ════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════
+function nav(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(x=>x.classList.remove('on'));
+  document.getElementById('page-'+p)?.classList.add('on');
+  document.querySelectorAll(`.ni[data-page="${p}"]`).forEach(x=>x.classList.add('on'));
+  ({dashboard:renderDash,learners:renderLearners,analytics:renderAnalytics,sessions:renderSessions,
+    feedback_list:renderFeedback,plans:renderPlans,revenue:renderRevenue,coupons:renderCoupons,
+    topics:renderTopics,exams:renderExams,website:renderWebEditor,notifs:renderNotifLog})[p]?.();
+}
+document.querySelectorAll('.ni[data-page]').forEach(n=>n.addEventListener('click',()=>nav(n.dataset.page)));
+setInterval(()=>document.getElementById('liveTime').textContent=new Date().toLocaleTimeString('en-IN',{hour12:false}),1000);
+
+// ════════════════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════════════════
+function renderDash(){
+  const L=ld(K.learners), S=ld(K.sessions), F=ld(K.feedback), A=ld(K.activity);
+  const plans=ld(K.plans); const pMap={}; plans.forEach(p=>pMap[p.name]=p.price||0);
+  const now=Date.now();
+  const active=S.filter(s=>(now-s.timestamp)<30*60*1000).length;
+  const revenue=L.reduce((r,l)=>r+(pMap[l.plan]||0),0);
+  const paid=L.filter(l=>(pMap[l.plan]||0)>0).length;
+  const todayL=L.filter(l=>(now-l.joinedAt)<86400000).length;
+
+  document.getElementById('st_learners').textContent=L.length;
+  document.getElementById('st_active').textContent=active;
+  document.getElementById('st_sessions').textContent=S.length;
+  document.getElementById('st_rev').textContent='₹'+revenue.toLocaleString('en-IN');
+  document.getElementById('st_learners_sub').textContent=L.length===0?'Abhi koi nahi':`+${todayL} aaj joined`;
+  document.getElementById('st_learners_sub').className='stat-sub'+(todayL>0?' up':'');
+  document.getElementById('st_active_sub').textContent=active===0?'Koi active nahi':`${active} live right now`;
+  document.getElementById('st_active_sub').className='stat-sub'+(active>0?' up':'');
+  document.getElementById('st_sessions_sub').textContent=S.length===0?'0 sessions total':`${S.length} total`;
+  document.getElementById('st_rev_sub').textContent=paid===0?'0 paid subscribers':`${paid} paid subscriber${paid>1?'s':''}`;
+  document.getElementById('st_rev_sub').className='stat-sub'+(paid>0?' up':'');
+  document.getElementById('dashUpdated').textContent='Last updated: '+new Date().toLocaleTimeString('en-IN');
+
+  // sidebar badges
+  document.getElementById('totalBadge').textContent=L.length;
+  document.getElementById('liveBadge').textContent=active;
+  document.getElementById('fbBadge').textContent=F.length;
+
+  // bar chart (last 7 days)
+  if(S.length>0){
+    const labels=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const counts=Array(7).fill(0);
+    S.forEach(s=>{ if((now-s.timestamp)<7*86400000){const idx=(new Date(s.timestamp).getDay()+6)%7; counts[idx]++;} });
+    const mx=Math.max(...counts,1);
+    document.getElementById('dashChart').innerHTML=`<div class="mini-chart">`+
+      labels.map((d,i)=>`<div class="bar-col"><div class="bar-val">${counts[i]}</div>
+        <div class="bar" style="height:${Math.round(counts[i]/mx*130)+5}px;background:linear-gradient(to top,#4338ca,#818cf8)"></div>
+        <div class="bar-label">${d}</div></div>`).join('')+`</div>`;
+    // pie
+    const ec={};S.forEach(s=>ec[s.exam]=(ec[s.exam]||0)+1);
+    const en=Object.entries(ec).sort((a,b)=>b[1]-a[1]);
+    const tot=S.length; let deg=0;
+    const seg=en.map((e,i)=>{const pc=e[1]/tot*360;const s=`${PAL[i%10]} ${deg}deg ${deg+pc}deg`;deg+=pc;return s;}).join(',');
+    document.getElementById('dashPie').innerHTML=
+      `<div style="width:120px;height:120px;border-radius:50%;background:conic-gradient(${seg});margin:0 auto 12px;box-shadow:0 0 20px rgba(99,102,241,0.3)"></div>
+      <div class="pie-legend">${en.map((e,i)=>`<div class="pie-item"><div class="pie-dot" style="background:${PAL[i%10]}"></div>${e[0]}<span style="margin-left:auto;font-weight:900;color:var(--text)">${Math.round(e[1]/tot*100)}%</span></div>`).join('')}</div>`;
+  }
+  // recent signups
+  if(L.length>0){
+    const recent=[...L].sort((a,b)=>b.joinedAt-a.joinedAt).slice(0,5);
+    document.getElementById('recentSignups').innerHTML=
+      `<table><thead><tr><th>Learner</th><th>Plan</th><th>Joined</th></tr></thead><tbody>`+
+      recent.map(l=>`<tr><td><div class="td-name"><div class="uav" style="background:${l.ac}22;color:${l.ac}">${l.ini||'?'}</div>${l.name}</div></td>
+        <td>${pb(l.plan)}</td><td style="color:var(--muted);font-size:11px">${ta(l.joinedAt)}</td></tr>`).join('')+`</tbody></table>`;
+  }
+  // activity
+  if(A.length>0){
+    document.getElementById('actFeed').innerHTML=A.slice().reverse().slice(0,10).map(a=>
+      `<div class="activity-item"><div class="act-icon" style="background:${a.bg||'rgba(99,102,241,0.15)'}">${a.ic||'📌'}</div>
+      <div><div class="act-text">${a.text}</div><div class="act-time">${ta(a.ts)}</div></div></div>`).join('');
+  }
+}
+
+// ════════════════════════════════════════════
+// LEARNERS
+// ════════════════════════════════════════════
+let _lf='all',_ls='';
+function renderLearners(){
+  const all=ld(K.learners);
+  const fil=all.filter(l=>{
+    const ms=l.name.toLowerCase().includes(_ls.toLowerCase())||(l.email||'').toLowerCase().includes(_ls.toLowerCase());
+    const mp=_lf==='all'||l.plan===_lf;
+    return ms&&mp;
+  });
+  document.getElementById('learnerCountText').textContent=`${fil.length} of ${all.length} learners`;
+  if(!fil.length){
+    document.getElementById('learnersBody').innerHTML=`<tr><td colspan="8"><div class="zero-state"><div class="zero-icon">👤</div>
+      <div class="zero-title">${all.length===0?'Koi learner nahi':'Search mein koi nahi'}</div>
+      <div class="zero-sub">${all.length===0?'Manually add karo ya website se register hone dena':''}</div>
+      ${all.length===0?`<div style="margin-top:8px"><button class="btn btn-primary btn-sm" onclick="openModal('modal-addLearner')">+ Add</button></div>`:''}</div></td></tr>`;
+    return;
+  }
+  document.getElementById('learnersBody').innerHTML=fil.map(l=>{
+    const i=all.indexOf(l);
+    return `<tr><td><div class="td-name"><div class="uav" style="background:${l.ac}22;color:${l.ac}">${l.ini||'?'}</div>${l.name}</div></td>
+      <td style="color:var(--muted);font-size:11px">${l.email||'—'}</td>
+      <td><span class="badge badge-indigo">${l.exam||'—'}</span></td>
+      <td>${pb(l.plan)}</td>
+      <td style="font-weight:900;color:var(--indigo-light)">${l.sessions||0}</td>
+      <td style="color:var(--muted);font-size:11px">${l.lastActive?ta(l.lastActive):'—'}</td>
+      <td style="color:var(--muted);font-size:11px">${l.joinedAt?ta(l.joinedAt):'—'}</td>
+      <td><div class="action-btns"><div class="icon-btn" onclick="openEditLearner(${i})">✏️</div><div class="icon-btn danger" onclick="delLearner(${i})">🗑️</div></div></td>
+    </tr>`;
+  }).join('');
+}
+function filterLearners(q){_ls=q;renderLearners();}
+function setLF(f,el){_lf=f;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));if(el)el.classList.add('on');renderLearners();}
+function addLearner(){
+  const name=document.getElementById('al_name').value.trim(),email=document.getElementById('al_email').value.trim();
+  if(!name||!email){showToast('⚠️','Name aur Email required!');return;}
+  const ac=PAL[Math.floor(Math.random()*PAL.length)];
+  const ini=name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const L=ld(K.learners);
+  L.unshift({id:Date.now(),name,email,exam:document.getElementById('al_exam').value,plan:document.getElementById('al_plan').value,sessions:0,joinedAt:Date.now(),lastActive:null,ini,ac});
+  sv(K.learners,L);
+  logAct('🆕','rgba(16,185,129,0.15)',`<strong>${name}</strong> ko admin ne manually add kiya`);
+  closeModal('modal-addLearner');
+  document.getElementById('al_name').value='';document.getElementById('al_email').value='';
+  renderLearners();updateBadges();showToast('✅',`${name} add ho gaya!`);
+}
+function openEditLearner(i){
+  const L=ld(K.learners),l=L[i];if(!l)return;
+  document.getElementById('el_name').value=l.name;document.getElementById('el_email').value=l.email||'';
+  document.getElementById('el_exam').value=l.exam||'';document.getElementById('el_plan').value=l.plan||'Free';
+  document.getElementById('el_idx').value=i;openModal('modal-editLearner');
+}
+function saveLearner(){
+  const i=+document.getElementById('el_idx').value,L=ld(K.learners);
+  if(!L[i])return;
+  L[i].name=document.getElementById('el_name').value;L[i].email=document.getElementById('el_email').value;
+  L[i].exam=document.getElementById('el_exam').value;L[i].plan=document.getElementById('el_plan').value;
+  sv(K.learners,L);closeModal('modal-editLearner');renderLearners();showToast('✅','Updated!');
+}
+function delLearner(i){
+  const L=ld(K.learners);if(!L[i]||!confirm(`"${L[i].name}" delete karein?`))return;
+  const n=L[i].name;L.splice(i,1);sv(K.learners,L);renderLearners();updateBadges();showToast('🗑️',`${n} deleted.`);
+}
+
+// ════════════════════════════════════════════
+// ANALYTICS
+// ════════════════════════════════════════════
+function renderAnalytics(){
+  const S=ld(K.sessions),L=ld(K.learners),F=ld(K.feedback);
+  document.getElementById('an_s').textContent=S.length;document.getElementById('an_l').textContent=L.length;document.getElementById('an_f').textContent=F.length;
+  if(F.length>0)document.getElementById('an_r').textContent=(F.reduce((s,f)=>s+(f.rating||0),0)/F.length).toFixed(1)+'⭐';
+  if(S.length>0){
+    const pal=PAL;
+    const lc={};S.forEach(s=>lc[s.lang]=(lc[s.lang]||0)+1);
+    const le=Object.entries(lc).sort((a,b)=>b[1]-a[1]);const ml=le[0]?le[0][1]:1;
+    document.getElementById('anLang').innerHTML=le.map((e,i)=>
+      `<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px"><span>${e[0]||'Unknown'}</span><span style="color:${pal[i%10]}">${e[1]}</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(e[1]/ml*100)}%;background:${pal[i%10]}"></div></div></div>`).join('');
+    const ec={};S.forEach(s=>ec[s.exam]=(ec[s.exam]||0)+1);
+    const ee=Object.entries(ec).sort((a,b)=>b[1]-a[1]);const me=ee[0]?ee[0][1]:1;
+    document.getElementById('anExam').innerHTML=ee.map((e,i)=>
+      `<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px"><span>${e[0]||'Unknown'}</span><span style="color:${pal[i%10]}">${e[1]}</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(e[1]/me*100)}%;background:${pal[i%10]}"></div></div></div>`).join('');
+    const tc={};S.forEach(s=>{if(s.topic)tc[s.topic]=(tc[s.topic]||0)+1;});
+    const te=Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,10);
+    if(te.length>0){const mt=te[0][1];
+      document.getElementById('anTopics').innerHTML=te.map((e,i)=>
+        `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--text2);margin-bottom:4px"><span>${e[0]}</span><span style="color:${pal[i%10]};font-weight:900">${e[1]}x</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(e[1]/mt*100)}%;background:${pal[i%10]}"></div></div></div>`).join('');
+    }
+  }
+}
+
+// ════════════════════════════════════════════
+// SESSIONS
+// ════════════════════════════════════════════
+function renderSessions(){
+  const S=ld(K.sessions);
+  document.getElementById('sessionsBody').innerHTML=!S.length?
+    `<tr><td colspan="6"><div class="zero-state"><div class="zero-icon">🎬</div><div class="zero-title">Koi session recorded nahi</div><div class="zero-sub">Jab learner website par session kare tab yahan dikhega</div></div></td></tr>`:
+    [...S].sort((a,b)=>b.timestamp-a.timestamp).map(s=>
+      `<tr><td><div class="td-name">${s.learnerName||'Anonymous'}</div></td>
+      <td style="color:var(--text2)">${s.topic||'—'}</td>
+      <td><span class="badge badge-indigo">${s.exam||'—'}</span></td>
+      <td><span class="badge badge-muted">${s.lang||'—'}</span></td>
+      <td><span class="badge badge-green">${s.scenes||0} scenes</span></td>
+      <td style="color:var(--muted);font-size:11px">${ta(s.timestamp)}</td></tr>`).join('');
+}
+
+// ════════════════════════════════════════════
+// FEEDBACK
+// ════════════════════════════════════════════
+function renderFeedback(){
+  const F=ld(K.feedback);
+  document.getElementById('fb_total').textContent=F.length;
+  if(!F.length){document.getElementById('fb_avg').textContent='—';document.getElementById('fb_promo').textContent='0';
+    document.getElementById('fbBody').innerHTML=`<tr><td colspan="6"><div class="zero-state"><div class="zero-icon">💬</div><div class="zero-title">Koi feedback nahi abhi</div><div class="zero-sub">Jab learner website par feedback submit kare tab yahan dikhega</div></div></td></tr>`;return;}
+  document.getElementById('fb_avg').textContent=(F.reduce((s,f)=>s+(f.rating||0),0)/F.length).toFixed(1)+'⭐';
+  document.getElementById('fb_promo').textContent=F.filter(f=>(f.nps||0)>=9).length;
+  document.getElementById('fbBody').innerHTML=[...F].sort((a,b)=>b.submittedAt-a.submittedAt).map(f=>
+    `<tr><td><div class="td-name">${f.name||'Anonymous'}</div></td>
+    <td style="font-size:14px">${'⭐'.repeat(f.rating||0)}</td>
+    <td><span class="badge ${(f.nps||0)>=9?'badge-green':'badge-gold'}">${f.nps||'—'}/10</span></td>
+    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text2)">${f.like||'—'}</td>
+    <td><span class="badge badge-indigo">${f.exam||'—'}</span></td>
+    <td style="color:var(--muted);font-size:11px">${ta(f.submittedAt)}</td></tr>`).join('');
+}
+
+// ════════════════════════════════════════════
+// PLANS
+// ════════════════════════════════════════════
+function renderPlans(){
+  const plans=ld(K.plans),L=ld(K.learners);
+  const cmap={Free:'#6b7280',Pro:'#6366f1',Premium:'#f59e0b'};
+  document.getElementById('plansGrid').innerHTML=plans.map((p,i)=>{
+    const subs=L.filter(l=>l.plan===p.name).length,c=cmap[p.name]||'#6366f1';
+    return `<div class="plan-card ${p.popular?'popular':''}">
+      ${p.popular?`<div class="plan-badge-top badge-indigo badge">🔥 POPULAR</div>`:''}
+      <div class="plan-name">${p.name}</div>
+      <div class="plan-price" style="color:${c}">${p.price===0?'Free':'₹'+p.price}<span>${p.price>0?'/month':''}</span></div>
+      <div class="plan-users">👥 ${subs} subscriber${subs!==1?'s':''}</div>
+      <div class="plan-features">${(p.features||[]).map(f=>`<div class="pf"><div style="width:16px;height:16px;border-radius:50%;background:${c}22;color:${c};display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;font-weight:900">✓</div>${f}</div>`).join('')}</div>
+      <div class="plan-actions"><button class="btn btn-ghost btn-sm" style="flex:1" onclick="openAddPlan(${i})">✏️ Edit</button><button class="btn btn-danger btn-sm" onclick="delPlan(${i})">🗑️</button></div>
+    </div>`;
+  }).join('');
+}
+function openAddPlan(i){
+  const p=ld(K.plans);document.getElementById('planMT').textContent=i<0?'💎 New Plan':'✏️ Edit Plan';
+  document.getElementById('pl_idx').value=i;
+  if(i>=0&&p[i]){document.getElementById('pl_name').value=p[i].name;document.getElementById('pl_price').value=p[i].price;document.getElementById('pl_sess').value=p[i].sessions;document.getElementById('pl_pop').value=p[i].popular?'1':'0';document.getElementById('pl_feat').value=(p[i].features||[]).join('\n');}
+  else{['pl_name','pl_price','pl_sess','pl_feat'].forEach(id=>document.getElementById(id).value='');document.getElementById('pl_pop').value='0';}
+  openModal('modal-addPlan');
+}
+function savePlan(){
+  const name=document.getElementById('pl_name').value.trim();if(!name){showToast('⚠️','Name required!');return;}
+  const p=ld(K.plans),d={name,price:+document.getElementById('pl_price').value||0,sessions:document.getElementById('pl_sess').value||'Unlimited',popular:document.getElementById('pl_pop').value==='1',features:document.getElementById('pl_feat').value.split('\n').filter(f=>f.trim())};
+  const i=+document.getElementById('pl_idx').value;if(i>=0)p[i]=d;else p.push(d);sv(K.plans,p);closeModal('modal-addPlan');renderPlans();showToast('✅',`"${name}" saved!`);
+}
+function delPlan(i){const p=ld(K.plans);if(!p[i]||!confirm(`Delete "${p[i].name}"?`))return;p.splice(i,1);sv(K.plans,p);renderPlans();showToast('🗑️','Deleted.');}
+
+// ════════════════════════════════════════════
+// REVENUE
+// ════════════════════════════════════════════
+function renderRevenue(){
+  const L=ld(K.learners),plans=ld(K.plans);const pm={};plans.forEach(p=>pm[p.name]=p.price||0);
+  const paid=L.filter(l=>(pm[l.plan]||0)>0),free=L.filter(l=>(pm[l.plan]||0)===0);
+  const total=paid.reduce((r,l)=>r+(pm[l.plan]||0),0);
+  document.getElementById('rev_total').textContent='₹'+total.toLocaleString('en-IN');
+  document.getElementById('rev_pro').textContent=L.filter(l=>l.plan==='Pro').length;
+  document.getElementById('rev_prem').textContent=L.filter(l=>l.plan==='Premium').length;
+  document.getElementById('rev_free').textContent=free.length;
+  document.getElementById('revTable').innerHTML=!paid.length?
+    `<div class="zero-state"><div class="zero-icon">💳</div><div class="zero-title">Koi paid subscriber nahi</div><div class="zero-sub">Jab learner Pro/Premium le tab yahan dikhega</div></div>`:
+    `<table><thead><tr><th>Learner</th><th>Plan</th><th>Monthly</th><th>Joined</th></tr></thead><tbody>`+
+    [...paid].sort((a,b)=>b.joinedAt-a.joinedAt).map(l=>
+      `<tr><td><div class="td-name">${l.name}</div></td><td>${pb(l.plan)}</td>
+      <td style="color:var(--green);font-weight:900">₹${pm[l.plan]||0}/mo</td>
+      <td style="color:var(--muted);font-size:11px">${ta(l.joinedAt)}</td></tr>`).join('')+`</tbody></table>`;
+}
+
+// ════════════════════════════════════════════
+// COUPONS
+// ════════════════════════════════════════════
+function renderCoupons(){
+  const C=ld(K.coupons);
+  document.getElementById('couponsEmpty').style.display=C.length?'none':'block';
+  document.getElementById('couponsBody').innerHTML=C.map((c,i)=>
+    `<tr><td style="font-family:'Sora',sans-serif;font-weight:900;color:var(--indigo-light);letter-spacing:2px">${c.code}</td>
+    <td style="color:var(--green);font-weight:900">${c.discount}% OFF</td>
+    <td><span class="badge badge-indigo">${c.plan}</span></td>
+    <td style="font-weight:800">${c.used||0}/${c.limit||'∞'}</td>
+    <td style="color:var(--muted);font-size:11px">${c.expiry||'—'}</td>
+    <td><span class="badge ${c.status==='Active'?'badge-green':'badge-muted'}">${c.status||'Active'}</span></td>
+    <td><div class="action-btns"><div class="icon-btn" onclick="togCoupon(${i})">🔄</div><div class="icon-btn danger" onclick="delCoupon(${i})">🗑️</div></div></td></tr>`).join('');
+}
+function saveCoupon(){
+  const code=document.getElementById('cp_code').value.trim().toUpperCase(),disc=document.getElementById('cp_disc').value;
+  if(!code||!disc){showToast('⚠️','Code aur discount required!');return;}
+  const C=ld(K.coupons);C.push({code,discount:+disc,plan:document.getElementById('cp_plan').value,used:0,limit:+document.getElementById('cp_limit').value||999,expiry:document.getElementById('cp_exp').value||'N/A',status:'Active'});
+  sv(K.coupons,C);closeModal('modal-addCoupon');renderCoupons();showToast('🎟️',`"${code}" created!`);
+}
+function togCoupon(i){const C=ld(K.coupons);C[i].status=C[i].status==='Active'?'Inactive':'Active';sv(K.coupons,C);renderCoupons();}
+function delCoupon(i){const C=ld(K.coupons);if(!confirm(`Delete "${C[i].code}"?`))return;C.splice(i,1);sv(K.coupons,C);renderCoupons();showToast('🗑️','Deleted.');}
+
+// ════════════════════════════════════════════
+// TOPICS
+// ════════════════════════════════════════════
+function renderTopics(){
+  const T=ld(K.topics);
+  document.getElementById('topicsBody').innerHTML=!T.length?
+    `<tr><td colspan="5"><div class="zero-state"><div class="zero-icon">📚</div><div class="zero-title">Koi topic nahi</div></div></td></tr>`:
+    T.map((t,i)=>`<tr><td style="font-size:20px">${t.icon||'📌'}</td><td style="font-weight:800;color:var(--text)">${t.name}</td>
+      <td><span class="badge badge-indigo">${t.exam||'All'}</span></td>
+      <td><span class="badge ${t.status==='Active'?'badge-green':'badge-muted'}">${t.status||'Active'}</span></td>
+      <td><div class="action-btns"><div class="icon-btn" onclick="togTopic(${i})">🔄</div><div class="icon-btn danger" onclick="delTopic(${i})">🗑️</div></div></td></tr>`).join('');
+}
+function saveTopic(){const n=document.getElementById('tp_name').value.trim();if(!n){showToast('⚠️','Name!');return;}const T=ld(K.topics);T.push({icon:document.getElementById('tp_icon').value||'📌',name:n,exam:document.getElementById('tp_exam').value,status:'Active'});sv(K.topics,T);closeModal('modal-addTopic');renderTopics();showToast('✅',`"${n}" added!`);}
+function togTopic(i){const T=ld(K.topics);T[i].status=T[i].status==='Active'?'Inactive':'Active';sv(K.topics,T);renderTopics();}
+function delTopic(i){const T=ld(K.topics);if(!confirm(`Delete "${T[i].name}"?`))return;T.splice(i,1);sv(K.topics,T);renderTopics();showToast('🗑️','Deleted.');}
+
+// ════════════════════════════════════════════
+// EXAMS
+// ════════════════════════════════════════════
+function renderExams(){
+  const E=ld(K.exams),S=ld(K.sessions);
+  document.getElementById('examsBody').innerHTML=!E.length?
+    `<tr><td colspan="5"><div class="zero-state"><div class="zero-icon">🎯</div><div class="zero-title">Koi exam nahi</div></div></td></tr>`:
+    E.map((e,i)=>`<tr><td style="font-size:20px">${e.icon||'📋'}</td><td style="font-weight:800;color:var(--text)">${e.name}</td>
+      <td>${e.label?`<span class="badge badge-indigo">${e.label}</span>`:'—'}</td>
+      <td style="font-weight:900;color:var(--indigo-light)">${S.filter(s=>s.exam===e.name).length} sessions</td>
+      <td><div class="action-btns"><div class="icon-btn danger" onclick="delExam(${i})">🗑️</div></div></td></tr>`).join('');
+}
+function saveExam(){const n=document.getElementById('ex_name').value.trim();if(!n){showToast('⚠️','Name!');return;}const E=ld(K.exams);E.push({icon:document.getElementById('ex_icon').value||'📋',name:n,label:document.getElementById('ex_label').value||''});sv(K.exams,E);closeModal('modal-addExam');renderExams();showToast('✅',`"${n}" added!`);}
+function delExam(i){const E=ld(K.exams);if(!confirm(`Delete "${E[i].name}"?`))return;E.splice(i,1);sv(K.exams,E);renderExams();showToast('🗑️','Deleted.');}
+
+// ════════════════════════════════════════════
+// WEBSITE EDITOR — FULL VERSION
+// ════════════════════════════════════════════
+function weTab(name,el){
+  document.querySelectorAll('.we-tab-panel').forEach(p=>p.style.display='none');
+  document.getElementById('wet-'+name).style.display='flex';
+  document.querySelectorAll('#weTabs .tab-btn').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+}
+function renderWebEditor(){
+  const c=ld(K.webCfg,{});
+  // HERO
+  document.getElementById('ws_heroTitle').value=c.heroTitle||'Welcome to EduSphere AI 🎬';
+  document.getElementById('ws_heroSub').value=c.heroSub||'Koi bhi topic upload karo — AI teacher Hinglish mein samjhayega.';
+  document.getElementById('ws_ctaText').value=c.ctaText||'Start Learning Free 🚀';
+  document.getElementById('ws_ctaLink').value=c.ctaLink||'#start';
+  if(c.heroImgUrl){document.getElementById('ws_heroImgUrl').value=c.heroImgUrl;previewImgUrl({value:c.heroImgUrl},'heroImgPreview');}
+  setTog('tog-heroImg',c.showHeroImg!==false);
+  // STATS
+  const stats=c.stats||[{icon:'🎓',val:'10K+',label:'Students'},{icon:'📚',val:'500+',label:'Topics'},{icon:'⭐',val:'4.9',label:'Rating'},{icon:'🌍',val:'12+',label:'Exams'}];
+  document.getElementById('statsEd').innerHTML=stats.map((s,i)=>
+    `<div class="form-group"><div class="form-label">Stat ${i+1} Icon</div><input class="form-inp" id="stat_icon_${i}" value="${s.icon}"></div>
+     <div class="form-group"><div class="form-label">Value</div><input class="form-inp" id="stat_val_${i}" value="${s.val}"></div>
+     <div class="form-group"><div class="form-label">Label</div><input class="form-inp" id="stat_lbl_${i}" value="${s.label}"></div>
+     <div class="form-group" style="align-self:flex-end"><button class="btn btn-danger btn-sm" onclick="removeStat(${i})">🗑️</button></div>`).join('')+
+    `<div class="form-group" style="grid-column:1/-1"><button class="btn btn-ghost btn-sm" onclick="addStat()">+ Add Stat</button></div>`;
+  // TEACHER
+  document.getElementById('ws_teacher').value=c.teacher||'Jennie';
+  document.getElementById('ws_welcome').value=c.welcome||'Jennie ready hain! Topic upload karo 🚀';
+  document.getElementById('ws_lang').value=c.defLang||'Hinglish';
+  document.getElementById('ws_teacherTag').value=c.teacherTag||'AI-powered • Always available • Speaks Hinglish';
+  if(c.teacherImgUrl){document.getElementById('ws_teacherImgUrl').value=c.teacherImgUrl;previewImgUrl({value:c.teacherImgUrl},'teacherImgPreview');}
+  // FEATURES
+  document.getElementById('ws_featTitle').value=c.featTitle||'Why EduSphere?';
+  document.getElementById('ws_featSub').value=c.featSub||'AI-powered learning for every Indian student';
+  setTog('tog-features',c.showFeatures!==false);
+  const feats=c.features||[{icon:'🎬',title:'Video-style Scenes',desc:'Samajh aata hai jaldi, bilkul coaching jaisa'},
+    {icon:'🗣️',title:'Hinglish AI',desc:'Hindi + English mix mein explain karta hai'},
+    {icon:'📱',title:'Mobile Friendly',desc:'Kahi bhi padhao, kisi bhi device par'},
+    {icon:'⚡',title:'Instant AI',desc:'Upload karo aur 30 seconds mein ready'}];
+  document.getElementById('featuresEd').innerHTML=feats.map((f,i)=>
+    `<div class="settings-card" style="position:relative">
+      <button class="icon-btn danger" style="position:absolute;top:10px;right:10px" onclick="removeFeat(${i})">🗑️</button>
+      <div class="form-group"><div class="form-label">Icon/Emoji</div><input class="form-inp" id="feat_icon_${i}" value="${f.icon}"></div>
+      <div class="form-group" style="margin-top:8px"><div class="form-label">Title</div><input class="form-inp" id="feat_title_${i}" value="${f.title}"></div>
+      <div class="form-group" style="margin-top:8px"><div class="form-label">Description</div><textarea class="form-inp form-textarea" style="min-height:60px" id="feat_desc_${i}">${f.desc}</textarea></div>
+    </div>`).join('');
+  // CHIPS
+  const chips=c.chips||['🌿 Photosynthesis','⚙️ Newton Laws','🗽 French Revolution','🔬 Cell Division','📐 Quadratic Eq',"⚡ Ohm's Law"];
+  document.getElementById('chipsEd').innerHTML=chips.map((ch,i)=>
+    `<div class="form-group" style="position:relative">
+      <div class="form-label">Chip ${i+1}</div>
+      <div style="display:flex;gap:6px"><input class="form-inp" id="chip_${i}" value="${ch}"><button class="icon-btn danger" onclick="removeChip(${i})">✕</button></div>
+    </div>`).join('');
+  // BRANDING
+  document.getElementById('ws_colorPrimary').value=c.colorPrimary||'#4f46e5';
+  document.getElementById('ws_colorPrimaryHex').value=c.colorPrimary||'#4f46e5';
+  document.getElementById('ws_colorAccent').value=c.colorAccent||'#10b981';
+  document.getElementById('ws_colorAccentHex').value=c.colorAccent||'#10b981';
+  document.getElementById('ws_colorBg').value=c.colorBg||'#07051a';
+  document.getElementById('ws_colorBgHex').value=c.colorBg||'#07051a';
+  document.getElementById('ws_fontHeading').value=c.fontHeading||'Sora';
+  document.getElementById('ws_fontBody').value=c.fontBody||'Plus Jakarta Sans';
+  document.getElementById('ws_radius').value=c.radius||'16';
+  setTog('tog-secHero',c.secHero!==false);setTog('tog-secStats',c.secStats!==false);
+  setTog('tog-secFeatures',c.secFeatures!==false);setTog('tog-secChips',c.secChips!==false);
+  setTog('tog-secPlans',c.secPlans!==false);setTog('tog-secTestimonials',c.secTestimonials!==false);
+  setTog('tog-secFaq',c.secFaq!==false);setTog('tog-secFooter',c.secFooter!==false);
+  // META
+  document.getElementById('ws_siteTitle').value=c.siteTitle||'EduSphere – AI Hinglish Teacher';
+  document.getElementById('ws_metaDesc').value=c.metaDesc||'';
+  document.getElementById('ws_email').value=c.email||'support@edusphere.ai';
+  document.getElementById('ws_whatsapp').value=c.whatsapp||'';
+  document.getElementById('ws_instagram').value=c.instagram||'';
+  document.getElementById('ws_twitter').value=c.twitter||'';
+  document.getElementById('ws_youtube').value=c.youtube||'';
+  document.getElementById('ws_linkedin').value=c.linkedin||'';
+  document.getElementById('ws_footerTag').value=c.footerTag||'India ka sabse smart AI teacher 🇮🇳';
+  document.getElementById('ws_copyright').value=c.copyright||'© 2025 EduSphere. All rights reserved.';
+  // Sync color pickers
+  ['Primary','Accent','Bg'].forEach(n=>{
+    const picker=document.getElementById('ws_color'+n);
+    const hex=document.getElementById('ws_color'+n+'Hex');
+    if(picker&&hex){picker.addEventListener('input',()=>{hex.value=picker.value;});}
+  });
+}
+function setTog(id,val){const el=document.getElementById(id);if(!el)return;val?el.classList.add('on'):el.classList.remove('on');}
+function getTog(id){return document.getElementById(id)?.classList.contains('on');}
+function syncColorHex(name){const h=document.getElementById('ws_color'+name+'Hex').value;if(/^#[0-9A-Fa-f]{6}$/.test(h))document.getElementById('ws_color'+name).value=h;}
+function handleImgUpload(inputId,previewId,cfgKey){
+  const file=document.getElementById(inputId).files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{const url=e.target.result;const prev=document.getElementById(previewId);if(prev){if(prev.tagName==='IMG'){prev.src=url;}else{prev.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover">`;}}
+    const c=ld(K.webCfg,{});c[cfgKey]=url;sv(K.webCfg,c);showToast('🖼️','Image saved!');};
+  reader.readAsDataURL(file);
+}
+function previewImgUrl(inputEl,previewId){const url=inputEl.value||inputEl;const prev=document.getElementById(previewId);if(!prev||!url)return;prev.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='❌ Invalid URL'">`;}
+function addStat(){const c=ld(K.webCfg,{});const st=c.stats||[{icon:'🎓',val:'10K+',label:'Students'},{icon:'📚',val:'500+',label:'Topics'},{icon:'⭐',val:'4.9',label:'Rating'},{icon:'🌍',val:'12+',label:'Exams'}];st.push({icon:'📌',val:'0',label:'New Stat'});c.stats=st;sv(K.webCfg,c);renderWebEditor();weTab('hero',null);}
+function removeStat(i){const c=ld(K.webCfg,{});(c.stats||[]).splice(i,1);sv(K.webCfg,c);renderWebEditor();weTab('hero',null);}
+function addFeature(){const c=ld(K.webCfg,{});const f=c.features||[];f.push({icon:'✨',title:'New Feature',desc:'Describe karo...'});c.features=f;sv(K.webCfg,c);renderWebEditor();weTab('features',null);}
+function removeFeat(i){const c=ld(K.webCfg,{});(c.features||[]).splice(i,1);sv(K.webCfg,c);renderWebEditor();weTab('features',null);}
+function addChip(){const c=ld(K.webCfg,{});const ch=c.chips||[];ch.push('📌 New Topic');c.chips=ch;sv(K.webCfg,c);renderWebEditor();weTab('chips',null);}
+function removeChip(i){const c=ld(K.webCfg,{});(c.chips||[]).splice(i,1);sv(K.webCfg,c);renderWebEditor();weTab('chips',null);}
+function saveWebsite(){
+  const c=ld(K.webCfg,{});
+  // HERO
+  c.heroTitle=document.getElementById('ws_heroTitle').value;c.heroSub=document.getElementById('ws_heroSub').value;
+  c.ctaText=document.getElementById('ws_ctaText').value;c.ctaLink=document.getElementById('ws_ctaLink').value;
+  c.heroImgUrl=document.getElementById('ws_heroImgUrl').value;c.showHeroImg=getTog('tog-heroImg');
+  // STATS
+  const stats=[];let si=0;while(document.getElementById('stat_icon_'+si)){
+    stats.push({icon:document.getElementById('stat_icon_'+si).value,val:document.getElementById('stat_val_'+si).value,label:document.getElementById('stat_lbl_'+si).value});si++;}
+  c.stats=stats;
+  // TEACHER
+  c.teacher=document.getElementById('ws_teacher').value;c.welcome=document.getElementById('ws_welcome').value;
+  c.defLang=document.getElementById('ws_lang').value;c.teacherTag=document.getElementById('ws_teacherTag').value;
+  c.teacherImgUrl=document.getElementById('ws_teacherImgUrl').value;
+  // FEATURES
+  c.featTitle=document.getElementById('ws_featTitle').value;c.featSub=document.getElementById('ws_featSub').value;
+  c.showFeatures=getTog('tog-features');
+  const feats=[];let fi=0;while(document.getElementById('feat_icon_'+fi)){
+    feats.push({icon:document.getElementById('feat_icon_'+fi).value,title:document.getElementById('feat_title_'+fi).value,desc:document.getElementById('feat_desc_'+fi).value});fi++;}
+  c.features=feats;
+  // CHIPS
+  c.chips=[];let ci=0;while(document.getElementById('chip_'+ci)){c.chips.push(document.getElementById('chip_'+ci).value);ci++;}
+  // BRANDING
+  c.colorPrimary=document.getElementById('ws_colorPrimary').value;
+  c.colorAccent=document.getElementById('ws_colorAccent').value;
+  c.colorBg=document.getElementById('ws_colorBg').value;
+  c.fontHeading=document.getElementById('ws_fontHeading').value;
+  c.fontBody=document.getElementById('ws_fontBody').value;c.radius=document.getElementById('ws_radius').value;
+  c.secHero=getTog('tog-secHero');c.secStats=getTog('tog-secStats');c.secFeatures=getTog('tog-secFeatures');
+  c.secChips=getTog('tog-secChips');c.secPlans=getTog('tog-secPlans');c.secTestimonials=getTog('tog-secTestimonials');
+  c.secFaq=getTog('tog-secFaq');c.secFooter=getTog('tog-secFooter');
+  // META
+  c.siteTitle=document.getElementById('ws_siteTitle').value;c.metaDesc=document.getElementById('ws_metaDesc').value;
+  c.email=document.getElementById('ws_email').value;c.whatsapp=document.getElementById('ws_whatsapp').value;
+  c.instagram=document.getElementById('ws_instagram').value;c.twitter=document.getElementById('ws_twitter').value;
+  c.youtube=document.getElementById('ws_youtube').value;c.linkedin=document.getElementById('ws_linkedin').value;
+  c.footerTag=document.getElementById('ws_footerTag').value;c.copyright=document.getElementById('ws_copyright').value;
+  sv(K.webCfg,c);
+  // Dispatch storage event so website tab updates live
+  window.dispatchEvent(new StorageEvent('storage',{key:K.webCfg,newValue:JSON.stringify(c)}));
+  showToast('✅','All changes saved! Website tab mein refresh karo.',4000);
+}
+function previewWebsite(){showToast('👁️','Website file open karo same browser mein — changes live dikhenge!',4000);}
+
+// ════════════════════════════════════════════
+// SETTINGS
+// ════════════════════════════════════════════
+function saveSettings(){
+  sv(K.settings,{maintenance:document.getElementById('tog-maint').classList.contains('on'),registrations:document.getElementById('tog-reg').classList.contains('on'),freePlan:document.getElementById('tog-free').classList.contains('on'),maxScenes:document.getElementById('set_scenes').value,gateway:document.getElementById('set_gw').value});
+  showToast('✅','Settings saved!');
+}
+
+// ════════════════════════════════════════════
+// NOTIFICATIONS
+// ════════════════════════════════════════════
+function renderNotifLog(){
+  const log=ld(K.notifLog,[]);
+  if(log.length>0)document.getElementById('notifLog').innerHTML=log.slice().reverse().map(n=>
+    `<div class="activity-item"><div class="act-icon" style="background:rgba(99,102,241,0.15)">📣</div>
+    <div><div class="act-text"><strong>${n.title}</strong> → ${n.target}</div><div class="act-time">${ta(n.ts)}</div></div></div>`).join('');
+}
+function sendNotif(){
+  const title=document.getElementById('nf_title').value.trim(),msg=document.getElementById('nf_msg').value.trim();
+  if(!title||!msg){showToast('⚠️','Title aur message required!');return;}
+  const log=ld(K.notifLog,[]);log.push({title,msg,target:document.getElementById('nf_target').value,ts:Date.now()});sv(K.notifLog,log);
+  document.getElementById('nf_title').value='';document.getElementById('nf_msg').value='';
+  renderNotifLog();showToast('📣','Notification sent!');
+}
+
+// ════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════
+function logAct(ic,bg,text){const A=ld(K.activity,[]);A.push({ic,bg,text,ts:Date.now()});if(A.length>50)A.splice(0,A.length-50);sv(K.activity,A);}
+function pb(plan){const m={Free:'badge-muted',Pro:'badge-indigo',Premium:'badge-gold'};return `<span class="badge ${m[plan]||'badge-muted'}">${plan||'Free'}</span>`;}
+function ta(ts){if(!ts)return '—';const d=Date.now()-ts;if(d<60000)return 'Abhi abhi';if(d<3600000)return `${Math.floor(d/60000)} min ago`;if(d<86400000)return `${Math.floor(d/3600000)} hr ago`;if(d<604800000)return `${Math.floor(d/86400000)} days ago`;return new Date(ts).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
+function updateBadges(){const L=ld(K.learners),S=ld(K.sessions),F=ld(K.feedback);const a=S.filter(s=>(Date.now()-s.timestamp)<30*60*1000).length;document.getElementById('totalBadge').textContent=L.length;document.getElementById('liveBadge').textContent=a;document.getElementById('fbBadge').textContent=F.length;if(a>0)document.getElementById('notifDot').style.display='block';}
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show');}));
+let _tt;function showToast(i,m,d=3000){document.getElementById('ti').textContent=i;document.getElementById('tm').textContent=m;const t=document.getElementById('toast');t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),d);}
+function fullRefresh(){renderPage(document.querySelector('.page.on')?.id.replace('page-',''));showToast('🔄','Refreshed!',2000);}
+function renderPage(p){({dashboard:renderDash,learners:renderLearners,analytics:renderAnalytics,sessions:renderSessions,feedback_list:renderFeedback,plans:renderPlans,revenue:renderRevenue,coupons:renderCoupons,topics:renderTopics,exams:renderExams,website:renderWebEditor,notifs:renderNotifLog})[p]?.();}
+function exportCSV(){const L=ld(K.learners);if(!L.length){showToast('⚠️','Koi data nahi!');return;}const rows=[['Name','Email','Exam','Plan','Sessions','Joined'],...L.map(l=>[l.name,l.email||'',l.exam||'',l.plan||'',l.sessions||0,ta(l.joinedAt)])];const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(rows.map(r=>r.join(',')).join('\n'));a.download='edusphere_learners.csv';a.click();showToast('📥','CSV downloaded!');}
+
+// ════════════════════════════════════════════
+// WEBSITE BRIDGE — Website in inhe call kare
+// ════════════════════════════════════════════
+window.eduAdmin={
+  recordSession:function(d){const S=ld(K.sessions);S.push({...d,timestamp:Date.now()});sv(K.sessions,S);if(d.learnerId){const L=ld(K.learners);const l=L.find(x=>x.id===d.learnerId||x.email===d.learnerId);if(l){l.sessions=(l.sessions||0)+1;l.lastActive=Date.now();sv(K.learners,L);}}logAct('🎬','rgba(99,102,241,0.15)',`<strong>${d.learnerName||'Someone'}</strong> ne session shuru ki: ${d.topic||''}`);},
+  recordFeedback:function(d){const F=ld(K.feedback);F.push({...d,submittedAt:Date.now()});sv(K.feedback,F);logAct('⭐','rgba(245,158,11,0.15)',`<strong>${d.name||'Someone'}</strong> ne ${d.rating||0}⭐ feedback diya`);},
+  registerLearner:function(d){const L=ld(K.learners);const ex=L.find(l=>l.email===d.email);if(ex)return ex;const ac=PAL[Math.floor(Math.random()*PAL.length)];const ini=(d.name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);const l={id:Date.now(),...d,sessions:0,joinedAt:Date.now(),lastActive:null,ini,ac};L.unshift(l);sv(K.learners,L);logAct('🆕','rgba(16,185,129,0.15)',`<strong>${d.name||'New learner'}</strong> ne register kiya`);return l;},
+  getConfig:function(){return ld(K.webCfg,{});},
+  getSettings:function(){return ld(K.settings,{});}
+};
+
+// INIT
+window.addEventListener('load',()=>{
+  initDefaults();updateBadges();renderDash();renderNotifLog();
+  setInterval(()=>{updateBadges();if(document.getElementById('page-dashboard').classList.contains('on'))renderDash();if(document.getElementById('page-sessions').classList.contains('on'))renderSessions();},15000);
+  setTimeout(()=>showToast('✅','Admin ready — ZERO fake data! Real learner data wait kar raha hai.',5000),800);
+});
+</script>
+</body>
+</html>
