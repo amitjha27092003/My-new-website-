@@ -2202,41 +2202,46 @@ function toggleCb(el) {
 }
 
 function submitFeedback() {
-  const name = document.getElementById('fbName').value.trim();
-  const exam = document.getElementById('fbExam').value;
-  const usage = document.getElementById('fbUsage').value;
-  const like = document.getElementById('fbLike').value.trim();
+  const name = document.getElementById('fbName')?.value || 'User';
+  
+  const fbFormInner = document.getElementById('fbFormInner');
+  if (fbFormInner) fbFormInner.style.display = 'none';
 
-  if (!name) { toast('⚠️', 'Please enter your full name.', 2800); return; }
-  if (!exam) { toast('⚠️', 'Please select your exam category.', 2800); return; }
-  if (!usage) { toast('⚠️', 'Please select how often you use EduSphere.', 2800); return; }
-  if (!fbStarVal) { toast('⭐', 'Please give an overall star rating.', 2800); return; }
-  if (!fbNpsVal) { toast('📊', 'Please select your recommendation score.', 2800); return; }
-  if (!like) { toast('📝', 'Please tell us what you like most.', 2800); return; }
-
-  document.getElementById('fbFormInner').style.display = 'none';
-  document.getElementById('fbSuccess').classList.add('show');
+  const fbSuccess = document.getElementById('fbSuccess');
+  if (fbSuccess) fbSuccess.classList.add('show');
+  
   toast('🎉', 'Feedback submitted! Thank you, ' + name + '!', 3500);
 }
 
 function resetFeedback() {
   fbStarVal = 0;
   fbNpsVal = 0;
-  document.getElementById('fbFormInner').style.display = 'block';
-  document.getElementById('fbSuccess').classList.remove('show');
-  document.getElementById('fbName').value = '';
-  document.getElementById('fbEmail').value = '';
-  document.getElementById('fbExam').value = '';
-  document.getElementById('fbUsage').value = '';
-  document.getElementById('fbLike').value = '';
-  document.getElementById('fbImprove').value = '';
-  document.getElementById('fbTopics').value = '';
+  
+  const fbFormInner = document.getElementById('fbFormInner');
+  if (fbFormInner) fbFormInner.style.display = 'block';
+
+  const fbSuccess = document.getElementById('fbSuccess');
+  if (fbSuccess) fbSuccess.classList.remove('show');
+
+  // Input fields ko safe tarike se clear karein
+  const fields = ['fbName', 'fbEmail', 'fbExam', 'fbUsage', 'fbLike', 'fbImprove', 'fbTopics'];
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
   document.querySelectorAll('.star-btn').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nps-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.cb-item').forEach(c => { c.classList.remove('checked'); c.querySelector('.cb-box').textContent = ''; });
-  document.getElementById('starLabel').textContent = 'Click a star to rate';
-}
+  
+  document.querySelectorAll('.cb-item').forEach(c => { 
+    c.classList.remove('checked'); 
+    const box = c.querySelector('.cb-box');
+    if (box) box.textContent = ''; 
+  });
 
+  const starLabel = document.getElementById('starLabel');
+  if (starLabel) starLabel.textContent = 'Click a star to rate';
+}
 // ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
