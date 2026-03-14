@@ -333,7 +333,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 const firebaseConfig = {
-  apiKey: "AIzaSyDC95NzzV64pCw52ajJvZbfp3AYgjySDzQ",
+  apiKey: "AIzaSyA3xACDebAsddtQxJfg9RgNZJbWrP6Uogs",
   authDomain: "edusphere-80549.firebaseapp.com",
   projectId: "edusphere-80549",
   storageBucket: "edusphere-80549.firebasestorage.app",
@@ -572,8 +572,30 @@ if(document.readyState === "loading"){
     <div class="panels">
       <div class="panel">
         <div class="panel-title">💡 KEY CONCEPTS</div>
+        <div id="eduFeaturesOverlay" style="background: #111827; padding: 15px; border-top: 1px solid #1f2937; width: 100%; box-sizing: border-box;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+        <div id="newProgressBar" style="flex:1; height:6px; background:#1e293b; border-radius:4px; cursor:pointer;" onclick="seekProgress(event)">
+            <div id="progFill" style="width:0%; height:100%; background:#6366f1; border-radius:4px;"></div>
+        </div>
+        <span id="timeText" style="font-size:11px; color:#94a3b8;">0:00 / 7:00</span>
+    </div>
+    <div id="thumbContainer" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px;"></div>
+</div>
         <div class="kc-grid" id="kcGrid"></div>
       </div>
+      <div class="p-video-box">
+
+<canvas id="sceneCanvas"></canvas>
+
+ </div>
+
+    
+
+   <div id="eduFeaturesOverlay" ... >
+
+      ... (Progress bar aur thumbnails ka code)
+
+  </div>
       <div class="panel">
         <div class="panel-title">🎬 SCENE OVERVIEW</div>
         <div class="scene-list" id="sceneList"></div>
