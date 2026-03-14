@@ -1,59 +1,10 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta name="google-site-verification" content="oIwVhT737rznEitBs6E-VdWBFdNv69ZqPojgwHw1_MU" />
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>EduSphere – AI Hinglish Teacher | UPSC, SSC, NEET Exam Prep</title>
-
-<!-- ── PRIMARY SEO META TAGS ── -->
-<meta name="description" content="EduSphere is India's AI-powered Hinglish teacher for UPSC, SSC, NEET, JEE & more. Learn complex topics in easy Hinglish with AI-generated video lessons, smart quizzes, and personalized study plans."/>
-<meta name="keywords" content="EduSphere, AI teacher, Hinglish education, UPSC preparation, SSC exam, NEET JEE coaching, online learning India, AI study app, government exam prep, Hindi English learning"/>
-<meta name="author" content="EduSphere AI"/>
-<meta name="robots" content="index, follow"/>
-<link rel="canonical" href="https://edusphereai.in/"/>
-
-<!-- ── OPEN GRAPH (Facebook, WhatsApp, LinkedIn) ── -->
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://edusphereai.in/"/>
-<meta property="og:title" content="EduSphere – AI Hinglish Teacher | UPSC, SSC, NEET Exam Prep"/>
-<meta property="og:description" content="India's smartest AI teacher! UPSC, SSC, NEET, JEE topics explained in Hinglish. AI-powered lessons, quizzes & video stories — bilkul free!"/>
-<meta property="og:image" content="https://edusphereai.in/og-image.png"/>
-<meta property="og:image:width" content="1200"/>
-<meta property="og:image:height" content="630"/>
-<meta property="og:site_name" content="EduSphere AI"/>
-<meta property="og:locale" content="en_IN"/>
-
-<!-- ── TWITTER CARD ── -->
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:url" content="https://edusphereai.in/"/>
-<meta name="twitter:title" content="EduSphere – AI Hinglish Teacher"/>
-<meta name="twitter:description" content="India's AI-powered Hinglish teacher for UPSC, SSC, NEET & JEE. Learn smart, learn fast!"/>
-<meta name="twitter:image" content="https://edusphereai.in/og-image.png"/>
-
-<!-- ── SCHEMA.ORG STRUCTURED DATA (JSON-LD) ── -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "EduSphere AI",
-  "url": "https://edusphereai.in/",
-  "description": "AI-powered Hinglish teacher for UPSC, SSC, NEET, JEE and other competitive exams in India.",
-  "applicationCategory": "EducationApplication",
-  "operatingSystem": "Web",
-  "inLanguage": ["hi", "en"],
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "INR"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "EduSphere AI",
-    "url": "https://edusphereai.in/"
-  }
-}
-</script>
+<title>EduSphere – AI Hinglish Teacher</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Sora:wght@600;700;800;900&display=swap');
@@ -327,95 +278,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .hist-topic{font-weight:800;color:var(--text);font-size:14px}
 .hist-meta{color:var(--muted);font-size:11px;margin-top:2px;font-weight:600}
 </style>
-
-<!-- FIREBASE REAL-TIME SYNC -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyA3xACDebAsddtQxJfg9RgNZJbWrP6Uogs",
-  authDomain: "edusphere-80549.firebaseapp.com",
-  projectId: "edusphere-80549",
-  storageBucket: "edusphere-80549.firebasestorage.app",
-  messagingSenderId: "434274785382",
-  appId: "1:434274785382:web:5b3ec4f65bcd9a55e835a7"
-};
-const _app = initializeApp(firebaseConfig, "edusphere-sync");
-const _db  = getFirestore(_app);
-
-function _set(id,val){const e=document.getElementById(id);if(e)e.textContent=val;}
-function _html(id,val){const e=document.getElementById(id);if(e)e.innerHTML=val;}
-
-function applyData(d){
-  if(d.siteTitle) document.title = d.siteTitle;
-
-  // Hero title & subtitle
-  if(d.heroTitle)   _set("heroTitle", d.heroTitle);
-  if(d.heroSubText) _html("heroSubText", d.heroSubText);
-
-  // Hero tags
-  if(d.heroTags && Array.isArray(d.heroTags)){
-    const w = document.querySelector(".hero-tags");
-    if(w) w.innerHTML = d.heroTags.map(t=>`<div class="htag">${t}</div>`).join("");
-  }
-
-  // Hero banner image
-  const bannerImg = document.getElementById("heroBannerImg");
-  if(bannerImg){
-    if(d.heroBannerUrl && d.heroBannerUrl.trim() !== ""){
-      bannerImg.src = d.heroBannerUrl;
-      bannerImg.style.display = "block";
-    } else if(d.heroImgUrl && d.showHeroImg){
-      bannerImg.src = d.heroImgUrl;
-      bannerImg.style.display = "block";
-    } else {
-      bannerImg.style.display = "none";
-    }
-  }
-
-  // Sidebar pro tip
-  if(d.proTipTitle){const e=document.querySelector(".sb-card-title");if(e)e.textContent=d.proTipTitle;}
-  if(d.proTip)     {const e=document.querySelector(".sb-card-text"); if(e)e.textContent=d.proTip;}
-
-  // Quick chips
-  if(d.quickChips && Array.isArray(d.quickChips)){
-    const w = document.getElementById("quickChips");
-    if(w) w.innerHTML = d.quickChips.map(c=>
-      `<div class="chip" onclick="quickT('${c.topic}')">${c.label}</div>`
-    ).join("");
-  }
-
-  // Announcement banner
-  if(d.announcement && d.announcement.trim() !== ""){
-    let b = document.getElementById("announcementBanner");
-    if(!b){
-      b = document.createElement("div");
-      b.id = "announcementBanner";
-      b.style.cssText = "background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#1a1a1a;padding:9px 20px;font-size:12.5px;font-weight:800;text-align:center;z-index:99;letter-spacing:.3px;flex-shrink:0;";
-      const ap = document.getElementById("app");
-      if(ap) ap.insertBefore(b, ap.children[1]);
-    }
-    b.textContent = "📢  " + d.announcement;
-    b.style.display = "block";
-  } else {
-    const b = document.getElementById("announcementBanner");
-    if(b) b.style.display = "none";
-  }
-
-  // Brand name
-  if(d.brandName){const e=document.querySelector(".logo-ai");if(e)e.textContent=d.brandName;}
-}
-
-function startSync(){
-  onSnapshot(doc(_db, "siteContent", "main"), snap => {
-    if(snap.exists()) applyData(snap.data());
-  });
-}
-
-if(document.readyState === "loading"){
-  document.addEventListener("DOMContentLoaded", startSync);
-} else { startSync(); }
-</script>
 </head>
 <body>
 <div id="app">
@@ -468,9 +330,7 @@ if(document.readyState === "loading"){
 <!-- HOME PAGE -->
 <div class="page on" id="page-home">
   <!-- Hero -->
-  <div class="hero" style="position:relative">
-    <img id="heroBannerImg" src="" alt="banner" style="display:none;position:absolute;right:16px;top:50%;transform:translateY(-50%);max-height:110px;max-width:200px;object-fit:contain;border-radius:10px;opacity:0.9;z-index:1;pointer-events:none"/>
-    <div style="position:relative;z-index:2;width:100%">
+  <div class="hero">
     <div class="hero-title" id="heroTitle">Welcome to EduSphere AI 🎬</div>
     <div class="hero-sub">Koi bhi topic upload karo — AI teacher <strong id="heroLang">Hinglish</strong> mein samjhayega. Real-time animated video explainer!</div>
     <div class="hero-tags">
@@ -481,7 +341,6 @@ if(document.readyState === "loading"){
       <div class="htag">🎯 Competitive</div>
       <div class="htag">🌐 3 Languages</div>
     </div>
-    </div><!-- /hero inner -->
   </div>
 
   <!-- Upload + Preview Grid -->
@@ -572,30 +431,8 @@ if(document.readyState === "loading"){
     <div class="panels">
       <div class="panel">
         <div class="panel-title">💡 KEY CONCEPTS</div>
-        <div id="eduFeaturesOverlay" style="background: #111827; padding: 15px; border-top: 1px solid #1f2937; width: 100%; box-sizing: border-box;">
-    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-        <div id="newProgressBar" style="flex:1; height:6px; background:#1e293b; border-radius:4px; cursor:pointer;" onclick="seekProgress(event)">
-            <div id="progFill" style="width:0%; height:100%; background:#6366f1; border-radius:4px;"></div>
-        </div>
-        <span id="timeText" style="font-size:11px; color:#94a3b8;">0:00 / 7:00</span>
-    </div>
-    <div id="thumbContainer" style="display:flex; gap:8px; overflow-x:auto; padding-bottom: 5px;"></div>
-</div>
         <div class="kc-grid" id="kcGrid"></div>
       </div>
-      <div class="p-video-box">
-
-<canvas id="sceneCanvas"></canvas>
-
- </div>
-
-    
-
-   <div id="eduFeaturesOverlay" ... >
-
-      ... (Progress bar aur thumbnails ka code)
-
-  </div>
       <div class="panel">
         <div class="panel-title">🎬 SCENE OVERVIEW</div>
         <div class="scene-list" id="sceneList"></div>
@@ -1267,7 +1104,7 @@ RULES: No apostrophes in JSON strings. All strings single line. No line breaks i
     let body;
     if(G.topicText){
       body={
-        model:'meta-llama/llama-2-70b-chat',
+        model:'meta-llama/llama-4-scout:free',
         max_tokens:8000,
         messages:[
           {role:'system',content:sys},
@@ -1276,10 +1113,8 @@ RULES: No apostrophes in JSON strings. All strings single line. No line breaks i
       };
     } else {
       const {b64,mime}=await readB64(G.file);
-      // Try multiple models for image upload (with fallback)
-      const imageModels = ['openai/gpt-4-vision', 'openai/gpt-4o-mini', 'anthropic/claude-3-5-sonnet'];
       body={
-        model:imageModels[0], // Will try each if previous fails
+        model:'google/gemini-2.0-flash-001',
         max_tokens:8000,
         messages:[
           {role:'system',content:sys},
@@ -1289,135 +1124,43 @@ RULES: No apostrophes in JSON strings. All strings single line. No line breaks i
           ]}
         ]
       };
-      // Store models separately, NOT in body object
-      G._imageModels = imageModels;
     }
 
-    // Robust fetch with auto-retry (3 attempts) + model fallback
+    // Robust fetch with auto-retry (3 attempts)
     let resp, lastErr;
-    const textModels = ['meta-llama/llama-2-70b-chat', 'mistralai/mistral-7b-instruct', 'openchat/openchat-3.5'];
-    let modelIndex = 0;
-    
     for(let attempt=1; attempt<=3; attempt++){
       try{
-        // For image uploads, try different models on 400 errors
-        if(G._imageModels && modelIndex < G._imageModels.length && resp?.status === 400){
-          body.model = G._imageModels[modelIndex++];
-          console.warn(`Trying alternate image model: ${body.model}`);
-          document.getElementById('loadTxt').textContent = 'TRYING ALTERNATE MODEL...';
-        }
-        // For text, fallback to alternative models
-        else if(!G._imageModels && resp?.status === 400 && modelIndex < textModels.length){
-          body.model = textModels[modelIndex++];
-          console.warn(`Trying alternate text model: ${body.model}`);
-          document.getElementById('loadTxt').textContent = 'TRYING ALTERNATE MODEL...';
-        }
-        
         document.getElementById('loadTxt').textContent = attempt>1 ? 'RETRY '+attempt+'/3 — PLEASE WAIT...' : 'AI TOPIC ANALYZE KAR RAHA HAI...';
-        
-        // Fetch with timeout (simplified, browser compatible)
-        const fetchWithTimeout = (url, options, timeout=60000) => {
-          return Promise.race([
-            fetch(url, options),
-            new Promise((_, reject) =>
-              setTimeout(() => reject(new Error('Timeout')), timeout)
-            )
-          ]);
-        };
-        
-        try {
-          resp = await fetchWithTimeout('https://openrouter.ai/api/v1/chat/completions', {
-            method:'POST',
-            headers:{'Content-Type':'application/json','Authorization':'Bearer '+_k(),'HTTP-Referer':'https://edusphere.ai','X-Title':'EduSphere AI Teacher'},
-            body:JSON.stringify(body)
-          }, 60000);
-          console.log(`Attempt ${attempt}: Fetch successful, status ${resp.status}`);
-        } catch(fetchErr) {
-          if(fetchErr.message === 'Timeout') {
-            lastErr = new Error('Request timeout — server busy, try again in a moment');
-            if(attempt < 3) await new Promise(r=>setTimeout(r, 1500));
-            continue;
-          }
-          throw fetchErr;
-        }
+        resp = await fetch('https://openrouter.ai/api/v1/chat/completions',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Authorization':'Bearer '+_k(),'HTTP-Referer':'https://edusphere.ai','X-Title':'EduSphere AI Teacher'},
+          body:JSON.stringify(body),
+          signal: AbortSignal.timeout(60000)
+        });
         if(resp.ok) break; // success
         const errData = await resp.json().catch(()=>({}));
         const errMsg = (errData.error&&errData.error.message)||'HTTP '+resp.status;
-        console.error(`Attempt ${attempt}: ${errMsg}`);
-        
-        if(resp.status===401||resp.status===403) throw new Error('API Authentication Failed: '+errMsg);
-        if(resp.status===404) throw new Error('Model endpoint not available. Please try another topic type.');
-        if(resp.status===400){
-          // Invalid model - try fallback
-          if((body._imageModels && modelIndex < body._imageModels.length) || 
-             (!body._imageModels && modelIndex < textModels.length)){
-            console.warn('Invalid model, trying fallback...');
-            lastErr = new Error('Trying alternate model...');
-            continue;
-          }
-          throw new Error('No suitable models available: '+errMsg);
-        }
+        if(resp.status===401||resp.status===403) throw new Error('API Auth Error: '+errMsg);
         if(resp.status===429){
           // Rate limit — wait then retry
-          console.warn('Rate limited, waiting before retry...');
           await new Promise(r=>setTimeout(r,3000*attempt));
           lastErr = new Error('Rate limit: '+errMsg);
-          continue;
-        }
-        if(resp.status===500||resp.status===502||resp.status===503){
-          // Server error — retry with backoff
-          console.warn('API server error, retrying...');
-          await new Promise(r=>setTimeout(r,2000*attempt));
-          lastErr = new Error('Server temporarily unavailable');
           continue;
         }
         lastErr = new Error('API '+resp.status+': '+errMsg);
         if(attempt<3) await new Promise(r=>setTimeout(r,1500));
       }catch(fetchErr){
-        console.error(`Fetch Error (Attempt ${attempt}):`, fetchErr.message);
-        
-        // Network/CORS errors
-        if(fetchErr.message.includes('Failed to fetch') || fetchErr.message.includes('CORS')){
-          console.warn('Network or CORS issue, retrying...');
-          lastErr = new Error('Network issue - retrying...');
-          if(attempt < 3) await new Promise(r=>setTimeout(r, 2000*attempt));
-          continue;
-        }
-        // Timeout
-        if(fetchErr.message === 'Timeout'){
-          console.warn('Request timeout, retrying...');
-          lastErr = new Error('Request timeout - retrying...');
-          if(attempt < 3) await new Promise(r=>setTimeout(r, 1500));
-          continue;
-        }
-        // Auth errors - don't retry
-        if(fetchErr.message.includes('Auth')) {
-          throw new Error('API Authentication Failed: Check your API key');
-        }
-        // Other errors - retry
-        lastErr = fetchErr;
-        if(attempt < 3) {
-          console.warn(`Will retry (${attempt}/3)...`);
-          await new Promise(r=>setTimeout(r, 1500));
-        }
+        if(fetchErr.name==='AbortError') lastErr=new Error('Request timeout — try shorter topic');
+        else if(fetchErr.message.includes('Auth')) throw fetchErr; // dont retry auth errors
+        else lastErr=fetchErr;
+        if(attempt<3) await new Promise(r=>setTimeout(r,1500));
       }
     }
 
     clearInterval(mt);
 
     if(!resp||!resp.ok){
-      let errorMsg = lastErr?.message || 'API request failed after 3 attempts';
-      
-      // Provide helpful messages based on error type
-      if(errorMsg.includes('Network') || errorMsg.includes('Failed to fetch')){
-        errorMsg = 'Network issue detected. Check: 1) Internet connection, 2) OpenRouter status (openrouter.ai/status), 3) Try again';
-      } else if(errorMsg.includes('Authentication')){
-        errorMsg = 'API key issue. Contact support or check your API configuration';
-      } else if(errorMsg.includes('timeout')){
-        errorMsg = 'Request timeout. Try with shorter topic name or check internet speed';
-      }
-      
-      throw new Error(errorMsg);
+      throw lastErr||new Error('API request failed after 3 attempts');
     }
 
     const data=await resp.json();
