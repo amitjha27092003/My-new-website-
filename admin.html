@@ -718,13 +718,7 @@ function initDefaults(){
     {name:'Pro',price:299,sessions:'100',popular:true,features:['100 sessions/month','All exam categories','3 languages','Priority AI','Download PDF','Email support']},
     {name:'Premium',price:599,sessions:'Unlimited',popular:false,features:['Unlimited sessions','All exams','3 languages','Fastest AI','Download PDF','1-on-1 support','Offline access']}
   ]);
-  if(!localStorage.getItem(K.topics)) sv(K.topics,[
-    {icon:'🌿',name:'Photosynthesis',exam:'Class 9-10',status:'Active'},
-    {icon:'⚙️',name:"Newton's Laws",exam:'JEE',status:'Active'},
-    {icon:'🗽',name:'French Revolution',exam:'Class 11-12',status:'Active'},
-    {icon:'🔬',name:'Cell Division',exam:'NEET',status:'Active'},
-    {icon:'📐',name:'Quadratic Equations',exam:'JEE',status:'Active'},
-    {icon:'⚡',name:"Ohm's Law",exam:'Class 9-10',status:'Active'}
+  
   ]);
   if(!localStorage.getItem(K.exams)) sv(K.exams,[
     {icon:'📘',name:'Class 9-10',label:'CBSE'},
