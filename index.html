@@ -2264,5 +2264,132 @@ window.addEventListener('load',()=>{
   console.log('[EduSphere] Tracking ✅');
 })();
 </script>
+  <script>
+// ══════════════════════════════════════════════════════
+// VISITOR REGISTRATION — Captures name + phone on visit
+// Saves to localStorage so admin panel can read it live
+// ══════════════════════════════════════════════════════
+(function(){
+  var STORAGE_KEY = 'edu_visitor_profile';
+  var LEADS_KEY   = 'edu_leads';
+  var SHOWN_KEY   = 'edu_reg_shown';
+
+  // Check if already registered or modal already shown this session
+  function alreadyDone(){
+    return !!localStorage.getItem(STORAGE_KEY) || !!sessionStorage.getItem(SHOWN_KEY);
+  }
+
+  // Save lead to localStorage (admin reads this)
+  function saveLead(name, phone){
+    try{
+      var profile = {name:name, phone:phone, ts:Date.now(), visitorId:getVid(), page:location.pathname, source:getSource()};
+      // Save profile
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+      // Add to leads list
+      var leads = JSON.parse(localStorage.getItem(LEADS_KEY)||'[]');
+      // Check duplicate phone
+      if(!leads.find(function(l){return l.phone===phone;})){
+        leads.unshift(profile);
+        if(leads.length>2000) leads.length=2000;
+        localStorage.setItem(LEADS_KEY, JSON.stringify(leads));
+      }
+      // Also register as learner in admin's edu_learners store
+      var learners = JSON.parse(localStorage.getItem('edu_learners')||'[]');
+      if(!learners.find(function(l){return l.phone===phone||l.email===phone;})){
+        var colors=['#4338ca','#10b981','#f59e0b','#6366f1','#f43f5e','#8b5cf6','#0ea5e9'];
+        var ac=colors[Math.floor(Math.random()*colors.length)];
+        var ini=(name||'?').split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);
+        var learner={id:Date.now(),name:name,phone:phone,email:phone+'@visitor.edusphere',exam:'',plan:'Free',sessions:0,joinedAt:Date.now(),lastActive:Date.now(),ini:ini,ac:ac,source:'website_popup'};
+        learners.unshift(learner);
+        if(learners.length>5000) learners.splice(5000);
+        localStorage.setItem('edu_learners', JSON.stringify(learners));
+      }
+      // Log to activity feed
+      var activity = JSON.parse(localStorage.getItem('edu_activity')||'[]');
+      activity.unshift({ic:'👤',bg:'rgba(16,185,129,0.15)',text:'<strong>'+name+'</strong> registered — 📱 '+phone,ts:Date.now()});
+      if(activity.length>100) activity.length=100;
+      localStorage.setItem('edu_activity', JSON.stringify(activity));
+      // Also save as a visit with name
+      var visits = JSON.parse(localStorage.getItem('edu_visits')||'[]');
+      visits.unshift({ts:Date.now(),timestamp:Date.now(),visitorId:getVid(),name:name,phone:phone,page:location.pathname,source:getSource(),type:'register'});
+      if(visits.length>5000) visits.splice(0,visits.length-5000);
+      localStorage.setItem('edu_visits', JSON.stringify(visits));
+    }catch(e){}
+  }
+
+  function getVid(){return localStorage.getItem('_edu_vid')||('v_'+Date.now());}
+  function getSource(){
+    var ref=document.referrer||'';
+    if(!ref) return 'direct';
+    if(ref.indexOf('google')>-1) return 'google';
+    if(ref.indexOf('instagram')>-1) return 'instagram';
+    if(ref.indexOf('whatsapp')>-1||ref.indexOf('wa.me')>-1) return 'whatsapp';
+    return 'referral';
+  }
+
+  // Show modal after small delay
+  window.submitVisitorReg = function(){
+    var name  = (document.getElementById('vrName')||{}).value||'';
+    var phone = (document.getElementById('vrPhone')||{}).value||'';
+    name  = name.trim();
+    phone = phone.replace(/\D/g,'').trim();
+    var ok = true;
+    // Validate name
+    var nameErr = document.getElementById('vrNameErr');
+    if(!name || name.length < 2){
+      if(nameErr) nameErr.style.display='block';
+      ok=false;
+    } else {
+      if(nameErr) nameErr.style.display='none';
+    }
+    // Validate phone
+    var phoneErr = document.getElementById('vrPhoneErr');
+    if(!phone || phone.length < 10){
+      if(phoneErr) phoneErr.style.display='block';
+      ok=false;
+    } else {
+      if(phoneErr) phoneErr.style.display='none';
+    }
+    if(!ok) return;
+    saveLead(name, phone);
+    sessionStorage.setItem(SHOWN_KEY,'1');
+    document.getElementById('visitorModal').classList.remove('show');
+    // Update topbar avatar initials
+    var av = document.querySelector('.user-av');
+    if(av) av.textContent = (name.split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2)||'S');
+    // Welcome toast
+    if(typeof toast==='function') toast('👋', 'Welcome, '+name.split(' ')[0]+'! Ready to learn? 🚀', 3000);
+  };
+
+  window.skipVisitorReg = function(){
+    sessionStorage.setItem(SHOWN_KEY,'1');
+    document.getElementById('visitorModal').classList.remove('show');
+  };
+
+  // Show on load if not already registered
+  window.addEventListener('load', function(){
+    if(alreadyDone()) return;
+    setTimeout(function(){
+      var m = document.getElementById('visitorModal');
+      if(m) m.classList.add('show');
+      // Enter key to submit
+      ['vrName','vrPhone'].forEach(function(id){
+        var el=document.getElementById(id);
+        if(el) el.addEventListener('keydown',function(e){if(e.key==='Enter') window.submitVisitorReg();});
+      });
+    }, 1800);
+  });
+
+  // Phone: only allow digits
+  window.addEventListener('load',function(){
+    var ph=document.getElementById('vrPhone');
+    if(ph) ph.addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');});
+  });
+})();
+
+</script>
+</body>
+</html>
+
 </body>
 </html>
