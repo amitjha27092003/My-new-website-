@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-  <script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FRSL68YFGP">
+</script>
+
+<script>
  window.dataLayer window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
@@ -191,7 +194,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .explain-panel{grid-column:1/-1}
 #explainText p{margin-bottom:14px;font-size:13px;line-height:2.1;color:var(--text2);font-weight:600;border-left:2px solid rgba(99,102,241,0.3);padding-left:12px}
 
-/* ── MODAL ── */
+/* ── SCENE CONTENT CARD ── */
+@keyframes scCardIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scPtIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
 .modal{display:none;position:fixed;inset:0;background:rgba(5,3,21,0.85);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(12px)}
 .modal.show{display:flex}
 .mbox{background:linear-gradient(135deg,#0d0b2e,#141138,#1a1660);border-radius:22px;padding:32px;max-width:480px;width:93%;position:relative;box-shadow:0 40px 100px rgba(0,0,0,0.8),var(--glow-indigo);border:1px solid var(--border2)}
@@ -593,22 +598,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
         <div class="load-bar-wrap"><div class="load-bar"></div></div>
       </div>
       
-      <!-- NEW: HD Diagram Container (replaces loading screen) -->
-      <div id="diagramOverlayContainer" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(13,11,46,0.95),rgba(20,15,60,0.95));backdrop-filter:blur(12px);z-index:15;pointer-events:auto;visibility:hidden;opacity:0;transition:opacity 0.4s,visibility 0.4s ease-in-out">
-        <style>
-          #diagramOverlayContainer svg circle, 
-          #diagramOverlayContainer svg rect,
-          #diagramOverlayContainer svg text { animation: diagramFadeIn 0.6s ease-out backwards; }
-          #diagramOverlayContainer svg circle:nth-child(2) { animation-delay: 0.1s; }
-          #diagramOverlayContainer svg circle:nth-child(3) { animation-delay: 0.2s; }
-          #diagramOverlayContainer svg circle:nth-child(4) { animation-delay: 0.3s; }
-          #diagramOverlayContainer svg circle:nth-child(5) { animation-delay: 0.4s; }
-          #diagramOverlayContainer svg circle[filter*="glow"] { animation: glow-pulse 2s ease-in-out infinite; }
-        </style>
-        <div style="width:100%;height:100%;max-width:1400px;max-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 40px;overflow-y:auto;border-radius:0">
-          <div style="font-size:12px;font-weight:900;color:#818cf8;letter-spacing:1.5px;margin-bottom:30px;text-transform:uppercase;animation:float-up 0.8s ease-out">📊 HD ANIMATED DIAGRAM</div>
-          <div id="diagramSvgContainerCanvas" style="width:100%;height:auto;min-height:600px;max-height:85vh;display:flex;align-items:center;justify-content:center;background:rgba(13,11,46,0.5);border:2px solid rgba(129,140,248,0.3);border-radius:20px;overflow:hidden;padding:40px"></div>
-        </div>
+      <!-- SCENE CONTENT OVERLAY — shows actual AI content per scene -->
+      <div id="diagramOverlayContainer" style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(7,5,26,0.94) 0%,rgba(14,11,46,0.96) 60%,rgba(20,15,60,0.94) 100%);backdrop-filter:blur(8px);z-index:15;pointer-events:auto;visibility:hidden;opacity:0;transition:opacity 0.35s,visibility 0.35s;overflow-y:auto;overflow-x:hidden">
       </div>
       
       <div class="sc-overlay">
@@ -640,6 +631,48 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
       <div class="sub-bar-inner">
         <div class="sub-speaker" id="subSpeaker" style="display:none"><div class="sub-speaker-dot"></div><span>JENNIE IS EXPLAINING</span></div>
         <div id="subText">▶ Press Play — Jennie will explain!</div>
+      </div>
+    </div>
+
+    <!-- ═══ SCENE CONTENT CARD (shows current scene heading + points) ═══ -->
+    <div id="sceneContentCard" style="display:none;background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border2);border-radius:16px;padding:0;overflow:hidden;box-shadow:var(--card3d),0 0 30px rgba(79,70,229,0.15);position:relative">
+      <!-- animated top border -->
+      <div style="height:2px;background:linear-gradient(90deg,transparent,#6366f1,#818cf8,#a5b4fc,#818cf8,#6366f1,transparent)"></div>
+      <!-- header -->
+      <div id="sceneCardHeader" style="display:flex;align-items:center;gap:12px;padding:14px 18px 10px;border-bottom:1px solid var(--border)">
+        <div id="sceneCardIcon" style="font-size:26px;line-height:1;filter:drop-shadow(0 0 8px rgba(129,140,248,0.7))">💡</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div id="sceneCardBadge" style="font-size:9px;font-weight:900;color:var(--indigo-light);letter-spacing:2px;background:rgba(99,102,241,0.15);border:1px solid var(--border);border-radius:20px;padding:2px 9px">SCENE 1</div>
+            <div id="sceneCardType" style="font-size:9px;font-weight:800;color:rgba(129,140,248,0.5);letter-spacing:1px;text-transform:uppercase">intro</div>
+          </div>
+          <div id="sceneCardTitle" style="font-family:'Sora',sans-serif;font-size:15px;font-weight:900;color:var(--text);margin-top:4px;text-shadow:0 0 12px rgba(165,180,252,0.2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Topic</div>
+        </div>
+      </div>
+      <!-- points list -->
+      <div id="sceneCardPoints" style="padding:14px 18px 16px;display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+    <div id="solutionDisplaySection" style="display:none">
+      <div style="background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(5,150,105,0.06));border:1px solid rgba(16,185,129,0.4);border-radius:16px;padding:18px 20px;position:relative;overflow:hidden;box-shadow:0 0 24px rgba(16,185,129,0.12),inset 0 1px 0 rgba(255,255,255,0.06)">
+        <!-- top glow line -->
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#10b981,#34d399,#10b981,transparent);border-radius:16px 16px 0 0"></div>
+        <!-- header row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:9px">
+            <div style="width:32px;height:32px;background:linear-gradient(135deg,#065f46,#10b981);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 12px rgba(16,185,129,0.5)">✅</div>
+            <div>
+              <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:900;color:#10b981;letter-spacing:2px;text-shadow:0 0 10px rgba(16,185,129,0.6)">SOLUTION</div>
+              <div style="font-size:10px;color:rgba(16,185,129,0.6);font-weight:700;margin-top:1px">Exam-ready answer</div>
+            </div>
+          </div>
+          <!-- speak solution button -->
+          <button id="solutionSpeakBtn" onclick="speakSolution()" style="display:flex;align-items:center;gap:6px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);border-radius:20px;padding:6px 14px;color:#10b981;font-size:11px;font-weight:800;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s" onmouseover="this.style.background='rgba(16,185,129,0.28)'" onmouseout="this.style.background='rgba(16,185,129,0.15)'">
+            <span id="solSpeakIcon">🔊</span>
+            <span id="solSpeakLabel">Jennie Se Suno</span>
+          </button>
+        </div>
+        <!-- solution text -->
+        <div id="visibleSolutionText" style="font-size:13.5px;line-height:1.9;color:#d1fae5;background:rgba(16,185,129,0.06);padding:16px 18px;border-left:4px solid #10b981;border-radius:0 10px 10px 0;max-height:300px;overflow-y:auto;white-space:pre-wrap;word-wrap:break-word;font-weight:600"></div>
       </div>
     </div>
 
@@ -2011,6 +2044,7 @@ function applyResult(r){
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
       
+      // Show in Quick Notes tab (for bottom panels)
       const solutionEl = document.getElementById('quickNotesText');
       if(solutionEl){
         solutionEl.innerHTML = 
@@ -2028,6 +2062,20 @@ function applyResult(r){
         setTimeout(() => {
           solutionEl.scrollIntoView({behavior:'smooth',block:'nearest'});
         }, 300);
+      }
+      
+      // ALSO show in visible section (top of screen for learner)
+      const visibleSolEl = document.getElementById('visibleSolutionText');
+      if(visibleSolEl){
+        visibleSolEl.textContent = r.solution_summary;
+        visibleSolEl.style.display = 'block';
+      }
+      
+      // Show the solution display section
+      const solSection = document.getElementById('solutionDisplaySection');
+      if(solSection){
+        solSection.style.display = 'block';
+        solSection.scrollIntoView({behavior:'smooth',block:'start'});
       }
     }
 
@@ -2075,6 +2123,10 @@ function applyResult(r){
     // FULL COURSE MODE - 8 scenes with explanation
     G.scenes=r.scenes||[];
     G.curScene=-1;
+
+    // HIDE solution display section in course mode
+    const solSection = document.getElementById('solutionDisplaySection');
+    if(solSection) solSection.style.display='none';
 
     // Stats
     document.getElementById('statsRow').innerHTML=[
@@ -2197,6 +2249,8 @@ window.stopAll=function(){
   document.getElementById('playBtn').classList.remove('on');
   document.getElementById('aiInd').classList.remove('on');
   document.getElementById('subText').textContent='▶ Play dabao phir se';
+  const scc=document.getElementById('sceneContentCard');
+  if(scc) scc.style.display='none';
   updDots(-1);drawIdle();
 };
 window.replayAll=function(){speechSynthesis.cancel();G.playing=true;G.paused=false;playScene(0);};
@@ -2211,6 +2265,9 @@ function playScene(idx){
       overlay.style.visibility = 'hidden';
       overlay.style.opacity = '0';
     }
+    // Hide scene content card
+    const scc=document.getElementById('sceneContentCard');
+    if(scc) scc.style.display='none';
     document.getElementById('playBtn').textContent='▶ Play';
     document.getElementById('playBtn').classList.remove('on');
     document.getElementById('aiInd').classList.remove('on');
@@ -2335,53 +2392,104 @@ function getBestVoice(vs, profile){
 }
 
 // ── Hinglish text preprocessor ──
-// Converts common Roman English words → Devanagari phonetics
+// Converts common Roman English/Hindi words → Devanagari phonetics
 // so hi-IN voice reads them with proper Indian accent
 const HINGLISH_MAP = {
-  // Educational core
+  // ── Hindi connector words (Roman → Devanagari) ── HIGHEST PRIORITY
+  'dekho':'देखो','samjho':'समझो','suno':'सुनो','suno na':'सुनो ना',
+  'matlab':'मतलब','kyunki':'क्योंकि','isliye':'इसलिए',
+  'lekin':'लेकिन','toh':'तो','aur':'और','bas':'बस',
+  'bilkul':'बिल्कुल','bahut':'बहुत','thoda':'थोड़ा','ekdum':'एकदम',
+  'accha':'अच्छा','haan':'हाँ','nahi':'नहीं','phir':'फिर',
+  'abhi':'अभी','pehle':'पहले','baad':'बाद','dono':'दोनों',
+  'samajh':'समझ','seedha':'सीधा','zyada':'ज़्यादा','waise':'वैसे',
+  'asal mein':'असल में','zaroor':'ज़रूर','pakka':'पक्का',
+  'jaise':'जैसे','bilkul waise':'बिल्कुल वैसे','woh':'वो',
+  'kya':'क्या','kyun':'क्यों','kaise':'कैसे','kaun':'कौन',
+  'yeh':'यह','yahan':'यहाँ','wahan':'वहाँ','ab':'अब',
+  'chahiye':'चाहिए','milta':'मिलता','milti':'मिलती',
+  'hota':'होता','hoti':'होती','hote':'होते','hai':'है','hain':'हैं',
+  'tha':'था','thi':'थी','the':'थे','ho':'हो','ho gaya':'हो गया',
+  'kar':'कर','karo':'करो','raho':'रहो','leke':'लेके',
+  'nahi hai':'नहीं है','nahi hota':'नहीं होता','nahi milta':'नहीं मिलता',
+  'samajh gaye':'समझ गए','samajh aaya':'समझ आया','clear hai':'क्लियर है',
+  'yaad rakho':'याद रखो','yaad karo':'याद करो',
+  'na':'ना','haan na':'हाँ ना','bilkul na':'बिल्कुल ना',
+  'khana':'खाना','paani':'पानी','pani':'पानी','phone':'फोन',
+  'ghar':'घर','school':'स्कूल','dost':'दोस्त','bhai':'भाई',
+  'padhai':'पढ़ाई','samajhte':'समझते','samjha':'समझा',
+
+  // ── Educational Science ──
+  'photosynthesis':'फोटोसिंथेसिस','osmosis':'ऑस्मोसिस',
+  'diffusion':'डिफ्यूजन','respiration':'रेस्पिरेशन',
+  'mitochondria':'माइटोकॉन्ड्रिया','chlorophyll':'क्लोरोफिल',
+  'enzyme':'एंजाइम','glucose':'ग्लूकोज','protein':'प्रोटीन',
+  'chromosome':'क्रोमोसोम','dna':'डीएनए','rna':'आरएनए',
+  'membrane':'मेम्ब्रेन','nucleus':'न्यूक्लियस','cytoplasm':'साइटोप्लाज्म',
+  'ecosystem':'इकोसिस्टम','biodiversity':'बायोडायवर्सिटी',
+  'evolution':'इवोल्यूशन','mutation':'म्यूटेशन',
+
+  // ── Chemistry ──
+  'atom':'एटम','molecule':'मॉलिक्यूल','electron':'इलेक्ट्रॉन',
+  'proton':'प्रोटॉन','neutron':'न्यूट्रॉन','ion':'आयन',
+  'chemical':'केमिकल','reaction':'रिएक्शन','equation':'इक्वेशन',
+  'acid':'एसिड','base':'बेस','salt':'साल्ट','oxide':'ऑक्साइड',
+  'oxidation':'ऑक्सीडेशन','reduction':'रिडक्शन',
+  'concentration':'कंसंट्रेशन','solution':'सॉल्यूशन',
+  'catalyst':'कैटालिस्ट','compound':'कंपाउंड','element':'एलिमेंट',
+  'periodic table':'पीरियोडिक टेबल','valency':'वैलेंसी','bond':'बॉन्ड',
+  'oxygen':'ऑक्सीजन','carbon':'कार्बन','nitrogen':'नाइट्रोजन',
+  'hydrogen':'हाइड्रोजन','calcium':'कैल्शियम','iron':'आयरन',
+
+  // ── Physics ──
+  'force':'फोर्स','power':'पावर','energy':'एनर्जी',
+  'velocity':'वेलोसिटी','acceleration':'एक्सेलरेशन','momentum':'मोमेंटम',
+  'gravity':'ग्रेविटी','friction':'फ्रिक्शन','inertia':'इनर्शिया',
+  'current':'करंट','circuit':'सर्किट','resistance':'रेजिस्टेंस',
+  'voltage':'वोल्टेज','frequency':'फ्रीक्वेंसी','amplitude':'एम्प्लिट्यूड',
+  'wave':'वेव','particle':'पार्टिकल','magnetic':'मैग्नेटिक',
+  'electric':'इलेक्ट्रिक','nuclear':'न्यूक्लियर','radiation':'रेडिएशन',
+  'light':'लाइट','speed':'स्पीड','motion':'मोशन','mass':'मास',
+  'pressure':'प्रेशर','temperature':'टेम्परेचर','density':'डेंसिटी',
+
+  // ── Math ──
+  'angle':'एंगल','triangle':'ट्रायएंगल','circle':'सर्किल',
+  'formula':'फॉर्मूला','equation':'इक्वेशन','theorem':'थ्योरम',
+  'polynomial':'पॉलिनोमियल','quadratic':'क्वाड्रेटिक',
+  'matrix':'मैट्रिक्स','vector':'वेक्टर','function':'फंक्शन',
+  'calculus':'कैलकुलस','derivative':'डेरिवेटिव','integral':'इंटीग्रल',
+  'probability':'प्रॉबेबिलिटी','statistics':'स्टेटिस्टिक्स',
+  'area':'एरिया','volume':'वॉल्यूम','perimeter':'परिमाप',
+
+  // ── Social Science / History ──
+  'government':'गवर्नमेंट','democracy':'डेमोक्रेसी',
+  'constitution':'कॉन्स्टिट्यूशन','parliament':'पार्लियामेंट',
+  'election':'इलेक्शन','policy':'पॉलिसी','rights':'राइट्स',
+  'revolution':'रेवोल्यूशन','independence':'इंडिपेंडेंस',
+  'colonialism':'कोलोनियलिज्म','nationalism':'नेशनलिज्म',
+  'economy':'इकोनॉमी','trade':'ट्रेड','agriculture':'एग्रीकल्चर',
+  'population':'पॉपुलेशन','poverty':'पॉवर्टी','development':'डेवलपमेंट',
+  'environment':'एनवायरनमेंट','pollution':'पॉल्यूशन','climate':'क्लाइमेट',
+  'geography':'जियोग्राफी','history':'हिस्ट्री','civics':'सिविक्स',
+
+  // ── General academic ──
   'process':'प्रोसेस','concept':'कॉन्सेप्ट','important':'इम्पोर्टेंट',
   'example':'एग्जाम्पल','simple':'सिम्पल','basically':'बेसिकली',
-  'actually':'एक्चुअली','energy':'एनर्जी','theory':'थ्योरी',
-  'formula':'फॉर्मूला','reaction':'रिएक्शन','function':'फंक्शन',
-  'system':'सिस्टम','temperature':'टेम्परेचर','pressure':'प्रेशर',
-  'force':'फोर्स','power':'पावर','light':'लाइट','water':'वाटर',
-  'air':'एयर','cell':'सेल','blood':'ब्लड','heart':'हार्ट',
-  'brain':'ब्रेन','bone':'बोन','plant':'प्लांट','animal':'एनिमल',
-  'human':'ह्यूमन','body':'बॉडी','oxygen':'ऑक्सीजन',
-  'carbon':'कार्बन','nitrogen':'नाइट्रोजन','hydrogen':'हाइड्रोजन',
-  'atom':'एटम','molecule':'मॉलिक्यूल','electron':'इलेक्ट्रॉन',
-  'proton':'प्रोटॉन','neutron':'न्यूट्रॉन','nucleus':'न्यूक्लियस',
-  'chemical':'केमिकल','physical':'फिजिकल','natural':'नेचुरल',
-  'electric':'इलेक्ट्रिक','magnetic':'मैग्नेटिक','gravity':'ग्रेविटी',
-  'motion':'मोशन','speed':'स्पीड','velocity':'वेलोसिटी',
-  'acceleration':'एक्सेलरेशन','mass':'मास','weight':'वेट',
-  'volume':'वॉल्यूम','density':'डेंसिटी','area':'एरिया',
-  'structure':'स्ट्रक्चर','layer':'लेयर','level':'लेवल',
-  'stage':'स्टेज','step':'स्टेप','type':'टाइप','rate':'रेट',
-  'result':'रिजल्ट','effect':'इफेक्ट','solution':'सॉल्यूशन',
+  'actually':'एक्चुअली','theory':'थ्योरी','natural':'नेचुरल',
+  'physical':'फिजिकल','structure':'स्ट्रक्चर','system':'सिस्टम',
+  'layer':'लेयर','level':'लेवल','stage':'स्टेज','step':'स्टेप',
+  'type':'टाइप','rate':'रेट','result':'रिजल्ट','effect':'इफेक्ट',
   'problem':'प्रॉब्लम','answer':'आंसर','question':'क्वेश्चन',
   'topic':'टॉपिक','chapter':'चैप्टर','exam':'एग्जाम',
   'board':'बोर्ड','marks':'मार्क्स','paper':'पेपर',
   'student':'स्टूडेंट','teacher':'टीचर','class':'क्लास',
-  'school':'स्कूल','college':'कॉलेज','biology':'बायोलॉजी',
-  'chemistry':'केमिस्ट्री','physics':'फिजिक्स','math':'मैथ',
-  'science':'साइंस','history':'हिस्ट्री','geography':'जियोग्राफी',
-  'diagram':'डायग्राम','graph':'ग्राफ','photosynthesis':'फोटोसिंथेसिस',
-  'osmosis':'ऑस्मोसिस','diffusion':'डिफ्यूजन','respiration':'रेस्पिरेशन',
-  'equation':'इक्वेशन','current':'करंट','circuit':'सर्किट',
-  'resistance':'रेजिस्टेंस','voltage':'वोल्टेज','frequency':'फ्रीक्वेंसी',
-  'wave':'वेव','particle':'पार्टिकल','field':'फील्ड',
-  'government':'गवर्नमेंट','democracy':'डेमोक्रेसी','constitution':'कॉन्स्टिट्यूशन',
-  'environment':'एनवायरनमेंट','pollution':'पॉल्यूशन','climate':'क्लाइमेट',
-  'population':'पॉपुलेशन','market':'मार्केट','percent':'परसेंट',
-  'angle':'एंगल','triangle':'ट्रायएंगल','circle':'सर्किल',
-  // Hindi connector words (Roman → Devanagari)
-  'matlab':'मतलब','kyunki':'क्योंकि','isliye':'इसलिए',
-  'lekin':'लेकिन','toh':'तो','dekho':'देखो','suno':'सुनो',
-  'bilkul':'बिल्कुल','bahut':'बहुत','thoda':'थोड़ा',
-  'accha':'अच्छा','haan':'हाँ','nahi':'नहीं','phir':'फिर',
-  'abhi':'अभी','pehle':'पहले','baad':'बाद','dono':'दोनों',
-  'samajh':'समझ','seedha':'सीधा','zyada':'ज़्यादा','waise':'वैसे'
+  'college':'कॉलेज','biology':'बायोलॉजी','chemistry':'केमिस्ट्री',
+  'physics':'फिजिक्स','math':'मैथ','science':'साइंस',
+  'diagram':'डायग्राम','graph':'ग्राफ',
+  'water':'वाटर','air':'एयर','cell':'सेल','blood':'ब्लड',
+  'heart':'हार्ट','brain':'ब्रेन','bone':'बोन','plant':'प्लांट',
+  'animal':'एनिमल','human':'ह्यूमन','body':'बॉडी',
+  'weight':'वेट','field':'फील्ड','market':'मार्केट','percent':'परसेंट',
 };
 
 // ── Hindi-only text processor ──
@@ -2413,11 +2521,20 @@ function prepareText(text, lang){
   const map = lang === 'Hindi' ? HINDI_MAP : HINGLISH_MAP;
   let out = text;
 
-  // Sort by length descending so longer phrases match first
+  // Sort by length descending so longer phrases match first (critical for multi-word like "asal mein")
   const entries = Object.entries(map).sort((a,b)=>b[0].length-a[0].length);
   entries.forEach(([eng, dev])=>{
     if(!dev) return;
-    const rx = new RegExp('(?<![\\u0900-\\u097F])\\b' + eng.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '\\b(?![\\u0900-\\u097F])', 'gi');
+    const escaped = eng.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    // Use different regex for single vs multi-word entries
+    let rx;
+    if(eng.includes(' ')){
+      // Multi-word: match with flexible whitespace, case-insensitive, not inside Devanagari
+      rx = new RegExp('(?<![\\u0900-\\u097F])' + escaped.replace(/\\ /g,'\\s+') + '(?![\\u0900-\\u097F])', 'gi');
+    } else {
+      // Single word: use word boundaries
+      rx = new RegExp('(?<![\\u0900-\\u097F])\\b' + escaped + '\\b(?![\\u0900-\\u097F])', 'gi');
+    }
     out = out.replace(rx, dev);
   });
   return out;
@@ -2517,6 +2634,47 @@ function setVoiceScript(script){
   }
 }
 
+// ── Speak Solution in Q&A mode ──
+let _solSpeaking = false;
+window.speakSolution = function(){
+  const btn = document.getElementById('solutionSpeakBtn');
+  const iconEl = document.getElementById('solSpeakIcon');
+  const labelEl = document.getElementById('solSpeakLabel');
+  const solText = document.getElementById('visibleSolutionText');
+  if(!solText || !solText.textContent.trim()){
+    toast('⚠️','Solution abhi ready nahi hai!'); return;
+  }
+  if(_solSpeaking){
+    speechSynthesis.cancel();
+    _solSpeaking = false;
+    iconEl.textContent = '🔊';
+    labelEl.textContent = 'Jennie Se Suno';
+    if(btn) btn.style.background = 'rgba(16,185,129,0.15)';
+    // Reset subtitle
+    const subEl = document.getElementById('subText');
+    if(subEl) subEl.textContent = '✅ Solution ready! Study carefully for exam!';
+    return;
+  }
+  _solSpeaking = true;
+  iconEl.textContent = '⏸';
+  labelEl.textContent = 'Suno dhyan se...';
+  if(btn) btn.style.background = 'rgba(16,185,129,0.3)';
+  // Show speaking indicator in subtitle bar
+  const subEl = document.getElementById('subText');
+  if(subEl) subEl.innerHTML = '<span style="color:#10b981;font-weight:700">🎙️ Jennie explain kar rahi hai...</span>';
+  const spkEl = document.getElementById('subSpeaker');
+  if(spkEl) spkEl.style.display = 'flex';
+
+  doSpeak(solText.textContent, function(){
+    _solSpeaking = false;
+    iconEl.textContent = '🔊';
+    labelEl.textContent = 'Phir se Suno';
+    if(btn) btn.style.background = 'rgba(16,185,129,0.15)';
+    if(subEl) subEl.textContent = '✅ Solution samajh aaya! Phir sun sakte ho 🔊';
+    if(spkEl) spkEl.style.display = 'none';
+  });
+};
+
 function doSpeak(text, done){
   try {
     speechSynthesis.cancel();
@@ -2589,19 +2747,6 @@ function doSpeak(text, done){
           const orig = (origSents[i] || s).trim();
           if(!s){ i++; setTimeout(next, 50); return; }
 
-          // Show sentence in subtitle with highlight effect
-          const subEl = document.getElementById('subText');
-          if(subEl) {
-            subEl.style.transition='opacity .15s';
-            subEl.style.opacity='0.4';
-            setTimeout(()=>{
-              if(subEl) {
-                subEl.innerHTML = orig;
-                subEl.style.opacity='1';
-              }
-            }, 150);
-          }
-
           const u = new SpeechSynthesisUtterance(s);
 
           if(voice){
@@ -2615,16 +2760,38 @@ function doSpeak(text, done){
           u.pitch  = Math.max(0.5, Math.min(2, profile.pitch));
           u.volume = 1;
 
+          // ✅ Update subtitle EXACTLY when voice starts speaking (perfect sync)
+          let subtitleShown = false;
+          function showSubtitle(){
+            if(subtitleShown) return;
+            subtitleShown = true;
+            const subEl = document.getElementById('subText');
+            if(subEl){
+              subEl.style.transition = 'opacity .1s';
+              subEl.style.opacity = '0.3';
+              requestAnimationFrame(()=>{
+                subEl.innerHTML = orig;
+                subEl.style.opacity = '1';
+              });
+            }
+          }
+
+          u.onstart = ()=>{ showSubtitle(); };
+
+          // Safety fallback: if onstart doesn't fire within 350ms, show subtitle anyway
+          const subtitleFallback = setTimeout(showSubtitle, 350);
+
           u.onend  = ()=>{ 
+            clearTimeout(subtitleFallback);
             i++; 
-            // Increased pause between sentences - ensures each one is fully spoken
-            setTimeout(next, 250); 
+            setTimeout(next, 180); 
           };
           
           u.onerror = (evt)=>{ 
+            clearTimeout(subtitleFallback);
             console.log('Speech error on sentence', i, ':', evt.error);
             i++; 
-            setTimeout(next, 300);  // longer pause on error
+            setTimeout(next, 300);
           };
 
           try {
@@ -3208,7 +3375,7 @@ function createHD2DSummary(heading, points, topic){
 }
 
 // ══════════════════════════════
-// SCENE ROUTER — NOW WITH 2D ULTRA HD DIAGRAMS
+// SCENE RENDERER — ACTUAL AI CONTENT ON SCREEN
 // ══════════════════════════════
 let _totalScenes=8;
 function renderScene(sc,idx,total){
@@ -3219,51 +3386,235 @@ function renderScene(sc,idx,total){
   const pts=vd.points||[];
   const ic=vd.icon||'💡';
   const sn=(idx||0)+1;
-  const narr=sc.narration||'';
 
-  // ✅ Display 2D HD real-world diagram in canvas container
-  let hdDiagram = '';
-  const topicLower = (G.topicText || G.file?.name || '').toLowerCase();
-  
-  // Scene-specific 2D Ultra HD diagrams
-  if(sc.visual_type==='intro'){
-    hdDiagram = createHD2DIntro(h, ic, pts, topicLower);
-  } else if(sc.visual_type==='diagram'){
-    hdDiagram = createHD2DDiagram(h, pts, topicLower);
-  } else if(sc.visual_type==='example'){
-    hdDiagram = createHD2DExample(h, pts, topicLower);
-  } else if(sc.visual_type==='summary'){
-    hdDiagram = createHD2DSummary(h, pts, topicLower);
-  } else { // concept
-    hdDiagram = createHD2DConcept(h, pts, topicLower);
-  }
-  
-  // Show ONLY in canvas overlay (centered, not scrollable bottom)
-  const canvasDiagramContainer = document.getElementById('diagramSvgContainerCanvas');
-  if(canvasDiagramContainer){
-    canvasDiagramContainer.innerHTML = hdDiagram;
-  }
-  
-  // FORCE overlay to be visible for diagram display
-  const diagramOverlay = document.getElementById('diagramOverlayContainer');
-  if(diagramOverlay){
-    diagramOverlay.style.visibility = 'visible';
-    diagramOverlay.style.opacity = '1';
-    diagramOverlay.style.zIndex = '15';
-    diagramOverlay.style.pointerEvents = 'auto';
-  }
-  
-  // Simple canvas background with scene info (title bar)
+  // ── Canvas: animated background only ──
   animFn=()=>{
     const bg=ctx.createRadialGradient(CW/2,CH*.3,0,CW/2,CH*.6,Math.max(CW,CH));
     bg.addColorStop(0,t.b3+'cc');
     bg.addColorStop(.6,t.b2);
     bg.addColorStop(1,t.b1);
-    ctx.fillStyle=bg;
-    ctx.fillRect(0,0,CW,CH);
+    ctx.fillStyle=bg; ctx.fillRect(0,0,CW,CH);
     drawStars(0.3);
     sceneHeader(t,h,ic,sn,_totalScenes);
   };
+
+  // ── Render actual AI content in overlay ──
+  renderSceneContent(sc, idx, total);
+
+  // ── Also update below-subtitle content card ──
+  updateSceneContentCard(sc, idx);
+}
+
+// ══════════════════════════════════════════════════════════
+// SCENE CONTENT RENDERER — shows actual topic data on screen
+// ══════════════════════════════════════════════════════════
+function renderSceneContent(sc, idx, total){
+  const overlay = document.getElementById('diagramOverlayContainer');
+  if(!overlay) return;
+
+  const vd  = sc.visual_data || {};
+  const heading = vd.heading || sc.title || '';
+  const pts = vd.points || [];
+  const icon = vd.icon || '💡';
+  const vtype = sc.visual_type || 'concept';
+  const narr = sc.narration || '';
+  const sn = idx + 1;
+  const tot = total || G.scenes.length;
+
+  // Theme colors per scene type
+  const typeTheme = {
+    intro:   { accent:'#818cf8', bg:'rgba(99,102,241,0.12)',  border:'rgba(129,140,248,0.5)', badge:'🎯 INTRO' },
+    concept: { accent:'#a5b4fc', bg:'rgba(99,102,241,0.08)',  border:'rgba(129,140,248,0.35)', badge:'💡 CONCEPT' },
+    diagram: { accent:'#06b6d4', bg:'rgba(6,182,212,0.08)',   border:'rgba(6,182,212,0.4)',  badge:'🔗 DIAGRAM' },
+    example: { accent:'#10b981', bg:'rgba(16,185,129,0.08)',  border:'rgba(16,185,129,0.4)', badge:'📝 EXAMPLES' },
+    summary: { accent:'#f59e0b', bg:'rgba(245,158,11,0.08)',  border:'rgba(245,158,11,0.4)', badge:'✅ SUMMARY' }
+  };
+  const th = typeTheme[vtype] || typeTheme.concept;
+
+  // Extract real-world examples from narration sentences
+  // Look for "jaise", "example", "like", "e.g." patterns
+  const examplePhrases = [];
+  const narSents = narr.split(/[.!?।]+/).filter(s => s.trim().length > 15);
+  narSents.forEach(s => {
+    const sl = s.toLowerCase();
+    if(sl.includes('jaise') || sl.includes('example') || sl.includes('jab tum') ||
+       sl.includes('phone') || sl.includes('paani') || sl.includes('ghar') ||
+       sl.includes('aam') || sl.includes('battery') || sl.includes('school') ||
+       sl.includes('like ') || sl.includes('e.g.') || sl.includes('real life') ||
+       sl.includes('daily life') || sl.includes('roz') || sl.includes('rozana')){
+      examplePhrases.push(s.trim());
+    }
+  });
+
+  // Point cards HTML
+  const ptColors = ['#818cf8','#10b981','#f59e0b','#f43f5e','#06b6d4','#e879f9','#fb923c'];
+  let ptsHTML = '';
+
+  if(vtype === 'intro'){
+    // Intro: big icon + heading + first 2 points as key focus
+    ptsHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;margin-bottom:24px">
+        <div style="font-size:64px;line-height:1;filter:drop-shadow(0 0 20px ${th.accent}88)">${icon}</div>
+        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:900;color:#f0f0ff;text-align:center;text-shadow:0 0 20px ${th.accent}66;max-width:700px">${heading}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+          ${pts.slice(0,3).map(p=>`<div style="background:${th.bg};border:1px solid ${th.border};border-radius:20px;padding:6px 16px;font-size:12px;color:${th.accent};font-weight:700">${p.slice(0,60)}</div>`).join('')}
+        </div>
+      </div>`;
+  } else if(vtype === 'example'){
+    // Examples: each point as a real-world example card
+    ptsHTML = pts.slice(0,4).map((ex, i) => {
+      const c = ptColors[i % ptColors.length];
+      const exNarr = examplePhrases[i] || '';
+      return `<div style="background:${c}12;border:2px solid ${c}44;border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;animation:scPtIn .4s ease-out ${i*0.1}s both">
+        <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,${c}33,${c}66);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;box-shadow:0 0 10px ${c}44">
+          ${['🇮🇳','📱','🏠','⚗️'][i] || '📌'}
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:800;color:${c};margin-bottom:4px">Example ${i+1}</div>
+          <div style="font-size:12.5px;color:#c7d2fe;line-height:1.6;font-weight:600">${ex}</div>
+          ${exNarr ? `<div style="font-size:11px;color:rgba(199,210,254,0.6);margin-top:5px;font-style:italic">"${exNarr.slice(0,90)}..."</div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  } else if(vtype === 'diagram'){
+    // Diagram: flow/mind-map style showing terms with connections
+    ptsHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">` +
+      pts.slice(0,6).map((pt, i) => {
+        const c = ptColors[i % ptColors.length];
+        const parts = pt.split(/[:\-–—]/);
+        const term = parts[0]?.trim() || pt;
+        const def  = parts.slice(1).join(' ').trim() || '';
+        return `<div style="background:${c}10;border:1px solid ${c}44;border-radius:12px;padding:12px 14px;animation:scPtIn .35s ease-out ${i*0.08}s both">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <div style="width:6px;height:6px;border-radius:50%;background:${c};flex-shrink:0"></div>
+            <div style="font-size:12px;font-weight:900;color:${c}">${term.slice(0,35)}</div>
+          </div>
+          ${def ? `<div style="font-size:11.5px;color:#c7d2fe;line-height:1.5;font-weight:600;padding-left:14px">${def.slice(0,80)}</div>` : ''}
+        </div>`;
+      }).join('') + `</div>`;
+  } else if(vtype === 'summary'){
+    // Summary: numbered recap cards
+    ptsHTML = pts.slice(0,5).map((pt, i) => {
+      const c = ptColors[i % ptColors.length];
+      return `<div style="display:flex;align-items:flex-start;gap:12px;padding:11px 14px;background:${c}0d;border:1px solid ${c}33;border-radius:12px;animation:scPtIn .4s ease-out ${i*0.1}s both">
+        <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,${c}44,${c}66);color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;font-family:'Sora',sans-serif">${i+1}</div>
+        <div style="font-size:12.5px;color:#d1d5ff;line-height:1.6;font-weight:600">${pt}</div>
+      </div>`;
+    }).join('');
+  } else {
+    // Concept: clean point rows with full text
+    ptsHTML = pts.slice(0,5).map((pt, i) => {
+      const c = ptColors[i % ptColors.length];
+      const parts = pt.split(/[:\-–—]/);
+      const term = parts.length > 1 ? parts[0].trim() : '';
+      const body = parts.length > 1 ? parts.slice(1).join(' ').trim() : pt;
+      return `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);border-left:3px solid ${c};border-radius:0 10px 10px 0;animation:scPtIn .35s ease-out ${i*0.08}s both">
+        <div style="width:22px;height:22px;border-radius:50%;background:${c}22;border:1.5px solid ${c}88;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+          <span style="font-size:10px;font-weight:900;color:${c}">${i+1}</span>
+        </div>
+        <div>
+          ${term ? `<span style="font-size:12px;font-weight:900;color:${c}">${term} — </span>` : ''}
+          <span style="font-size:12.5px;color:#c7d2fe;line-height:1.6;font-weight:600">${body}</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Real-world examples section (from narration, shown for all types)
+  let examplesHTML = '';
+  if(examplePhrases.length > 0 && vtype !== 'example'){
+    examplesHTML = `
+      <div style="margin-top:14px;padding:12px 14px;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.25);border-radius:12px">
+        <div style="font-size:10px;font-weight:900;color:#10b981;letter-spacing:1.5px;margin-bottom:8px">🌍 REAL-WORLD EXAMPLES</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          ${examplePhrases.slice(0,3).map(ex =>
+            `<div style="font-size:12px;color:#a7f3d0;line-height:1.6;padding:6px 10px;background:rgba(16,185,129,0.06);border-radius:8px;border-left:2px solid #10b981">→ ${ex}</div>`
+          ).join('')}
+        </div>
+      </div>`;
+  }
+
+  // Build full overlay HTML
+  overlay.innerHTML = `
+    <div style="width:100%;height:100%;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:0">
+      <!-- Scene header bar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-shrink:0">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:28px;filter:drop-shadow(0 0 8px ${th.accent}88)">${icon}</div>
+          <div>
+            <div style="display:flex;align-items:center;gap:7px">
+              <span style="font-size:9px;font-weight:900;color:${th.accent};background:${th.bg};border:1px solid ${th.border};border-radius:20px;padding:2px 10px;letter-spacing:1.5px">${th.badge}</span>
+              <span style="font-size:9px;color:rgba(199,210,254,0.5);font-weight:700">SCENE ${sn}/${tot}</span>
+            </div>
+            <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:900;color:#f0f0ff;margin-top:3px;text-shadow:0 0 12px ${th.accent}55">${heading}</div>
+          </div>
+        </div>
+        <!-- scene progress dots -->
+        <div style="display:flex;gap:4px;align-items:center">
+          ${Array.from({length:tot},(_,di)=>{
+            const w = di===idx ? '18px' : '6px';
+            const bg = di===idx ? th.accent : (di<idx ? 'rgba(129,140,248,0.5)' : 'rgba(99,102,241,0.2)');
+            return `<div style="width:${w};height:6px;border-radius:3px;background:${bg};transition:all .3s"></div>`;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- Content area -->
+      <div style="display:flex;flex-direction:column;gap:9px;flex:1">
+        ${ptsHTML}
+        ${examplesHTML}
+      </div>
+    </div>`;
+
+  // Make overlay visible
+  overlay.style.visibility = 'visible';
+  overlay.style.opacity = '1';
+  overlay.style.zIndex = '15';
+  overlay.style.pointerEvents = 'auto';
+  // Scroll to top on each new scene
+  overlay.scrollTop = 0;
+}
+
+// ═══ SCENE CONTENT CARD UPDATER ═══
+function updateSceneContentCard(sc, idx){
+  const card = document.getElementById('sceneContentCard');
+  if(!card) return;
+
+  const vd = sc.visual_data || {};
+  const heading = vd.heading || sc.title || 'Scene '+(idx+1);
+  const pts = vd.points || [];
+  const icon = vd.icon || (sc.visual_type==='intro'?'🎯':sc.visual_type==='diagram'?'🔗':sc.visual_type==='example'?'📝':sc.visual_type==='summary'?'✅':'💡');
+  const total = G.scenes.length;
+  const typeColor = {intro:'#818cf8',concept:'#a5b4fc',diagram:'#06b6d4',example:'#10b981',summary:'#f59e0b'};
+  const tcolor = typeColor[sc.visual_type] || '#818cf8';
+
+  // Update header
+  document.getElementById('sceneCardIcon').textContent = icon;
+  document.getElementById('sceneCardBadge').textContent = 'SCENE '+(idx+1)+' / '+total;
+  document.getElementById('sceneCardType').textContent = (sc.visual_type||'concept').toUpperCase();
+  document.getElementById('sceneCardType').style.color = tcolor;
+  document.getElementById('sceneCardTitle').textContent = heading;
+
+  // Build points HTML
+  const ptColors = ['#818cf8','#10b981','#f59e0b','#f43f5e','#06b6d4','#e879f9','#fb923c','#a5b4fc'];
+  const ptsEl = document.getElementById('sceneCardPoints');
+  if(pts.length > 0){
+    ptsEl.innerHTML = pts.map((pt, i) => {
+      const c = ptColors[i % ptColors.length];
+      return `<div style="display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.14);border-left:3px solid ${c};border-radius:0 9px 9px 0;animation:scPtIn .35s ease-out ${i*0.07}s both">
+        <div style="width:20px;height:20px;border-radius:50%;background:${c}22;border:1px solid ${c}66;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+          <span style="font-size:9px;font-weight:900;color:${c}">${i+1}</span>
+        </div>
+        <span style="font-size:12.5px;color:#c7d2fe;line-height:1.6;font-weight:600">${pt}</span>
+      </div>`;
+    }).join('');
+  } else {
+    ptsEl.innerHTML = `<div style="padding:8px 4px;font-size:12px;color:var(--muted);font-style:italic">Narration se samjho — subtitle bar mein chal raha hai 👆</div>`;
+  }
+
+  // Show card with animation
+  card.style.display = 'block';
+  card.style.animation = 'scCardIn .4s ease-out';
 }
 
 // ══════════════════════════════
@@ -3843,9 +4194,9 @@ Return ONLY this JSON (no markdown, no explanation, start with {):
         },
         body:JSON.stringify({
           model: model,
-          max_tokens: 1400,
+          max_tokens: 1600,
           messages:[
-            {role:'system',content:'Quiz generator. Return ONLY valid JSON starting with {. No markdown. No extra text.'},
+            {role:'system',content:'You are a quiz generator. Return ONLY valid JSON. No markdown, no backticks, no explanation. Start directly with {'},
             {role:'user',content:prompt}
           ]
         })
@@ -3854,16 +4205,26 @@ Return ONLY this JSON (no markdown, no explanation, start with {):
       const data = await resp.json();
       const raw = ((data.choices||[])[0]?.message?.content||'').trim();
       if(!raw){ console.warn('[Quiz] '+model+' → empty response'); continue; }
-      // Strip markdown fences
-      const clean = raw.replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/\s*```$/,'').trim();
-      const match = clean.match(/\{[\s\S]*\}/);
-      if(!match){ console.warn('[Quiz] '+model+' → no JSON found in: '+clean.slice(0,100)); continue; }
-      const parsed = JSON.parse(match[0]);
-      if(parsed?.questions?.length >= 3){
-        questions = parsed.questions;
-        console.log('[Quiz] ✅ API success with '+model);
-        break;
-      }
+      // Strip any markdown fences
+      let clean = raw.replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/\s*```$/g,'').trim();
+      // Find first { to last }
+      const s=clean.indexOf('{'); const e=clean.lastIndexOf('}');
+      if(s<0||e<0){ console.warn('[Quiz] '+model+' → no JSON braces found'); continue; }
+      clean = clean.slice(s,e+1);
+      // Fix trailing commas
+      clean = clean.replace(/,\s*([}\]])/g,'$1');
+      try {
+        const parsed = JSON.parse(clean);
+        if(parsed?.questions?.length >= 3){
+          // Validate each question has required fields
+          const valid = parsed.questions.filter(q=>q&&q.q&&Array.isArray(q.opts)&&q.opts.length>=4&&typeof q.correct==='number');
+          if(valid.length >= 3){
+            questions = valid.slice(0,5);
+            console.log('[Quiz] ✅ API success with '+model+' ('+questions.length+' questions)');
+            break;
+          }
+        }
+      } catch(je){ console.warn('[Quiz] '+model+' JSON parse failed: '+je.message+' | raw: '+clean.slice(0,100)); }
     } catch(fe){ console.warn('[Quiz] '+model+' → '+fe.message); }
   }
 
@@ -3875,8 +4236,14 @@ Return ONLY this JSON (no markdown, no explanation, start with {):
 
   if(!questions || !questions.length){
     document.getElementById('quizLoad').innerHTML=
-      '<div style="color:#f87171;font-size:13px;font-weight:700;text-align:center">⚠️ Quiz bana nahi. Topic dobara generate karo.</div>'+
-      '<button onclick="closeQuiz()" style="margin-top:12px;padding:9px 20px;background:rgba(244,63,94,0.2);color:#f87171;border:1px solid rgba(244,63,94,0.4);border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;font-family:Plus Jakarta Sans,sans-serif">✕ Close</button>';
+      '<div style="text-align:center;padding:10px">' +
+      '<div style="font-size:28px;margin-bottom:10px">😕</div>' +
+      '<div style="color:#f87171;font-size:13px;font-weight:700;margin-bottom:8px">Quiz generate nahi ho saki</div>'+
+      '<div style="color:var(--muted);font-size:11px;margin-bottom:16px">Internet check karo ya dobara try karo</div>'+
+      '<div style="display:flex;gap:8px;justify-content:center">' +
+      '<button onclick="generateQuizQuestions(G.currentResult)" style="padding:9px 18px;background:rgba(99,102,241,0.2);color:#a5b4fc;border:1px solid rgba(99,102,241,0.4);border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;font-family:Plus Jakarta Sans,sans-serif">🔄 Dobara Try Karo</button>'+
+      '<button onclick="closeQuiz()" style="padding:9px 18px;background:rgba(244,63,94,0.15);color:#f87171;border:1px solid rgba(244,63,94,0.3);border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;font-family:Plus Jakarta Sans,sans-serif">✕ Close</button>'+
+      '</div></div>';
     return;
   }
 
@@ -3886,65 +4253,113 @@ Return ONLY this JSON (no markdown, no explanation, start with {):
   showQuizQuestion();
 }
 
-// ── Local Quiz Builder — uses key_concepts + scene data ──
+// ── Local Quiz Builder — works with ANY data format ──
 function buildLocalQuestions(r){
   const tn = r.topic_name||'Topic';
-  const kc = (r.key_concepts||[]);
+  const kc = (r.key_concepts||[]).filter(Boolean);
   const scenes = (r.scenes||[]);
   const qs = [];
   const lang = G.lang||'Hinglish';
 
-  // Q from each key concept — build MCQ with distractors
-  kc.slice(0,5).forEach((concept, i)=>{
-    const parts = concept.split(':');
-    const term = (parts[0]||'').trim();
-    const def  = (parts[1]||'').trim();
-    if(!term || !def) return;
+  // Helper: make question text
+  function makeQ(term, opts, correct, exp){
+    let qText='';
+    if(lang==='English') qText=`What is "${term}" related to ${tn}?`;
+    else if(lang==='Hindi') qText=`"${term}" ke baare mein ${tn} mein kya sahi hai?`;
+    else qText=`"${term}" kya hai ${tn} mein? Sahi option choose karo:`;
+    return { q:qText, opts:opts.map((o,j)=>['A','B','C','D'][j]+'. '+String(o).slice(0,65)), correct, exp };
+  }
 
-    // Pick 3 wrong answers from other concepts
-    const others = kc.filter((_,j)=>j!==i).map(c=>{
-      const p=c.split(':'); return (p[1]||p[0]||'').trim().slice(0,60);
-    }).filter(Boolean).slice(0,3);
+  // ── Strategy 1: From key_concepts (handles both "term: def" and plain text) ──
+  if(kc.length >= 3){
+    kc.slice(0,5).forEach((concept, i)=>{
+      if(qs.length >= 5) return;
+      const parts = concept.split(':');
+      const term = parts.length > 1 ? parts[0].trim() : concept.trim().split(' ').slice(0,3).join(' ');
+      const def  = parts.length > 1 ? parts.slice(1).join(':').trim() : concept.trim();
+      if(!term || !def || def.length < 5) return;
 
-    while(others.length < 3) others.push('Iska '+tn+' se koi relation nahi');
+      // Distractors from other concepts
+      const others = kc.filter((_,j)=>j!==i).map(c=>{
+        const p=c.split(':'); return (p.length>1?p.slice(1).join(':'):p[0]||'').trim().slice(0,60);
+      }).filter(x=>x && x.length>3);
 
-    const correctIdx = Math.floor(Math.random()*4);
-    const opts = [...others];
-    opts.splice(correctIdx, 0, def.slice(0,60));
+      // Pad with generic distractors if needed
+      const pads = [
+        lang==='English'?`Not related to ${tn}`:lang==='Hindi'?`${tn} se koi relation nahi`:`${tn} se related nahi`,
+        lang==='English'?'This is incorrect':'Yeh galat hai',
+        lang==='English'?'None of the above':'Koi nahi'
+      ];
+      while(others.length < 3) others.push(pads[others.length % pads.length]);
 
-    let qText = '';
-    if(lang==='English') qText = `What is "${term}" in the context of ${tn}?`;
-    else if(lang==='Hindi') qText = `"${term}" ka matlab ${tn} mein kya hota hai?`;
-    else qText = `"${term}" kya hota hai ${tn} mein?`;
+      const correctIdx = Math.floor(Math.random()*4);
+      const opts = others.slice(0,3);
+      opts.splice(correctIdx, 0, def.slice(0,60));
 
-    let expText = '';
-    if(lang==='English') expText = `${term} means: ${def}`;
-    else if(lang==='Hindi') expText = `${term} ka matlab hai: ${def}`;
-    else expText = `${term} basically yeh hai: ${def}`;
+      const expText = lang==='English'?`${term} means: ${def}`:lang==='Hindi'?`${term} matlab: ${def}`:`${term} basically: ${def}`;
+      qs.push(makeQ(term, opts, correctIdx, expText));
+    });
+  }
 
-    qs.push({ q:qText, opts:opts.map((o,j)=>['A','B','C','D'][j]+'. '+o), correct:correctIdx, exp:expText });
-  });
-
-  // Extra Q from scenes if needed
-  scenes.slice(0,3).forEach(sc=>{
+  // ── Strategy 2: From scene points ──
+  scenes.slice(0,5).forEach(sc=>{
     if(qs.length >= 5) return;
     const pts = (sc.visual_data?.points||[]).filter(p=>p&&p.length>5);
     if(pts.length < 2) return;
+
     const correct = pts[0];
-    const wrongs = pts.slice(1,4);
-    while(wrongs.length<3) wrongs.push('Yeh '+tn+' ka hissa nahi');
+    const wrongs = [];
+    // Use other scene points as distractors
+    scenes.forEach(s2=>{
+      if(wrongs.length >= 3) return;
+      (s2.visual_data?.points||[]).forEach(p=>{
+        if(wrongs.length < 3 && p && p!==correct && p.length>5) wrongs.push(p.slice(0,60));
+      });
+    });
+    while(wrongs.length<3) wrongs.push(lang==='English'?'Incorrect option':'Galat option');
+
     const correctIdx = Math.floor(Math.random()*4);
-    const opts=[...wrongs]; opts.splice(correctIdx,0,correct);
+    const opts=[...wrongs.slice(0,3)];
+    opts.splice(correctIdx,0,correct.slice(0,60));
 
+    const title = sc.title||tn;
     let qText='';
-    if(lang==='English') qText=`Which of these is related to "${sc.title||tn}"?`;
-    else if(lang==='Hindi') qText=`"${sc.title||tn}" ke baare mein kaunsa sahi hai?`;
-    else qText=`"${sc.title||tn}" mein kaunsi baat sahi hai?`;
-
-    qs.push({ q:qText, opts:opts.map((o,j)=>['A','B','C','D'][j]+'. '+o.slice(0,55)), correct:correctIdx, exp:(lang==='English'?'Correct: ':lang==='Hindi'?'Sahi jawab: ':'Sahi hai: ')+correct });
+    if(lang==='English') qText=`Which of these is TRUE about "${title}"?`;
+    else if(lang==='Hindi') qText=`"${title}" ke baare mein kaunsi baat sahi hai?`;
+    else qText=`"${title}" mein kaunsi baat sahi hai?`;
+    const exp = (lang==='English'?'Correct: ':lang==='Hindi'?'Sahi: ':'Bilkul sahi: ')+correct.slice(0,80);
+    qs.push({ q:qText, opts:opts.map((o,j)=>['A','B','C','D'][j]+'. '+String(o).replace(/^[A-D]\.\s*/,'')), correct:correctIdx, exp });
   });
 
-  return qs.slice(0,5);
+  // ── Strategy 3: True/False style from narration if still not enough ──
+  if(qs.length < 3){
+    scenes.slice(0,3).forEach(sc=>{
+      if(qs.length >= 5) return;
+      const narr = sc.narration||'';
+      if(narr.length < 30) return;
+      // Extract a fact phrase from narration
+      const sentences = narr.split(/[.!?।]+/).filter(s=>s.trim().length>20);
+      if(!sentences.length) return;
+      const fact = sentences[0].trim().replace(/^[^a-zA-Z\u0900-\u097F]+/,'').slice(0,80);
+      if(!fact || fact.length < 15) return;
+      const title = sc.title||tn;
+      let qText='';
+      if(lang==='English') qText=`Complete this about ${title}: "${fact.slice(0,50)}..."`;
+      else qText=`${title} ke baare mein — kaunsa sahi hai?`;
+      const correctOpt = fact.slice(0,60);
+      const wrongOpts = [
+        `${title} bilkul alag concept hai`,
+        `Yeh ${tn} se related nahi`,
+        `Iska koi use nahi`
+      ];
+      const correctIdx=0;
+      const opts = [correctOpt, ...wrongOpts];
+      qs.push({ q:qText, opts:opts.map((o,j)=>['A','B','C','D'][j]+'. '+o.slice(0,65)), correct:0, exp:`Sahi: ${correctOpt}` });
+    });
+  }
+
+  // Ensure max 5 questions with valid structure
+  return qs.slice(0,5).filter(q=>q&&q.q&&q.opts&&q.opts.length===4&&typeof q.correct==='number');
 }
 
 function showQuizQuestion(){
