@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FRSL68YFGP"></script>
+
 <script>
-window.datalayer window.dataLayer || []; 7
+ window.dataLayer window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-
 gtag('config', 'G-FRSL68YFGP');
 </script>
-  
+
 <meta name="google-site-verification" content="oIwVhT737rznEitBs6E-VdWBFdNv69ZqPojgwHw1_MU" />
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
@@ -133,8 +133,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 #sceneCanvas{position:absolute;top:0;left:0;width:100%;height:100%;display:block}
 
 /* Loading overlay */
-.load-ov{position:absolute;inset:0;background:linear-gradient(135deg,#050315,#0d0b2e,#1e1b4b);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:20;transition:opacity .6s}
-.load-ov.hide{opacity:0;pointer-events:none}
+.load-ov{position:absolute;inset:0;background:linear-gradient(135deg,#050315,#0d0b2e,#1e1b4b);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:20;transition:opacity .6s,visibility .6s}
+.load-ov.hide{opacity:0;visibility:hidden;pointer-events:none}
 .load-spin{width:56px;height:56px;border:3px solid rgba(99,102,241,0.15);border-top-color:#818cf8;border-right-color:#6366f1;border-radius:50%;animation:spin .7s linear infinite;box-shadow:0 0 20px rgba(129,140,248,0.4)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-title{color:#a5b4fc;font-family:'Sora',sans-serif;font-size:14px;font-weight:900;letter-spacing:2.5px;text-align:center;text-shadow:0 0 20px rgba(165,180,252,0.6)}
@@ -352,6 +352,22 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .quiz-result-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .quiz-retry-btn{padding:11px 28px;background:linear-gradient(135deg,#4338ca,#6366f1);color:white;border:none;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;box-shadow:var(--glow-indigo)}
 .quiz-retry-btn:hover{transform:translateY(-2px)}
+
+/* ── ENHANCED VOICE CONTROLS ── */
+.voice-control-section{display:flex;gap:12px;align-items:center;padding:16px;background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(99,102,241,0.06));border:1.5px solid rgba(129,140,248,0.3);border-radius:18px;margin-bottom:20px;flex-wrap:wrap}
+.voice-label{font-size:13px;font-weight:800;color:var(--indigo-light);text-transform:uppercase;letter-spacing:1.2px}
+.voice-play-btn{background:linear-gradient(135deg,rgba(99,102,241,0.3),rgba(99,102,241,0.15));border:1px solid rgba(129,140,248,0.5);color:var(--indigo-light);padding:11px 20px;border-radius:24px;cursor:pointer;font-size:13px;font-weight:700;transition:all .3s;display:flex;align-items:center;gap:8px;box-shadow:0 2px 10px rgba(99,102,241,0.15);white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif}
+.voice-play-btn:hover{background:linear-gradient(135deg,var(--indigo),rgba(99,102,241,0.9));color:white;border-color:var(--indigo);box-shadow:var(--glow-indigo),0 4px 12px rgba(99,102,241,0.25);transform:translateY(-1px)}
+.voice-play-btn.playing{background:linear-gradient(135deg,#10b981,#059669);border-color:#10b981;color:white;box-shadow:0 0 24px rgba(16,185,129,0.6);animation:pulse-btn 1.4s ease-in-out infinite}
+@keyframes pulse-btn{0%,100%{box-shadow:0 0 24px rgba(16,185,129,0.6)}50%{box-shadow:0 0 40px rgba(16,185,129,0.9)}}
+.voice-loading-indicator{display:inline-block;width:13px;height:13px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin-voice .7s linear infinite}
+@keyframes spin-voice{to{transform:rotate(360deg)}}
+
+/* ── HD DIAGRAM SECTION ── */
+.hd-diagram-wrapper{width:100%;min-height:420px;background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(99,102,241,0.08));border:2px solid rgba(129,140,248,0.35);border-radius:20px;margin-bottom:24px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:32px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)}
+.hd-diagram-canvas{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
+.diagram-svg{max-width:100%;max-height:100%;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.3))}
+
 </style>
 </head>
 <body>
@@ -492,12 +508,22 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
     <!-- Canvas -->
     <div class="player" id="playerBox">
       <canvas id="sceneCanvas"></canvas>
-      <div class="load-ov" id="loadOv">
+      <!-- HIDDEN: Loading overlay (old way) -->
+      <div class="load-ov hide" id="loadOv">
         <div class="load-spin"></div>
         <div class="load-title" id="loadTxt">AI TOPIC ANALYZE KAR RAHA HAI...</div>
         <div class="load-sub" id="loadSub">Please wait — Jennie is preparing your lesson</div>
         <div class="load-bar-wrap"><div class="load-bar"></div></div>
       </div>
+      
+      <!-- NEW: HD Diagram Container (replaces loading screen) -->
+      <div id="diagramOverlayContainer" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(13,11,46,0.95),rgba(20,15,60,0.95));backdrop-filter:blur(12px);z-index:15;pointer-events:auto;visibility:hidden;opacity:0;transition:opacity 0.4s,visibility 0.4s">
+        <div style="width:100%;height:100%;max-width:1400px;max-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 40px;overflow-y:auto;border-radius:0">
+          <div style="font-size:12px;font-weight:900;color:#818cf8;letter-spacing:1.5px;margin-bottom:30px;text-transform:uppercase">📊 HD EDUCATIONAL DIAGRAM</div>
+          <div id="diagramSvgContainerCanvas" style="width:100%;height:auto;min-height:600px;max-height:85vh;display:flex;align-items:center;justify-content:center;background:rgba(13,11,46,0.5);border:2px solid rgba(129,140,248,0.3);border-radius:20px;overflow:hidden;padding:40px"></div>
+        </div>
+      </div>
+      
       <div class="sc-overlay">
         <div class="sc-badge" id="scBadge">READY</div>
         <div class="sc-title-tag" id="scTitle">Upload a topic to begin</div>
@@ -1166,6 +1192,10 @@ function loadFile(f){
     img.src=ev.target.result;
     img.style.cssText='max-width:100%;max-height:130px;object-fit:contain;border-radius:10px;display:block';
     box.appendChild(img);
+    
+    // Store image URL for canvas display
+    G.uploadedImageUrl = ev.target.result;
+    
     document.getElementById('genBtn').disabled=false;
     toast('📸','Image loaded! Ready to generate 🚀');
   };
@@ -1263,9 +1293,75 @@ async function startGen(){
 
   // Language instructions
   const langInstr = {
-    'Hinglish': 'STRICT HINGLISH ONLY — Roman script. Mix Hindi + English exactly like Indians speak. Use: dekho, samjho, bilkul, matlab, kyunki, isliye, lekin, toh, bahut, thoda. Every sentence = desi teacher vibes. Example: "Dekho, photosynthesis basically ek process hai jisme plants sunlight use karke apna khana banate hain. Simple hai na?" DO NOT write pure English. DO NOT write pure Hindi. Dono mix karo naturally.',
-    'Hindi': 'PURE HINDI — Roman script only (NO Devanagari). Clear simple Hindi jaise ek accha teacher bolata hai. Use: dekho, samajhte hain, bilkul seedha, matlab yeh hai, kyunki, isliye, lekin, toh, bahut zaroori, dhyan se suno. Example: "Dekho, prakash-sangleshanh ek aisi prakriya hai jisme paudhey suraj ki roshni ka upayog karke apna khana banate hain. Bilkul seedha hai na?" Har sentence mein Hindi feel rakho — koi English word mat daalo.',
-    'English': 'INDIAN ENGLISH ONLY. Speak like a warm Indian teacher explaining to students — NOT British, NOT American. Use Indian English patterns: "So basically", "Now see", "What happens is", "The thing is", "Isn\'t it?", "Got it?", "Very simple only", "Let me tell you". Add Indian teacher energy. Example: "Now see, photosynthesis is basically the process by which plants use sunlight to prepare their own food. Very simple only, isn\'t it?" Sound like a caring Indian sir or didi explaining in English.'
+    'Hinglish': `STRICT HINGLISH ONLY — Roman script. Mix Hindi + English EXACTLY like Indian students speak.
+
+KEY HINGLISH WORDS (use every sentence):
+dekho, samjho, bilkul, matlab, kyunki, isliye, lekin, toh, bahut, thoda, haan, haan na, na, asal mein, basically, actually, jaise ki, samajhte ho, clear hai na, iska matlab, sabse important
+
+STRUCTURE - Make sentences NATURAL:
+Start: "Dekho...", "Samjho...", "Basically...", "Matlab..."
+Middle: "toh", "kyunki", "isliye", "lekin", "aur"
+End: "na?", "samajh aaya?", "clear?", "bilkul simple hai na?"
+
+EXAMPLES OF PERFECT HINGLISH:
+- "Dekho, photosynthesis basically ek process hai jisme plants sunlight ko energy mein convert karte hain. Jaise ki tum lunch khate ho aur energy pate ho, waise hi plants sunlight khate hain aur apna khana banate hain. Samajh gaye na?"
+- "Iska matlab agar plant ko sunlight nahi milegi toh voh apna khana nahi bana payega. Simple logic hai na?"
+- "Toh yaad rakho - sunlight + water + CO2 = glucose. Hamesha yaad rakhna."
+
+TONE - Like a cool senior friend:
+- "Suno na, yeh concept bahut important hai"
+- "Dekho, basically yeh hota hai"
+- "Toh iska matlab kya hai - ki..."
+- "Bilkul simple - samajh jaoge"
+
+USE 1-2 EMOJIS PER NARRATION naturally.
+AVOID: Pure English, textbook style, "Arre", "yaar", formal tone`,
+
+    'Hindi': `PURE HINDI — Roman script only (NO Devanagari). Clear, simple Hindi jaise ek accha teacher bolata hai.
+
+KEY HINDI WORDS (use every sentence):
+dekho, samajhte hain, bilkul seedha, matlab, kyunki, isliye, lekin, toh, haan bilkul, asal mein, sabse important, samajh mein aaya, theek hai
+
+STRUCTURE - Natural Hindi:
+Start: "Dekho...", "Samajhte ho...", "Bilkul seedha..."
+Middle: "toh", "matlab", "kyunki", "lekin"
+End: "samajh mein aaya na?", "theek hai?", "bilkul?"
+
+EXAMPLES OF GOOD HINDI:
+- "Dekho bhai, photosynthesis ek prakriya hai jisme plants suraj ki roshni ko apne liye khana banate hain."
+- "Iska matlab agar plant ko roshni nahi milegi toh voh mar jayega."
+- "Toh sabse important baat yeh hai ke - roshni, pani, aur carbon dioxide - teeno zaroori hain."
+
+TONE - Caring, friendly:
+- Use "dekho", "samajhte ho", "haan bilkul"
+- Ask: "Samajh mein aaya?", "Theek hai?", "Pata hai na?"
+- Be casual: "Bilkul simple hai", "Aasan baat hai", "Suno na"
+
+USE 1-2 EMOJIS naturally per narration.
+AVOID: English mixing, formal style, textbook language`,
+
+    'English': `INDIAN ENGLISH ONLY — Warm, friendly, like an Indian teacher.
+
+KEY PATTERNS (use constantly):
+So basically, Now see, What happens is, The thing is, Isn't it, Got it, Very simple only, Let me tell you, You know what, Think about it, Imagine if
+
+STRUCTURE:
+Start: "So basically...", "Now see...", "The thing is..."
+Connect: "Which means", "That's why", "In other words", "Here's the thing"
+End: "Got it?", "Makes sense?", "Clear?", "Isn't it?"
+
+EXAMPLES OF PERFECT INDIAN ENGLISH:
+- "So basically, photosynthesis is when plants use sunlight to make their own food. Think about it - you eat food and get energy. Same way, plants eat sunlight and make glucose."
+- "Now see, if the plant doesn't get sunlight, it cannot make food. Very simple only, isn't it?"
+- "Remember this - Sunlight + Water + CO2 = Glucose. This is the formula you must remember."
+
+TONE - Like a caring sir/didi:
+- "Listen carefully", "Pay attention", "This is very important only"
+- "You see what happens is...", "The point here is..."
+- "Right? Got it?", "Makes sense, isn't it?"
+
+USE 1-2 EMOJIS naturally per narration.
+AVOID: Formal tone, British English, American slang, textbook style`
   };
   const li = langInstr[G.lang] || langInstr['Hinglish'];
 
@@ -1285,42 +1381,74 @@ BANNED always: "yaar", "Arre", "In this scene", "In this lesson", "Let us explor
 - 1-2 emojis per narration, placed naturally
 - Exam tips woven in naturally
 
-YOUR MOST IMPORTANT JOB — REAL WORLD EXAMPLES:
-For every single scene, you MUST think: "What is the most natural, everyday thing that works EXACTLY like this topic?"
-Then build your entire explanation around that example.
+YOUR MOST CRITICAL JOB — DETAILED REAL WORLD EXPLANATIONS:
+EVERY scene must:
+1. Start with a RELATABLE hook (question or surprising fact)
+2. Explain the CONCEPT clearly using 2-3 real Indian examples
+3. Answer the "WHY" and "HOW" questions completely
+4. Use ANALOGIES that match the student's daily life
+5. Build from SIMPLE to COMPLEX gradually
+6. End with a MEMORABLE insight or mnemonic
 
-HOW TO FIND THE RIGHT EXAMPLE:
-- Look at the topic deeply — what does it DO or what HAPPENS in it?
-- Find something from daily Indian life that does the same thing or behaves the same way
-- The example must be so obvious that when a student hears it they say "ohh haan bilkul!"
-- NEVER reuse the same example across scenes — each scene gets a fresh angle
-- NEVER use generic placeholders like "Example 1" or "Indian example" — always be specific
+NARRATION QUALITY CHECKLIST:
+- Is it 6-8 flowing sentences? (Not short, not list-style)
+- Does it use 2-3 SPECIFIC Indian examples? (Not generic)
+- Does it explain WHY this concept matters?
+- Does it answer "how does it work?"
+- Does it use natural language transitions? (toh, matlab, kyunki, etc)
+- Is it in proper ${G.lang}? (No mixing, no textbook)
+- Does it feel like a friend explaining, not a book?
 
-EXAMPLES OF GOOD THINKING (for your reference only — do NOT use these in output):
-- Osmosis? Think: when you soak aam papad in water, it swells up — water moves into it
-- Newton 3rd Law? Think: when you push off a wall in a swimming pool, you go backward
-- Inflation? Think: same 500 rupees buys less sabzi than it did 2 years ago
-- Refraction? Think: a straw in a glass of water looks bent from the side
-- Democracy? Think: class monitor election — everyone votes, majority wins
+EXAMPLE REAL WORLD SCENARIOS (reference only):
+- Osmosis? Soak aam papad in water - it swells up because water moves inside
+- Gravity? Ball falls down, water flows downhill, everything goes toward Earth
+- Refraction? Straw in water looks bent from side, fish appears shallower than actual
+- Newton's 3rd Law? Push wall in swimming pool, you go backward. Push ground, you jump up.
+- Evaporation? Wet clothes dry in sun because water turns into air/vapor
+- Photosynthesis? Plant eats sunlight like you eat food - converts to energy
 
-TASK: Generate exactly 8 scenes for the given topic.
+SCENE ORDER (ALL 8 REQUIRED - COMPLETE COURSE):
+1. INTRO - Start with a shocking fact or relatable question. Hook them in 2-3 sentences. Example: "Do you know plants actually eat sunlight? Sounds crazy right? Bilkul but that's exactly what happens!"
+   Narration: 6-8 sentences with hook + why it matters + teaser
 
-SCENE ORDER (all 8 required):
-1. intro   — Open with one surprising fact or relatable moment about this topic. Hook them instantly.
-2. concept — Core theory with WHY and HOW. Build around a self-invented analogy specific to this topic.
-3. diagram — 5 real specific terms/components/steps of this exact topic as visual nodes.
-4. concept — Deeper mechanism or second layer of theory. New angle, new real-world comparison.
-5. example — 3 completely self-invented real-world examples for THIS topic. Specific. Creative. Clear.
-6. concept — What students commonly get wrong about this topic. Address misconceptions directly.
-7. example — Exam strategy: show exactly how to write the answer for this topic. Marks breakdown.
-8. summary — Full recap + invent a clever mnemonic or trick specifically for this topic + final push.
+2. CONCEPT - Core theory explained deeply. WHY does this concept exist? HOW does it actually work?
+   Narration: Explain concept + 2 real examples + why important
+   Use a clear analogy from Indian daily life
 
-NARRATION: 6-8 flowing natural sentences per scene. Warm, rich, detailed. Never short or list-style.
-DIAGRAM points: 5 actual specific terms from this topic only. Each term max 3 words.
-CONCEPT points: Each point should be a SHORT punchy sentence (max 12 words) that fits on one line. Make it impactful.
-EXAMPLE points: Each example should be a vivid real-world scenario (max 20 words). Specific. Indian context where possible.
-SUMMARY points: Each key takeaway in max 12 words. Start with an action word.
-Exam level: ${G.examType}. Language for ALL narrations, points, headings, titles, key_concepts, full_explanation: ${G.lang}.
+3. DIAGRAM - The structure/components/steps. Use specific terms from the topic.
+   Narration: Name each component + briefly explain what each does
+
+4. CONCEPT - Deeper layer. New perspective. Different angle of understanding.
+   Narration: Explain the "why behind the why" + consequences + real impact
+
+5. EXAMPLE - 3 specific real-world applications/scenarios.
+   Narration: For each example, explain clearly how concept applies
+   Make each example VIVID and SPECIFIC
+
+6. CONCEPT - What students get wrong. Misconceptions addressed directly.
+   Narration: State the wrong belief + explain why it's wrong + give correct understanding
+
+7. EXAMPLE - Exact exam strategy. Show sample answer structure. Mark distribution.
+   Narration: This is exactly how you write answer in exam + what examiners look for + how to get full marks
+
+8. SUMMARY - Full recap. Mnemonic/trick. Final motivational push.
+   Narration: Recap all 8 scenes quickly + give clever trick to remember + encourage student
+
+NARRATION GUIDELINES (CRITICAL):
+- Minimum 6 sentences per scene (more is better, make it DETAILED)
+- Use SPECIFIC examples, never generic placeholders
+- Explain the REASONING behind concepts
+- Connect scenes logically
+- Use natural language in ${G.lang}
+- Sound like a warm teacher, not a textbook
+- Include 1-2 check-in questions per narration ("Samajh aaya?", "Clear?", "Got it?")
+
+DIAGRAM POINTS: 5 actual specific terms. Max 3 words each.
+CONCEPT POINTS: Punchy sentences (max 12 words). Make it impactful.
+EXAMPLE POINTS: Vivid scenarios (max 20 words). Specific Indian context.
+SUMMARY POINTS: Key takeaways (max 12 words). Start with action word.
+
+Exam level: ${G.examType}. Language: ${G.lang}. COMPLETE all 8 scenes with FULL narrations.
 
 Return this EXACT JSON (all 8 scenes fully filled, zero generic placeholders):
 {"topic_name":"Topic Name","scenes":[{"title":"Scene 1 Title","narration":"6-8 sentence natural ${G.lang} narration","visual_type":"intro","visual_data":{"heading":"Heading","points":["point1","point2","point3"],"color_theme":"blue","icon":"🎯"}},{"title":"Scene 2 Title","narration":"...","visual_type":"concept","visual_data":{"heading":"...","points":["...","...","...","..."],"color_theme":"green","icon":"💡"}},{"title":"Scene 3 Title","narration":"...","visual_type":"diagram","visual_data":{"heading":"...","points":["Term1","Term2","Term3","Term4","Term5"],"color_theme":"orange","icon":"🔬"}},{"title":"Scene 4 Title","narration":"...","visual_type":"concept","visual_data":{"heading":"...","points":["...","...","...","..."],"color_theme":"purple","icon":"⚡"}},{"title":"Scene 5 Title","narration":"...","visual_type":"example","visual_data":{"heading":"...","points":["Specific Example 1","Specific Example 2","Specific Example 3"],"color_theme":"green","icon":"📝"}},{"title":"Scene 6 Title","narration":"...","visual_type":"concept","visual_data":{"heading":"...","points":["Misconception 1","Misconception 2","Misconception 3"],"color_theme":"red","icon":"⚠️"}},{"title":"Scene 7 Title","narration":"...","visual_type":"example","visual_data":{"heading":"...","points":["Exam point 1","Exam point 2","Exam point 3"],"color_theme":"blue","icon":"🏆"}},{"title":"Scene 8 Title","narration":"...","visual_type":"summary","visual_data":{"heading":"...","points":["Key 1","Key 2","Key 3","Key 4"],"color_theme":"purple","icon":"✅"}}],"key_concepts":["Term 1: definition","Term 2: definition","Term 3: definition","Term 4: definition","Term 5: definition","Term 6: definition"],"full_explanation":"Surprising hook PARA_BREAK Core theory deeply explained PARA_BREAK How it works with real example PARA_BREAK Self-invented specific real-world examples PARA_BREAK Common mistakes PARA_BREAK Exam strategy for ${G.examType}","quick_notes":["Note 1: key fact","Note 2: key fact","Note 3: key fact","Note 4: key fact","Note 5: key fact","Note 6: key fact","Note 7: key fact","Note 8: key fact"],"exam_tips":["Tip 1: exam strategy","Tip 2: common mistake to avoid","Tip 3: marks tip","Tip 4: remember this","Tip 5: short trick"]}
@@ -1329,7 +1457,56 @@ RULES: No apostrophes in JSON strings. All strings single line. No line breaks i
 
   try {
     const userContent = G.topicText
-      ? 'Topic: "'+G.topicText+'". Exam level: '+G.examType+'. Language: '+G.lang+'. Generate all 8 scenes. For every scene invent your own topic-specific real-world examples. Use Jennie tone in '+G.lang+', no "yaar", no "Arre", no textbook language. JSON only, start with {'
+      ? `Topic: "${G.topicText}". Exam: ${G.examType}. Language: ${G.lang}.
+
+===== CRITICAL INSTRUCTIONS FOR NARRATIONS =====
+
+EACH NARRATION MUST BE 12-18 SENTENCES MINIMUM (not 6-8).
+If you write less than 12 sentences, you have failed.
+
+SENTENCE RULES (so voice speaks every word):
+- Each sentence MAXIMUM 12 words (shorter = clearer)
+- End every sentence with period, question mark, or exclamation
+- Use ONE idea per sentence (not compound)
+- Write in SHORT, SIMPLE words
+- Use natural language transitions: "toh", "matlab", "kyunki", "isliye", "aur"
+
+STRUCTURE FOR EACH NARRATION (12-18 sentences):
+1. Hook: "Dekho...", "Samjho...", "Listen..."
+2-3. Why it matters: "Yeh important kyun hai?", "Iska benefit kya hai?"
+4-7. Definition + explanation: "Matlab yeh hai...", "Iska matlab..."
+8-11. Real examples: 3-4 specific Indian examples from daily life
+12-15. How it works: Step by step explanation
+16-18. Emotional connection: "Samajh aaya?", "Clear?", "Bilkul?"
+
+EXACT EXAMPLE OF GOOD NARRATION (12 sentences):
+"Dekho, photosynthesis ek bahut important process hai. Asal mein, plants apna khana khud banate hain. Toh matlab yeh hai ki plants ko light chahiye. Iska matlab plants sunlight se energy lete hain. Jaise tum lunch khate ho, plants sunlight khate hain. Plants water se bhi kuch lete hain. Air se bhi plants ko kuch zarurat hai. Agar plant ko sunlight nahi milegi toh voh mar jayega. Dekho, jab tum plant ko shade mein rakhte ho toh voh weak ho jata hai. Bilkul, sunlight key bina plant apna khana nahi bana sakta. Toh sunlight bahut important hai plants ke liye. Samajh gaye na?"
+
+HINDI/HINGLISH WORDS TO USE (in EVERY narration):
+- Start sentences: Dekho, Samjho, Toh dekho, Matlab, Basically, Listen
+- Connecting: toh, matlab, kyunki, isliye, aur, lekin
+- Ending: na, bilkul, haan, samajh aaya, clear hai, got it
+- "iska matlab", "iska fayda", "iska karan", "isliye important hai"
+
+REAL EXAMPLES (use 2-3 in EVERY narration):
+- Aam papad, water, phone, car, clothes, food, school, family
+- "Jaise tumhare phone mein battery hai...", "Jaise paani mein salt..."
+- SPECIFIC: "Jab tum aam papad ko pani mein daalte ho", NOT "Indian example"
+
+WHAT TO AVOID:
+✗ Short sentences (less than 12 total)
+✗ Complex grammar
+✗ Pure English or pure Hindi (mix naturally)
+✗ Generic examples
+✗ Textbook language
+✗ "Let us explore", "In this scene", "Welcome"
+✓ 12-18 sentences
+✓ Simple short sentences (max 12 words each)
+✓ Specific Indian examples
+✓ Natural language transitions
+✓ Warm, friendly tone
+
+Return COMPLETE JSON with 12-18 sentence narrations for ALL 8 scenes. Start with {`
       : null;
 
     let imgContent = null;
@@ -1337,7 +1514,39 @@ RULES: No apostrophes in JSON strings. All strings single line. No line breaks i
       const {b64,mime}=await readB64(G.file);
       imgContent=[
         {type:'image_url',image_url:{url:'data:'+mime+';base64,'+b64}},
-        {type:'text',text:'Exam level: '+G.examType+'. Language: '+G.lang+'. Identify topic from image. Generate 8 scenes in '+G.lang+'. Jennie tone. JSON only, start with {'}
+        {type:'text',text:`
+SCREENSHOT ANALYSIS MODE - FULL COURSE GENERATION:
+
+1. Identify the question/topic from image
+2. Generate 8 COMPLETE SCENES (like full course lesson)
+3. Each narration MUST be 6-8 sentences - DETAILED
+4. Use SPECIFIC Indian examples (2-3 per scene)
+5. Explain WHY and HOW concept works
+6. Build from SIMPLE to COMPLEX across scenes
+7. Use NATURAL ${G.lang} (no textbook, no formal)
+
+SCENE ORDER (all 8 required):
+1. intro   - Hook + why important
+2. concept - Core theory + 2 examples
+3. diagram - 5 specific terms explained
+4. concept - Deeper mechanism + real impact
+5. example - 3 vivid Indian examples
+6. concept - Misconceptions clarified
+7. example - Exact exam answer strategy
+8. summary - Recap + mnemonic + motivation
+
+NARRATION RULES:
+- Minimum 6-8 sentences per scene
+- Use natural language transitions (toh, matlab, kyunki)
+- Sound like warm teacher/friend
+- Explain reasoning behind concepts
+- SPECIFIC Indian examples only
+- Include 1-2 check-in questions per narration
+
+Return FULL JSON with complete 8 scenes:
+{"topic_name":"Topic","scenes":[8 COMPLETE scenes],"key_concepts":[...],"full_explanation":"...","quick_notes":[...],"exam_tips":[...]}
+
+NO solution summaries. FULL COURSE ONLY. JSON start with {`}
       ];
     }
 
@@ -1401,15 +1610,30 @@ RULES: No apostrophes in JSON strings. All strings single line. No line breaks i
     console.log('AI raw response length:', raw.length, '| First 200 chars:', raw.slice(0,200));
     if(!raw) throw new Error('Empty response from AI — please try again.');
     const parsed=safeJSON(raw);
-    if(!parsed||!parsed.scenes||parsed.scenes.length===0){
+    
+    // Check if valid response (either 8 scenes OR solution summary)
+    if(!parsed || !parsed.topic_name){
       console.warn('Parse failed. Raw response:', raw.slice(0,1000));
       throw new Error('AI response parse failed — please retype your topic and try again.');
     }
-    console.log('Parsed successfully! Scenes:', parsed.scenes.length);
+    
+    // Valid if it has either scenes (course mode) OR solution_summary (question mode)
+    if(!parsed.scenes && !parsed.solution_summary){
+      console.warn('Neither scenes nor solution found. Raw response:', raw.slice(0,1000));
+      throw new Error('AI response incomplete — please try again.');
+    }
+    
+    const sceneCount = (parsed.scenes && parsed.scenes.length) || 0;
+    console.log('Parsed successfully! Type:', sceneCount > 0 ? 'Course' : 'Solution', '| Scenes:', sceneCount);
 
     document.getElementById('loadOv').classList.add('hide');
     applyResult(parsed);
-    toast('🎬', parsed.scenes.length + ' scenes ready! ▶ Hit Play!');
+    
+    if(sceneCount > 0){
+      toast('🎬', sceneCount + ' scenes ready! ▶ Hit Play!');
+    } else {
+      toast('✅', 'Solution ready! Study carefully 📝');
+    }
 
   } catch(e){
     clearInterval(mt);
@@ -1541,68 +1765,197 @@ function safeJSON(raw){
   }catch(e3){ console.warn('Step 6 failed:',e3); }
 
   console.warn('All parse attempts failed. Raw (first 800):', raw.slice(0,800));
+  
+  // Step 7: Last resort - try to extract solution summary format (for images)
+  try{
+    const obj={};
+    const tn=raw.match(/"topic_name"\s*:\s*"([^"]+)"/);
+    if(tn) obj.topic_name=tn[1];
+    
+    // Extract solution summary fields
+    const qs=raw.match(/"question_summary"\s*:\s*"([\s\S]*?)(?:"\s*,|"$)/);
+    if(qs) obj.question_summary=qs[1];
+    
+    const ss=raw.match(/"solution_summary"\s*:\s*"([\s\S]*?)(?:"\s*,|"$)/);
+    if(ss) obj.solution_summary=ss[1];
+    
+    const kp=raw.match(/"key_points"\s*:\s*\[([\s\S]*?)\]/);
+    if(kp){ try{obj.key_points=JSON.parse('['+kp[1]+']');}catch{obj.key_points=[];} }
+    
+    const et=raw.match(/"exam_tips"\s*:\s*\[([\s\S]*?)\]/);
+    if(et){ try{obj.exam_tips=JSON.parse('['+et[1]+']');}catch{obj.exam_tips=[];} }
+    
+    const diff=raw.match(/"difficulty"\s*:\s*"([^"]+)"/);
+    if(diff) obj.difficulty=diff[1];
+    
+    const marks=raw.match(/"marks"\s*:\s*"([^"]+)"/);
+    if(marks) obj.marks=marks[1];
+    
+    if(obj.topic_name && (obj.solution_summary || obj.question_summary)){
+      console.log('Recovered solution summary from partial JSON');
+      return obj;
+    }
+  }catch(e4){ console.warn('Step 7 failed:',e4); }
   return null;
 }
 
 function applyResult(r){
   G.currentResult = r;
-  G.scenes=r.scenes||[];
-  G.curScene=-1;
   const tn=r.topic_name||'Topic';
+  
+  // Check if this is a solution summary (image) or full course (8 scenes)
+  const isSolutionMode = !r.scenes || r.scenes.length === 0;
+  
+  if(isSolutionMode){
+    // IMAGE SOLUTION MODE - Show concise solution
+    G.scenes=[];
+    
+    // Stats
+    document.getElementById('statsRow').innerHTML=[
+      ['🎯','Type','Question Solution'],
+      ['📊','Difficulty',r.difficulty||'Medium'],
+      ['⭐','Marks',r.marks||'Unknown'],
+      ['🌐','Lang',G.lang]
+    ].map(([i,l,v])=>'<div class="stat-chip">'+i+' '+l+': <span>'+v+'</span></div>').join('');
 
-  // Stats
-  document.getElementById('statsRow').innerHTML=[
-    ['🎬','Scenes',G.scenes.length],
-    ['🎯','Exam',G.examType],
-    ['📚','Topic',tn],
-    ['🌐','Lang',G.lang]
-  ].map(([i,l,v])=>'<div class="stat-chip">'+i+' '+l+': <span>'+v+'</span></div>').join('');
+    // Show question summary (escape HTML tags)
+    document.getElementById('explainLbl').innerHTML='❓ <span style="color:var(--indigo-light)">QUESTION</span>';
+    const questionDiv = document.getElementById('explainText');
+    questionDiv.innerHTML = '';
+    const qSpan = document.createElement('strong');
+    qSpan.style.cssText = 'color:#a5b4fc;font-size:14px';
+    qSpan.textContent = r.question_summary || 'Question not available';
+    questionDiv.appendChild(qSpan);
 
-  // Explanation tab
-  document.getElementById('explainLbl').innerHTML='📝 <span style="color:var(--indigo-light)">'+tn.toUpperCase()+'</span> — FULL EXPLANATION';
-  typewrite(document.getElementById('explainText'),(r.full_explanation||'').replace(/PARA_BREAK/g,'\n\n'));
+    // Show solution summary (concise, no fluff, escape HTML)
+    if(r.solution_summary){
+      const sanitizedSolution = (r.solution_summary || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+      
+      document.getElementById('quickNotesText').innerHTML = 
+        '<div style="background:rgba(16,185,129,0.1);border-left:4px solid #10b981;padding:16px;border-radius:8px;margin-bottom:16px">'+
+        '<div style="color:#10b981;font-weight:900;margin-bottom:8px;font-size:13px">✅ SOLUTION SUMMARY</div>'+
+        '<div style="color:#c7d2fe;line-height:1.8;font-size:13px;white-space:pre-wrap">'+sanitizedSolution+'</div>'+
+        '</div>';
+    }
 
-  // Quick Notes tab
-  if(r.quick_notes && r.quick_notes.length){
-    document.getElementById('quickNotesText').innerHTML = r.quick_notes.map((n,i)=>
-      '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;padding:9px 13px;background:rgba(99,102,241,0.06);border-radius:10px;border-left:3px solid var(--indigo-light)">'+
-      '<span style="color:var(--indigo-light);font-weight:900;font-size:12px;flex-shrink:0;margin-top:1px">'+(i+1)+'.</span>'+
-      '<span style="font-size:12.5px;color:var(--text2);line-height:1.6">'+n+'</span></div>'
+    // Key points (escape HTML)
+    if(r.key_points && r.key_points.length){
+      document.getElementById('examTipsText').innerHTML = r.key_points.map((p,i)=>{
+        const safe = (p || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+        return '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;padding:9px 13px;background:rgba(99,102,241,0.08);border-radius:8px;border-left:2px solid #818cf8">'+
+          '<span style="color:#818cf8;font-weight:900;font-size:12px;flex-shrink:0;margin-top:2px">•</span>'+
+          '<span style="font-size:12.5px;color:#c7d2fe;line-height:1.6">'+safe+'</span></div>';
+      }).join('');
+    }
+
+    // Exam tips (escape HTML)
+    if(r.exam_tips && r.exam_tips.length){
+      document.getElementById('kcGrid').innerHTML = 
+        '<div style="grid-column:1/-1;background:rgba(245,158,11,0.08);padding:16px;border-radius:10px;border-left:3px solid #f59e0b">'+
+        '<div style="color:#f59e0b;font-weight:900;margin-bottom:12px;font-size:13px">💡 EXAM TIPS</div>'+
+        r.exam_tips.map((t,i)=>{
+          const safe = (t || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+          return '<div style="margin-bottom:8px;padding:8px 12px;background:rgba(245,158,11,0.1);border-radius:6px;color:#fcd34d;font-size:12px">'+
+            '⭐ '+safe+'</div>';
+        }).join('')+
+        '</div>';
+    }
+
+    document.getElementById('sceneList').innerHTML='<div style="padding:16px;text-align:center;color:var(--muted);font-size:12px">Question Solution Mode - No scenes</div>';
+    document.getElementById('subText').textContent='✅ Solution ready! Study carefully for exam!';
+    
+    // Don't show play buttons in solution mode
+    document.getElementById('playBtn').style.display='none';
+    document.getElementById('scBadge').textContent='Q&A';
+    
+  } else {
+    // FULL COURSE MODE - 8 scenes with explanation
+    G.scenes=r.scenes||[];
+    G.curScene=-1;
+
+    // Stats
+    document.getElementById('statsRow').innerHTML=[
+      ['🎬','Scenes',G.scenes.length],
+      ['🎯','Exam',G.examType],
+      ['📚','Topic',tn],
+      ['🌐','Lang',G.lang]
+    ].map(([i,l,v])=>'<div class="stat-chip">'+i+' '+l+': <span>'+v+'</span></div>').join('');
+
+    // Explanation tab
+    document.getElementById('explainLbl').innerHTML='📝 <span style="color:var(--indigo-light)">'+tn.toUpperCase()+'</span> — FULL EXPLANATION';
+    typewrite(document.getElementById('explainText'),(r.full_explanation||'').replace(/PARA_BREAK/g,'\n\n'));
+
+    // ✅ SET VOICE SCRIPT — Natural Hinglish narration from all 8 scenes
+    const voiceNarrations = (r.scenes||[]).map(s => s.narration||'').filter(n=>n).join(' ');
+    if(voiceNarrations){
+      setVoiceScript(voiceNarrations);
+    }
+
+    // ✅ GENERATE HD DIAGRAM — Based on topic
+    if(document.getElementById('diagramSvgContainer')){
+      generateHDDiagram(tn);
+    }
+
+    // Quick Notes tab
+    if(r.quick_notes && r.quick_notes.length){
+      document.getElementById('quickNotesText').innerHTML = r.quick_notes.map((n,i)=>
+        '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;padding:9px 13px;background:rgba(99,102,241,0.06);border-radius:10px;border-left:3px solid var(--indigo-light)">'+
+        '<span style="color:var(--indigo-light);font-weight:900;font-size:12px;flex-shrink:0;margin-top:1px">'+(i+1)+'.</span>'+
+        '<span style="font-size:12.5px;color:var(--text2);line-height:1.6">'+n+'</span></div>'
+      ).join('');
+    }
+
+    // Exam Tips tab
+    if(r.exam_tips && r.exam_tips.length){
+      document.getElementById('examTipsText').innerHTML = r.exam_tips.map((t,i)=>
+        '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;padding:9px 13px;background:rgba(245,158,11,0.06);border-radius:10px;border-left:3px solid #f59e0b">'+
+        '<span style="font-size:16px;flex-shrink:0">💡</span>'+
+        '<span style="font-size:12.5px;color:var(--text2);line-height:1.6">'+t+'</span></div>'
+      ).join('');
+    }
+
+    // Key concepts
+    if(r.key_concepts){
+      document.getElementById('kcGrid').innerHTML=r.key_concepts.map((c,i)=>
+        '<div class="kc"><div class="kcn">'+(i+1)+'</div><div style="font-size:11px">'+c+'</div></div>').join('');
+    }
+
+    // Scene list
+    const icons={intro:'🎯',concept:'💡',diagram:'🔗',example:'📝',summary:'✅'};
+    document.getElementById('sceneList').innerHTML=G.scenes.map((sc,i)=>
+      '<div class="sl-item" onclick="jumpScene('+i+')">'+
+      '<span class="sl-num">'+(i+1<10?'0'+(i+1):i+1)+'</span>'+
+      '<span style="font-size:14px">'+(icons[sc.visual_type]||'▶')+'</span>'+
+      '<span class="sl-label">'+(sc.title||'Scene '+(i+1))+'</span>'+
+      '<span class="sl-type">'+(sc.visual_type||'')+'</span></div>'
     ).join('');
+
+    buildDots(G.scenes);
+    document.getElementById('scBadge').textContent=G.scenes.length+' SCENES';
+    document.getElementById('subText').textContent='▶ Press Play — Jennie will explain in '+G.lang+'!';
+    document.getElementById('playBtn').style.display='inline-flex';
   }
-
-  // Exam Tips tab
-  if(r.exam_tips && r.exam_tips.length){
-    document.getElementById('examTipsText').innerHTML = r.exam_tips.map((t,i)=>
-      '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;padding:9px 13px;background:rgba(245,158,11,0.06);border-radius:10px;border-left:3px solid #f59e0b">'+
-      '<span style="font-size:16px;flex-shrink:0">💡</span>'+
-      '<span style="font-size:12.5px;color:var(--text2);line-height:1.6">'+t+'</span></div>'
-    ).join('');
-  }
-
-  // Key concepts
-  if(r.key_concepts){
-    document.getElementById('kcGrid').innerHTML=r.key_concepts.map((c,i)=>
-      '<div class="kc"><div class="kcn">'+(i+1)+'</div><div style="font-size:11px">'+c+'</div></div>').join('');
-  }
-
-  // Scene list
-  const icons={intro:'🎯',concept:'💡',diagram:'🔗',example:'📝',summary:'✅'};
-  document.getElementById('sceneList').innerHTML=G.scenes.map((sc,i)=>
-    '<div class="sl-item" onclick="jumpScene('+i+')">'+
-    '<span class="sl-num">'+(i+1<10?'0'+(i+1):i+1)+'</span>'+
-    '<span style="font-size:14px">'+(icons[sc.visual_type]||'▶')+'</span>'+
-    '<span class="sl-label">'+(sc.title||'Scene '+(i+1))+'</span>'+
-    '<span class="sl-type">'+(sc.visual_type||'')+'</span></div>'
-  ).join('');
-
-  buildDots(G.scenes);
-  document.getElementById('scBadge').textContent=G.scenes.length+' SCENES';
+  
+  // Common for both modes
   document.getElementById('scTitle').textContent=tn;
-  document.getElementById('subText').textContent='▶ Press Play — Jennie will explain in '+G.lang+'!';
   drawIdle();
 
-  G.history.unshift({topic:tn,exam:G.examType,lang:G.lang,time:new Date().toLocaleString(),scenes:G.scenes.length});
+  G.history.unshift({topic:tn,exam:G.examType,lang:G.lang,time:new Date().toLocaleString(),scenes:G.scenes.length,type:isSolutionMode?'Solution':'Course'});
   localStorage.setItem('eduHist3',JSON.stringify(G.history.slice(0,30)));
   // Update hero counter
   const ctr = document.getElementById('heroTopicsCount');
@@ -1664,6 +2017,12 @@ window.jumpScene=function(i){speechSynthesis.cancel();G.playing=true;G.paused=fa
 function playScene(idx){
   if(idx>=G.scenes.length){
     G.playing=false;
+    // Hide diagram overlay when scenes end
+    const overlay = document.getElementById('diagramOverlayContainer');
+    if(overlay) {
+      overlay.style.visibility = 'hidden';
+      overlay.style.opacity = '0';
+    }
     document.getElementById('playBtn').textContent='▶ Play';
     document.getElementById('playBtn').classList.remove('on');
     document.getElementById('aiInd').classList.remove('on');
@@ -1678,6 +2037,14 @@ function playScene(idx){
     toast('🎉','Topic complete! Shaabaash! Ab Quiz do 🧠');
     return;
   }
+  
+  // SHOW diagram overlay when scene plays
+  const overlay = document.getElementById('diagramOverlayContainer');
+  if(overlay) {
+    overlay.style.visibility = 'visible';
+    overlay.style.opacity = '1';
+  }
+  
   G.curScene=idx;
   const sc=G.scenes[idx];
   const total=G.scenes.length;
@@ -1706,8 +2073,8 @@ function playScene(idx){
 const VOICE_PROFILES = {
   'Hinglish': {
     langCode: 'hi-IN',
-    rate: 0.84,       // slightly slow — warm desi teaching pace
-    pitch: 1.06,      // warm feminine Indian pitch
+    rate: 0.70,       // SLOWER for clear Hinglish pronunciation - every word spoken
+    pitch: 1.08,      // warm feminine Indian pitch - natural & engaging
     // Priority voice names (highest first)
     prefer: ['lekha','aditi','neerja','priya','asha','kalpana','heera','divya','rishi','google hindi','hindi india'],
     penalize: ['zira','hazel','david','mark','alex','fred','daniel','karen','moira','tessa','fiona','samantha'],
@@ -1715,16 +2082,16 @@ const VOICE_PROFILES = {
   },
   'Hindi': {
     langCode: 'hi-IN',
-    rate: 0.80,        // slower — pure Hindi needs clear enunciation
-    pitch: 1.04,       // natural warm Hindi pitch
+    rate: 0.68,        // SLOWER - pure Hindi needs VERY clear enunciation
+    pitch: 1.06,       // natural warm Hindi pitch
     prefer: ['lekha','aditi','neerja','priya','asha','kalpana','heera','divya','rishi','google hindi','hindi india'],
     penalize: ['zira','hazel','david','mark','alex','fred','daniel','karen','moira','tessa','fiona','samantha'],
     fallbackLang: 'hi-IN'
   },
   'English': {
     langCode: 'en-IN',  // Indian English — not British or American
-    rate: 0.88,         // natural Indian English pace
-    pitch: 1.02,        // neutral — clear Indian English
+    rate: 0.75,         // SLOWER - clear English pronunciation for every word
+    pitch: 1.04,        // warm - clear Indian English
     prefer: ['rishi','aditi','neerja','veena','google english india','english india','en-in','english (india)'],
     penalize: ['zira','hazel','david','fred','moira','tessa','fiona','samantha','daniel','karen'],
     fallbackLang: 'en-IN'
@@ -1868,59 +2235,230 @@ function prepareText(text, lang){
   return out;
 }
 
+// ════════════════════════════════════════════════════════════════
+// ENHANCED VOICE PLAY - NATURAL HUMAN TONE
+// ════════════════════════════════════════════════════════════════
+let isVoicePlaying = false;
+let currentVoiceScript = '';
+
+function toggleNaturalVoicePlay(){
+  const btn = document.getElementById('voicePlayBtn');
+  if(!btn) return;
+  
+  if(isVoicePlaying){
+    try {
+      window.speechSynthesis.cancel();
+    } catch(e) { console.log('Cancel error:', e.message); }
+    isVoicePlaying = false;
+    document.getElementById('voiceIcon').textContent = '🔊';
+    document.getElementById('voiceText').textContent = 'Play Hinglish Explanation';
+    btn.classList.remove('playing');
+  } else {
+    if(!currentVoiceScript) {
+      toast('⚠️', 'Voice explanation ready nahi hai. Thoda wait karo.');
+      return;
+    }
+    
+    isVoicePlaying = true;
+    btn.classList.add('playing');
+    document.getElementById('voiceIcon').innerHTML = '▶️';
+    document.getElementById('voiceText').textContent = 'Suno dhyan se...';
+    
+    try {
+      // Enhanced narration with better pacing and Hinglish emphasis
+      let enhancedScript = currentVoiceScript
+        .replace(/\n/g, ' ')
+        .replace(/[()]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      
+      const utterance = new SpeechSynthesisUtterance(enhancedScript);
+      utterance.rate = 0.80;  // Slower for clarity
+      utterance.pitch = 1.15;  // Slightly higher for natural Indian female voice
+      utterance.volume = 1;
+      utterance.lang = 'hi-IN';
+      
+      utterance.onstart = function(){
+        isVoicePlaying = true;
+        btn.classList.add('playing');
+      };
+      
+      utterance.onend = function(){
+        isVoicePlaying = false;
+        btn.classList.remove('playing');
+        document.getElementById('voiceIcon').textContent = '🔊';
+        document.getElementById('voiceText').textContent = 'Phir se Suno';
+      };
+      
+      utterance.onerror = function(event){
+        isVoicePlaying = false;
+        btn.classList.remove('playing');
+        document.getElementById('voiceIcon').textContent = '⚠️';
+        document.getElementById('voiceText').textContent = 'Voice unavailable';
+        console.error('Speech error:', event.error);
+        
+        // Fallback: Show toast with helpful message
+        if(event.error === 'network-error' || event.error === 'service-not-connected'){
+          toast('⚠️', 'Internet connection issue. Phir se try karo.');
+        }
+      };
+      
+      window.speechSynthesis.cancel(); // Cancel any previous speech
+      window.speechSynthesis.speak(utterance);
+    } catch(e) {
+      isVoicePlaying = false;
+      btn.classList.remove('playing');
+      document.getElementById('voiceIcon').textContent = '❌';
+      document.getElementById('voiceText').textContent = 'Error occurred';
+      console.error('Voice error:', e.message);
+      toast('❌', 'Voice mein error aaya. Please try again.');
+    }
+  }
+}
+
+function downloadVoiceExplanation(){
+  toast('✅', 'Voice download feature coming soon!');
+}
+
+function setVoiceScript(script){
+  currentVoiceScript = script;
+  const btn = document.getElementById('voicePlayBtn');
+  if(btn){
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  }
+}
+
 function doSpeak(text, done){
-  speechSynthesis.cancel();
+  try {
+    speechSynthesis.cancel();
+  } catch(e) { console.log('Cancel error:', e.message); }
 
   const lang = G.lang || 'Hinglish';
   const profile = VOICE_PROFILES[lang] || VOICE_PROFILES['Hinglish'];
 
   // Prepare text for voice (Devanagari substitution for Hindi/Hinglish)
   const speakText = prepareText(text, lang);
+  
+  // IMPROVED text cleaning - preserve ALL important characters
+  const cleanText = speakText
+    .replace(/\n/g, '. ')                   // newlines to period + space (helps voice pause)
+    .replace(/\s+/g, ' ')                   // multiple spaces to single
+    .replace(/\u2018|\u2019/g, "'")         // curly quotes to straight
+    .replace(/\u201C|\u201D/g, '"')         // double curly quotes to straight
+    .trim();
 
-  // Split into sentences for subtitle sync — smarter split
-  const sents = speakText.match(/[^.!?।\n]+[.!?।]*/g) || [speakText];
-  const origSents = text.match(/[^.!?।\n]+[.!?।]*/g) || [text];
+  // SMART SENTENCE SPLITTING:
+  // Split by periods, exclamations, questions BUT preserve them
+  // This ensures each sentence is spoken completely
+  let sents = [];
+  let origSents = [];
+  
+  // Split by sentence-ending punctuation
+  const sentencePattern = /[^.!?।]+[.!?।]+/g;
+  let sentenceMatches = cleanText.match(sentencePattern) || [cleanText];
+  let origMatches = text.match(sentencePattern) || [text];
+  
+  // Process each sentence to ensure it's not too long for speech
+  sentenceMatches.forEach((sent, idx) => {
+    let clean = sent.trim();
+    let orig = (origMatches[idx] || sent).trim();
+    
+    // If sentence is very long (words > 40), split it further by commas
+    if(clean.split(/\s+/).length > 40) {
+      const parts = clean.split(/,(?=\s)/);
+      const origParts = orig.split(/,(?=\s)/);
+      parts.forEach((p, pidx) => {
+        if(p.trim()) {
+          sents.push(p.trim() + (sentenceMatches[idx].match(/[.!?।]/)?sentenceMatches[idx].match(/[.!?।]/)[0]:''));
+          origSents.push((origParts[pidx] || p).trim());
+        }
+      });
+    } else {
+      if(clean) {
+        sents.push(clean);
+        origSents.push(orig);
+      }
+    }
+  });
+  
+  if(sents.length === 0) {
+    sents = [cleanText];
+    origSents = [text];
+  }
+  
   let i = 0;
 
   preloadVoices().then(vs=>{
-    const voice = getBestVoice(vs, profile);
+    try {
+      const voice = getBestVoice(vs, profile);
 
-    function next(){
-      if(!G.playing && !G.paused){ done(); return; }
-      if(i >= sents.length){ done(); return; }
-      const s = sents[i].trim();
-      const orig = (origSents[i] || s).trim();
-      if(!s){ i++; next(); return; }
+      function next(){
+        try {
+          if(!G.playing && !G.paused){ done?.(); return; }
+          if(i >= sents.length){ done?.(); return; }
+          const s = sents[i].trim();
+          const orig = (origSents[i] || s).trim();
+          if(!s){ i++; setTimeout(next, 50); return; }
 
-      // Show sentence in subtitle with highlight effect
-      const subEl = document.getElementById('subText');
-      subEl.style.transition='opacity .15s';
-      subEl.style.opacity='0.4';
-      setTimeout(()=>{
-        subEl.innerHTML = orig;
-        subEl.style.opacity='1';
-      }, 150);
+          // Show sentence in subtitle with highlight effect
+          const subEl = document.getElementById('subText');
+          if(subEl) {
+            subEl.style.transition='opacity .15s';
+            subEl.style.opacity='0.4';
+            setTimeout(()=>{
+              if(subEl) {
+                subEl.innerHTML = orig;
+                subEl.style.opacity='1';
+              }
+            }, 150);
+          }
 
-      const u = new SpeechSynthesisUtterance(s);
+          const u = new SpeechSynthesisUtterance(s);
 
-      if(voice){
-        u.voice = voice;
-        u.lang = profile.langCode;
-      } else {
-        u.lang = profile.fallbackLang;
+          if(voice){
+            u.voice = voice;
+            u.lang = profile.langCode;
+          } else {
+            u.lang = profile.fallbackLang;
+          }
+
+          u.rate   = Math.max(0.5, Math.min(2, G.speed * profile.rate));
+          u.pitch  = Math.max(0.5, Math.min(2, profile.pitch));
+          u.volume = 1;
+
+          u.onend  = ()=>{ 
+            i++; 
+            // Increased pause between sentences - ensures each one is fully spoken
+            setTimeout(next, 250); 
+          };
+          
+          u.onerror = (evt)=>{ 
+            console.log('Speech error on sentence', i, ':', evt.error);
+            i++; 
+            setTimeout(next, 300);  // longer pause on error
+          };
+
+          try {
+            speechSynthesis.speak(u);
+          } catch(e) {
+            console.log('Speak error:', e.message);
+            i++;
+            setTimeout(next, 200);  // longer pause on error
+          }
+        } catch(e) {
+          console.log('Next function error:', e.message);
+          done?.();
+        }
       }
-
-      u.rate   = G.speed * profile.rate;
-      u.pitch  = profile.pitch;
-      u.volume = 1;
-
-      u.onend  = ()=>{ i++; setTimeout(next, 120); };
-      u.onerror = ()=>{ i++; next(); };
-      u.onerror = ()=>{ i++; next(); };
-
-      speechSynthesis.speak(u);
+      next();
+    } catch(e) {
+      console.log('Voice selection error:', e.message);
+      done?.();
     }
-    next();
+  }).catch(e=>{
+    console.log('Voice loading error:', e.message);
+    done?.();
   });
 }
 
@@ -2058,7 +2596,30 @@ function drawIdle(){
   animFn=()=>{
     drawBg(TH.blue);
     drawParticles(TH.blue,24);
-    // pulsing rings
+    
+    // Check if we have an uploaded image - display it
+    if(G.file && G.uploadedImageUrl){
+      try {
+        const img = new Image();
+        img.onload = function(){
+          ctx.save();
+          const imgScale = Math.min(CW / img.width, (CH-100) / img.height);
+          const imgW = img.width * imgScale;
+          const imgH = img.height * imgScale;
+          const imgX = (CW - imgW) / 2;
+          const imgY = (64 + (CH - 164 - imgH) / 2);
+          
+          // Glow effect
+          ctx.shadowColor='#7c83fd';
+          ctx.shadowBlur=40;
+          ctx.drawImage(img, imgX, imgY, imgW, imgH);
+          ctx.restore();
+        };
+        if(G.uploadedImageUrl.startsWith('data:')) img.src = G.uploadedImageUrl;
+      } catch(e){}
+    }
+    
+    // Pulsing rings
     for(let i=0;i<4;i++){
       const r=80+i*55+Math.sin(T*.7+i)*.12;
       ctx.strokeStyle='rgba(124,131,253,'+(0.09-i*.018)+')';ctx.lineWidth=1.5;
@@ -2076,8 +2637,290 @@ function drawIdle(){
   };
 }
 
+// ════════════════════════════════════════════════════════════════
+// HD EDUCATIONAL DIAGRAM GENERATORS
+// ════════════════════════════════════════════════════════════════
+function generateHDDiagram(topic){
+  const container = document.getElementById('diagramSvgContainer');
+  if(!container) return;
+  
+  container.innerHTML = '';
+  let diagramHTML = '';
+  const topicLower = (topic||'').toLowerCase();
+  
+  // Topic-specific diagram selection
+  if(topicLower.includes('photosynthesis')||topicLower.includes('light')||topicLower.includes('calvin')){
+    diagramHTML = createPhotoDiagram();
+  } else if(topicLower.includes('newton')||topicLower.includes('motion')||topicLower.includes('force')){
+    diagramHTML = createNewtonDiagram();
+  } else if(topicLower.includes('dna')||topicLower.includes('genetic')){
+    diagramHTML = createDNADiagram();
+  } else if(topicLower.includes('mitochondria')||topicLower.includes('respiration')||topicLower.includes('atp')){
+    diagramHTML = createMitoDiagram();
+  } else if(topicLower.includes('circuit')||topicLower.includes('ohm')||topicLower.includes('electric')){
+    diagramHTML = createCircuitDiagram();
+  } else if(topicLower.includes('atom')||topicLower.includes('electron')||topicLower.includes('nucleus')){
+    diagramHTML = createAtomDiagram();
+  } else if(topicLower.includes('cell')){
+    diagramHTML = createCellDiagram();
+  } else {
+    diagramHTML = createGenericDiagram(topic);
+  }
+  
+  container.innerHTML = diagramHTML;
+}
+
+function createPhotoDiagram(){
+  return `<svg viewBox="0 0 700 450" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+    <defs><linearGradient id="sunG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fbbf24"/><stop offset="100%" style="stop-color:#f59e0b"/></linearGradient></defs>
+    <rect width="700" height="450" fill="rgba(13,11,46,0.3)"/>
+    <circle cx="600" cy="60" r="50" fill="url(#sunG)" filter="drop-shadow(0 0 25px #fbbf24)"/>
+    <line x1="600" y1="110" x2="250" y2="280" stroke="rgba(251,191,36,0.4)" stroke-width="5" stroke-dasharray="10,10"/>
+    <line x1="600" y1="110" x2="350" y2="200" stroke="rgba(251,191,36,0.4)" stroke-width="5" stroke-dasharray="10,10"/>
+    <ellipse cx="200" cy="300" rx="100" ry="120" fill="#10b981" opacity="0.6" filter="drop-shadow(0 6px 20px rgba(0,0,0,0.4))"/>
+    <circle cx="200" cy="260" r="30" fill="rgba(16,185,129,0.3)" stroke="#10b981" stroke-width="2"/>
+    <text x="200" y="270" text-anchor="middle" font-size="11" fill="#10b981" font-weight="bold">CHLOROPLAST</text>
+    <path d="M 80 420 Q 120 360 150 300" stroke="#3b82f6" stroke-width="6" fill="none"/>
+    <text x="40" y="415" font-size="13" fill="#3b82f6" font-weight="bold">H₂O</text>
+    <path d="M 320 420 Q 280 360 250 300" stroke="#8b5cf6" stroke-width="6" fill="none"/>
+    <text x="300" y="415" font-size="13" fill="#8b5cf6" font-weight="bold">CO₂</text>
+    <path d="M 200 180 L 200 100" stroke="#10b981" stroke-width="6" fill="none"/>
+    <text x="220" y="140" font-size="13" fill="#10b981" font-weight="bold">O₂ + Glucose</text>
+    <rect x="20" y="385" width="660" height="55" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.4)" stroke-width="1" rx="6"/>
+    <text x="50" y="408" font-size="13" fill="#a5b4fc" font-weight="bold">PHOTOSYNTHESIS: 6CO₂ + 6H₂O + Light → C₆H₁₂O₆ + 6O₂</text>
+    <text x="50" y="428" font-size="11" fill="#c7d2fe">Plants apna khana banate hain! 🌱 Chlorophyll light energy ko chemical energy mein convert karta hai.</text>
+  </svg>`;
+}
+
+function createNewtonDiagram(){
+  return `<svg viewBox="0 0 700 450" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+    <rect width="700" height="450" fill="rgba(13,11,46,0.3)"/>
+    <circle cx="600" cy="80" r="50" fill="rgba(99,102,241,0.15)" stroke="rgba(129,140,248,0.6)" stroke-width="2"/>
+    <text x="600" y="100" text-anchor="middle" font-size="46">👨‍🔬</text>
+    <g><rect x="40" y="140" width="140" height="90" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.5)" stroke-width="2" rx="8"/><circle cx="110" cy="180" r="32" fill="#4338ca"/><text x="110" y="190" text-anchor="middle" font-size="28">⚽</text><text x="110" y="220" text-anchor="middle" font-size="12" fill="#818cf8" font-weight="bold">1st Law: Inertia</text></g>
+    <g><rect x="280" y="140" width="140" height="90" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.5)" stroke-width="2" rx="8"/><text x="350" y="170" text-anchor="middle" font-size="32" fill="rgba(99,102,241,0.7)">→</text><circle cx="350" cy="185" r="25" fill="#6366f1"/><text x="350" y="228" text-anchor="middle" font-size="12" fill="#818cf8" font-weight="bold">2nd Law: F=ma</text></g>
+    <g><rect x="520" y="140" width="140" height="90" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.5)" stroke-width="2" rx="8"/><circle cx="590" cy="170" r="24" fill="#8b5cf6"/><text x="590" y="228" text-anchor="middle" font-size="12" fill="#8b5cf6" font-weight="bold">3rd Law: Action=Reaction</text></g>
+    <rect x="30" y="290" width="640" height="140" fill="rgba(99,102,241,0.1)" stroke="rgba(129,140,248,0.3)" stroke-width="1" rx="8"/>
+    <text x="50" y="315" font-size="14" fill="#a5b4fc" font-weight="bold">📌 NEWTON'S LAWS IN REAL LIFE:</text>
+    <text x="50" y="340" font-size="12" fill="#c7d2fe">1st: Car ka ball sthir rahega jab tak force na lage | 2nd: Zyada force = zyada acceleration (Heavy vs Light)</text>
+    <text x="50" y="360" font-size="12" fill="#c7d2fe">3rd: Wall ko dhakao, wall tumhe dhakelta hai | Sabme physics hai—rockets se cars tak! 🚀</text>
+    <text x="50" y="415" font-size="11" fill="#818cf8">Exam Tip: Always identify action-reaction pairs ke liye 3rd Law use karo!</text>
+  </svg>`;
+}
+
+function createDNADiagram(){
+  return `<svg viewBox="0 0 700 450" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+    <rect width="700" height="450" fill="rgba(13,11,46,0.3)"/>
+    <text x="350" y="50" text-anchor="middle" font-size="18" fill="#a5b4fc" font-weight="bold">🧬 DNA DOUBLE HELIX STRUCTURE</text>
+    <path d="M 200 100 Q 150 160 200 220 Q 250 280 200 340" fill="none" stroke="#10b981" stroke-width="6" filter="drop-shadow(0 0 12px #10b981)"/>
+    <path d="M 500 100 Q 550 160 500 220 Q 450 280 500 340" fill="none" stroke="#10b981" stroke-width="6" filter="drop-shadow(0 0 12px #10b981)"/>
+    <line x1="200" y1="130" x2="500" y2="130" stroke="#8b5cf6" stroke-width="4"/><text x="350" y="125" text-anchor="middle" font-size="10" fill="#8b5cf6" font-weight="bold">A-T</text>
+    <line x1="200" y1="190" x2="500" y2="190" stroke="#8b5cf6" stroke-width="4"/><text x="350" y="185" text-anchor="middle" font-size="10" fill="#8b5cf6" font-weight="bold">G-C</text>
+    <line x1="200" y1="250" x2="500" y2="250" stroke="#8b5cf6" stroke-width="4"/><text x="350" y="245" text-anchor="middle" font-size="10" fill="#8b5cf6" font-weight="bold">A-T</text>
+    <line x1="200" y1="310" x2="500" y2="310" stroke="#8b5cf6" stroke-width="4"/><text x="350" y="305" text-anchor="middle" font-size="10" fill="#8b5cf6" font-weight="bold">G-C</text>
+    <rect x="30" y="380" width="640" height="60" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.4)" stroke-width="1" rx="6"/>
+    <text x="50" y="405" font-size="13" fill="#a5b4fc" font-weight="bold">🧬 DNA: आनुवंशिक जानकारी का भंडार | Double Helix Shape | A-T aur G-C Base Pairs</text>
+    <text x="50" y="425" font-size="11" fill="#c7d2fe">Complementary base pairing—A always pairs with T (2 bonds), G with C (3 bonds)! Remember: Apples with Trees, Grapes with Cherries!</text>
+  </svg>`;
+}
+
+function createMitoDiagram(){
+  return `<svg viewBox="0 0 700 450" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+    <rect width="700" height="450" fill="rgba(13,11,46,0.3)"/>
+    <text x="350" y="45" text-anchor="middle" font-size="18" fill="#a5b4fc" font-weight="bold">⚡ MITOCHONDRIA: THE POWERHOUSE</text>
+    <ellipse cx="350" cy="220" rx="200" ry="140" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.7)" stroke-width="3"/>
+    <path d="M 250 180 Q 280 160 320 180 Q 350 170 380 180 Q 420 160 450 180" fill="none" stroke="rgba(245,158,11,0.8)" stroke-width="3"/>
+    <path d="M 250 240 Q 280 260 320 240 Q 350 270 380 240 Q 420 260 450 240" fill="none" stroke="rgba(245,158,11,0.8)" stroke-width="3"/>
+    <circle cx="300" cy="200" r="16" fill="#f59e0b" filter="drop-shadow(0 0 12px #f59e0b)"/><text x="300" y="208" text-anchor="middle" font-size="9" fill="white" font-weight="bold">ATP</text>
+    <circle cx="400" cy="200" r="16" fill="#f59e0b" filter="drop-shadow(0 0 12px #f59e0b)"/><text x="400" y="208" text-anchor="middle" font-size="9" fill="white" font-weight="bold">ATP</text>
+    <circle cx="350" cy="240" r="16" fill="#f59e0b" filter="drop-shadow(0 0 12px #f59e0b)"/><text x="350" y="248" text-anchor="middle" font-size="9" fill="white" font-weight="bold">ATP</text>
+    <text x="180" y="130" font-size="11" fill="#f59e0b" font-weight="bold">OUTER MEMBRANE</text>
+    <text x="380" y="350" font-size="11" fill="#f59e0b" font-weight="bold">MATRIX</text>
+    <rect x="30" y="390" width="640" height="50" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.4)" stroke-width="1" rx="6"/>
+    <text x="50" y="413" font-size="12" fill="#a5b4fc" font-weight="bold">⚡ CELLULAR RESPIRATION: Glucose → ATP (Energy) | Cristae mein Electron Transport Chain</text>
+    <text x="50" y="430" font-size="11" fill="#c7d2fe">Aerobic respiration: 1 Glucose = 30-32 ATP molecules! Without ATP—no energy, no life!</text>
+  </svg>`;
+}
+
+function createCircuitDiagram(){
+  return `<svg viewBox="0 0 700 450" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+    <rect width="700" height="450" fill="rgba(13,11,46,0.3)"/>
+    <rect x="60" y="180" width="30" height="120" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/><line x1="50" y1="165" x2="100" y2="165" stroke="#3b82f6" stroke-width="3"/><line x1="50" y1="320" x2="100" y2="320" stroke="#3b82f6" stroke-width="3"/><text x="75" y="250" text-anchor="middle" font-size="12" fill="white" font-weight="bold">12V</text>
+    <line x1="75" y1="165" x2="75" y2="120" stroke="#3b82f6" stroke-width="4"/><line x1="75" y1="120" x2="320" y2="120" stroke="#3b82f6" stroke-width="4"/>
+    <rect x="280" y="160" width="130" height="80" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.6)" stroke-width="2" rx="8"/><text x="345" y="190" text-anchor="middle" font-size="12" fill="#818cf8" font-weight="bold">RESISTOR 10Ω</text><circle cx="345" cy="235" r="20" fill="rgba(245,158,11,0.2)" stroke="rgba(245,158,11,0.8)" stroke-width="2"/><text x="345" y="242" text-anchor="middle" font-size="10" fill="#f59e0b" font-weight="bold">R</text>
+    <line x1="345" y1="120" x2="550" y2="120" stroke="#3b82f6" stroke-width="4"/>
+    <circle cx="550" cy="180" r="28" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.8)" stroke-width="2"/><text x="550" y="175" text-anchor="middle" font-size="11" fill="#10b981" font-weight="bold">A</text><text x="550" y="200" text-anchor="middle" font-size="10" fill="#10b981" font-weight="bold">1.2A</text>
+    <line x1="75" y1="320" x2="75" y2="360" stroke="#3b82f6" stroke-width="4"/><line x1="75" y1="360" x2="345" y2="360" stroke="#3b82f6" stroke-width="4"/>
+    <rect x="40" y="390" width="620" height="50" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.4)" stroke-width="1" rx="6"/>
+    <text x="60" y="413" font-size="12" fill="#a5b4fc" font-weight="bold">⚡ OHM'S LAW: V = I × R | 12V = 1.2A × 10Ω ✓</text>
+    <text x="60" y="430" font-size="11" fill="#c7d2fe">Voltage across resistor = Current flowing × Resistance value. Higher R = Lower I (Inverse relationship)</text>
+  </svg>`;
+}
+
+function createAtomDiagram(){
+  return `<svg viewBox="0 0 700 450" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+    <rect width="700" height="450" fill="rgba(13,11,46,0.3)"/>
+    <text x="350" y="45" text-anchor="middle" font-size="18" fill="#a5b4fc" font-weight="bold">⚛️ ATOMIC STRUCTURE</text>
+    <ellipse cx="350" cy="220" rx="150" ry="150" fill="none" stroke="rgba(99,102,241,0.3)" stroke-width="2" stroke-dasharray="5,5"/>
+    <circle cx="350" cy="220" r="8" fill="#e74c3c" filter="drop-shadow(0 0 12px #e74c3c)"/><text x="350" y="230" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Nucleus</text>
+    <circle cx="350" cy="100" r="6" fill="#3b82f6" filter="drop-shadow(0 0 8px #3b82f6)"/><text x="330" y="85" font-size="10" fill="#3b82f6" font-weight="bold">e⁻</text>
+    <circle cx="450" cy="200" r="6" fill="#3b82f6" filter="drop-shadow(0 0 8px #3b82f6)"/><text x="460" y="195" font-size="10" fill="#3b82f6" font-weight="bold">e⁻</text>
+    <circle cx="350" cy="340" r="6" fill="#3b82f6" filter="drop-shadow(0 0 8px #3b82f6)"/><text x="340" y="360" font-size="10" fill="#3b82f6" font-weight="bold">e⁻</text>
+    <circle cx="250" cy="200" r="6" fill="#3b82f6" filter="drop-shadow(0 0 8px #3b82f6)"/><text x="240" y="195" font-size="10" fill="#3b82f6" font-weight="bold">e⁻</text>
+    <rect x="30" y="390" width="640" height="50" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.4)" stroke-width="1" rx="6"/>
+    <text x="50" y="413" font-size="12" fill="#a5b4fc" font-weight="bold">⚛️ ATOM: Nucleus (Protons+Neutrons) + Electrons in Shells | Bohr Model shown</text>
+    <text x="50" y="430" font-size="11" fill="#c7d2fe">Electrons orbit nucleus like planets around sun! Atomic number = proton count. Electrons = protons (neutral atoms)</text>
+  </svg>`;
+}
+
+function createCellDiagram(){
+  return `<svg viewBox="0 0 700 450" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+    <rect width="700" height="450" fill="rgba(13,11,46,0.3)"/>
+    <text x="350" y="45" text-anchor="middle" font-size="18" fill="#a5b4fc" font-weight="bold">🧬 PLANT CELL STRUCTURE</text>
+    <ellipse cx="350" cy="220" rx="180" ry="150" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.7)" stroke-width="3"/>
+    <circle cx="350" cy="220" r="70" fill="none" stroke="rgba(16,185,129,0.5)" stroke-width="2" stroke-dasharray="3,3"/><text x="250" y="150" font-size="10" fill="#10b981" font-weight="bold">NUCLEUS</text>
+    <circle cx="350" cy="220" r="50" fill="rgba(99,102,241,0.15)" stroke="rgba(99,102,241,0.5)" stroke-width="1"/>
+    <circle cx="320" cy="280" r="20" fill="rgba(245,158,11,0.2)" stroke="rgba(245,158,11,0.8)" stroke-width="1.5"/><text x="320" y="290" text-anchor="middle" font-size="9" fill="#f59e0b" font-weight="bold">MITO</text>
+    <rect x="280" y="120" width="50" height="50" fill="rgba(10,184,181,0.2)" stroke="rgba(10,184,181,0.8)" stroke-width="1.5" rx="3"/><text x="305" y="153" text-anchor="middle" font-size="8" fill="#06b6d4" font-weight="bold">CHLORO</text>
+    <rect x="420" y="200" width="45" height="70" fill="rgba(244,63,94,0.1)" stroke="rgba(244,63,94,0.6)" stroke-width="1.5" rx="2"/><text x="442" y="240" text-anchor="middle" font-size="8" fill="#f43f5e" font-weight="bold">VAC</text>
+    <rect x="30" y="390" width="640" height="50" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.4)" stroke-width="1" rx="6"/>
+    <text x="50" y="413" font-size="12" fill="#a5b4fc" font-weight="bold">🧬 PLANT CELL: Cell Membrane + Chloroplasts (Photosynthesis) + Large Vacuole (Storage)</text>
+    <text x="50" y="430" font-size="11" fill="#c7d2fe">Plant cells: Rigid cell wall, Chloroplasts, Big vacuole | Animal cells: No wall, No chloroplasts, Small vacuole</text>
+  </svg>`;
+}
+
+function createGenericDiagram(topic){
+  return `<svg viewBox="0 0 700 450" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+    <rect width="700" height="450" fill="rgba(13,11,46,0.3)"/>
+    <circle cx="350" cy="140" r="60" fill="rgba(99,102,241,0.15)" stroke="rgba(129,140,248,0.8)" stroke-width="3" filter="drop-shadow(0 0 16px rgba(99,102,241,0.5))"/>
+    <text x="350" y="155" text-anchor="middle" font-size="32" fill="#a5b4fc" font-weight="bold">?</text>
+    <line x1="350" y1="200" x2="150" y2="300" stroke="rgba(99,102,241,0.3)" stroke-width="2" stroke-dasharray="5,5"/><circle cx="150" cy="300" r="35" fill="rgba(16,185,129,0.2)" stroke="rgba(16,185,129,0.8)" stroke-width="2"/><text x="150" y="310" text-anchor="middle" font-size="11" fill="#10b981" font-weight="bold">CONCEPT 1</text>
+    <line x1="350" y1="200" x2="550" y2="300" stroke="rgba(99,102,241,0.3)" stroke-width="2" stroke-dasharray="5,5"/><circle cx="550" cy="300" r="35" fill="rgba(245,158,11,0.2)" stroke="rgba(245,158,11,0.8)" stroke-width="2"/><text x="550" y="310" text-anchor="middle" font-size="11" fill="#f59e0b" font-weight="bold">CONCEPT 2</text>
+    <line x1="350" y1="200" x2="350" y2="300" stroke="rgba(99,102,241,0.3)" stroke-width="2" stroke-dasharray="5,5"/><circle cx="350" cy="300" r="35" fill="rgba(139,92,246,0.2)" stroke="rgba(139,92,246,0.8)" stroke-width="2"/><text x="350" y="310" text-anchor="middle" font-size="11" fill="#8b5cf6" font-weight="bold">CONCEPT 3</text>
+    <rect x="40" y="380" width="620" height="60" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.4)" stroke-width="1" rx="6"/>
+    <text x="60" y="403" font-size="13" fill="#a5b4fc" font-weight="bold">📚 "${(topic||'Topic').substring(0,45)}" का HD Educational Diagram</text>
+    <text x="60" y="423" font-size="11" fill="#c7d2fe">Topic-specific diagram banaya gaya! Teeno main concepts show ho rahe hain connected flow mein.</text>
+  </svg>`;
+}
+
+// ════════════════════════════════════════════════════════════════
+// 2D ULTRA HD REAL-WORLD EDUCATIONAL DIAGRAMS FOR EACH SCENE
+// ════════════════════════════════════════════════════════════════
+
+function createHD2DIntro(heading, icon, points, topic){
+  return `<svg viewBox="0 0 1400 800" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:linear-gradient(135deg,rgba(13,11,46,0.4),rgba(99,102,241,0.08))">
+    <defs>
+      <filter id="glow"><feGaussianBlur stdDeviation="4" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#6366f1;stop-opacity:1"/><stop offset="100%" style="stop-color:#a855f7;stop-opacity:1"/></linearGradient>
+    </defs>
+    <rect width="1400" height="800" fill="rgba(13,11,46,0.2)"/>
+    <circle cx="700" cy="200" r="140" fill="url(#grad1)" filter="url(#glow)" opacity="0.8"/>
+    <text x="700" y="235" text-anchor="middle" font-size="100" fill="white" font-weight="bold">${icon}</text>
+    <rect x="150" y="420" width="1100" height="300" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.6)" stroke-width="3" rx="24"/>
+    <text x="700" y="500" text-anchor="middle" font-size="44" fill="#a5b4fc" font-weight="bold">${heading}</text>
+    <text x="700" y="570" text-anchor="middle" font-size="18" fill="#c7d2fe" font-weight="600" style="letter-spacing:1px">📌 KEY LEARNING POINT</text>
+    <text x="700" y="620" text-anchor="middle" font-size="16" fill="#d5dce8">${(points[0] || 'समझने के लिए तैयार हो जाओ!')}</text>
+    <text x="700" y="680" text-anchor="middle" font-size="15" fill="#a5b4fc">आज सीखोगे कुछ ऐसा जो exam में 100% आएगा! 🎯</text>
+  </svg>`;
+}
+
+function createHD2DConcept(heading, points, topic){
+  const colors = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#06b6d4'];
+  let pointsHTML = '';
+  points.forEach((p, i) => {
+    const color = colors[i % colors.length];
+    pointsHTML += `
+      <g>
+        <circle cx="${200 + i*240}" cy="420" r="65" fill="rgba(${color.slice(1).match(/.{1,2}/g).map((x,j)=>j<3?parseInt(x,16):'').join(',')},0.15)" stroke="${color}" stroke-width="4"/>
+        <circle cx="${200 + i*240}" cy="420" r="50" fill="none" stroke="${color}" stroke-width="2" stroke-dasharray="6,6" opacity="0.5"/>
+        <text x="${200 + i*240}" y="435" text-anchor="middle" font-size="14" fill="#e0e7ff" font-weight="bold">${p.substring(0,30)}</text>
+      </g>
+    `;
+  });
+  
+  return `<svg viewBox="0 0 1400 800" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+    <defs><linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#1e293b;stop-opacity:1"/><stop offset="100%" style="stop-color:#0f172a;stop-opacity:1"/></linearGradient></defs>
+    <rect width="1400" height="800" fill="url(#grad2)"/>
+    <rect x="100" y="60" width="1200" height="130" fill="rgba(99,102,241,0.15)" stroke="rgba(129,140,248,0.5)" stroke-width="3" rx="18"/>
+    <text x="700" y="135" text-anchor="middle" font-size="48" fill="#a5b4fc" font-weight="bold">💡 ${heading}</text>
+    ${pointsHTML}
+    <text x="700" y="720" text-anchor="middle" font-size="16" fill="#fcd34d" font-weight="600">यह concept exam में 5-10 marks का है! ⭐</text>
+  </svg>`;
+}
+
+function createHD2DDiagram(heading, points, topic){
+  const termsList = points.slice(0, 5);
+  let termsHTML = '';
+  termsList.forEach((term, i) => {
+    const angle = (i / termsList.length) * Math.PI * 2 - Math.PI / 2;
+    const x = 450 + Math.cos(angle) * 140;
+    const y = 220 + Math.sin(angle) * 140;
+    const colors = ['#ec4899', '#6366f1', '#10b981', '#f59e0b', '#06b6d4'];
+    termsHTML += `
+      <g>
+        <line x1="450" y1="220" x2="${x}" y2="${y}" stroke="rgba(129,140,248,0.3)" stroke-width="2" stroke-dasharray="5,5"/>
+        <circle cx="${x}" cy="${y}" r="35" fill="rgba(${colors[i].slice(1).match(/.{1,2}/g).map((c,j)=>j<3?parseInt(c,16):'').join(',')},0.2)" stroke="${colors[i]}" stroke-width="2" filter="drop-shadow(0 4px 12px rgba(0,0,0,0.3))"/>
+        <text x="${x}" y="${y+2}" text-anchor="middle" font-size="11" fill="#e0e7ff" font-weight="bold">${term.substring(0,15)}</text>
+      </circle>
+    `;
+  });
+  
+  return `<svg viewBox="0 0 900 500" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+    <rect width="900" height="500" fill="rgba(13,11,46,0.3)"/>
+    <rect x="50" y="30" width="800" height="70" fill="rgba(99,102,241,0.1)" stroke="rgba(129,140,248,0.4)" stroke-width="2" rx="10"/>
+    <text x="450" y="80" text-anchor="middle" font-size="28" fill="#a5b4fc" font-weight="bold">🔬 ${heading}</text>
+    <circle cx="450" cy="220" r="50" fill="rgba(99,102,241,0.25)" stroke="rgba(129,140,248,0.8)" stroke-width="3" filter="drop-shadow(0 0 20px rgba(99,102,241,0.5))"/>
+    <text x="450" y="230" text-anchor="middle" font-size="36" fill="#a5b4fc" font-weight="bold">⚡</text>
+    ${termsHTML}
+    <rect x="50" y="400" width="800" height="80" fill="rgba(99,102,241,0.08)" stroke="rgba(129,140,248,0.3)" stroke-width="1" rx="8"/>
+    <text x="450" y="430" text-anchor="middle" font-size="13" fill="#c7d2fe" font-weight="600">यह structure समझना बहुत important है! सभी concepts को याद रखो। 📝</text>
+    <text x="450" y="460" text-anchor="middle" font-size="12" fill="#a5b4fc">Exam में diagram draw करने के लिए यह pattern जरूरी है!</text>
+  </svg>`;
+}
+
+function createHD2DExample(heading, points, topic){
+  return `<svg viewBox="0 0 900 500" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+    <defs><filter id="shadow"><feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/></filter></defs>
+    <rect width="900" height="500" fill="rgba(13,11,46,0.3)"/>
+    <rect x="40" y="30" width="820" height="70" fill="rgba(16,185,129,0.12)" stroke="rgba(16,185,129,0.5)" stroke-width="2" rx="12"/>
+    <text x="450" y="85" text-anchor="middle" font-size="28" fill="#10b981" font-weight="bold">📝 ${heading}</text>
+    ${points.slice(0, 3).map((ex, i) => `
+      <g filter="url(#shadow)">
+        <rect x="${60 + i*280}" y="140" width="260" height="200" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.6)" stroke-width="2" rx="12"/>
+        <circle cx="${190 + i*280}" cy="160" r="18" fill="#10b981" opacity="0.7"/>
+        <text x="${190 + i*280}" y="167" text-anchor="middle" font-size="14" fill="white" font-weight="bold">${i+1}</text>
+        <text x="${190 + i*280}" y="210" text-anchor="middle" font-size="12" fill="#c7d2fe" font-weight="600" style="word-wrap:break-word;max-width:240px">${ex.substring(0,50)}</text>
+        <text x="${190 + i*280}" y="315" text-anchor="middle" font-size="11" fill="#10b981">Real Life Example ✅</text>
+      </g>
+    `).join('')}
+    <rect x="50" y="380" width="800" height="100" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.3)" stroke-width="1" rx="8"/>
+    <text x="450" y="410" text-anchor="middle" font-size="13" fill="#c7d2fe" font-weight="bold">💡 इन examples को समझो और अपने शब्दों में explain करो!</text>
+    <text x="450" y="440" text-anchor="middle" font-size="12" fill="#10b981">Exam में ऐसे ही examples 2-3 marks के लिए लिखने होते हैं। 📍</text>
+    <text x="450" y="465" text-anchor="middle" font-size="11" fill="#a5b4fc">Real-world examples सबसे important हैं scoring के लिए!</text>
+  </svg>`;
+}
+
+function createHD2DSummary(heading, points, topic){
+  return `<svg viewBox="0 0 900 500" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+    <rect width="900" height="500" fill="rgba(13,11,46,0.3)"/>
+    <defs><linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#8b5cf6"/><stop offset="100%" style="stop-color:#6366f1"/></linearGradient></defs>
+    <rect x="40" y="30" width="820" height="70" fill="url(#checkGrad)" opacity="0.15" stroke="rgba(139,92,246,0.6)" stroke-width="2" rx="12"/>
+    <text x="450" y="85" text-anchor="middle" font-size="28" fill="#8b5cf6" font-weight="bold">✅ ${heading} — SUMMARY</text>
+    ${points.slice(0, 4).map((point, i) => `
+      <g>
+        <rect x="80" y="${140 + i*80}" width="740" height="70" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.4)" stroke-width="1" rx="8"/>
+        <circle cx="110" cy="${175 + i*80}" r="16" fill="#8b5cf6"/>
+        <text x="110" y="${182 + i*80}" text-anchor="middle" font-size="18" fill="white" font-weight="bold">${i+1}</text>
+        <text x="140" y="${180 + i*80}" font-size="13" fill="#c7d2fe" font-weight="600">${point.substring(0, 80)}</text>
+      </g>
+    `).join('')}
+    <rect x="50" y="430" width="800" height="50" fill="rgba(139,92,246,0.12)" stroke="rgba(139,92,246,0.5)" stroke-width="2" rx="8"/>
+    <text x="450" y="465" text-anchor="middle" font-size="13" fill="#a5b4fc" font-weight="bold">🎯 यह summary याद रखो! Exam के लिए यही key points हैं।</text>
+  </svg>`;
+}
+
 // ══════════════════════════════
-// SCENE ROUTER
+// SCENE ROUTER — NOW WITH 2D ULTRA HD DIAGRAMS
 // ══════════════════════════════
 let _totalScenes=8;
 function renderScene(sc,idx,total){
@@ -2090,12 +2933,40 @@ function renderScene(sc,idx,total){
   const sn=(idx||0)+1;
   const narr=sc.narration||'';
 
-  // Choose visual layout based on type AND content
-  if(sc.visual_type==='intro')        animFn=mkHDIntro(t,h,ic,sn,narr);
-  else if(sc.visual_type==='diagram') animFn=mkHDDiagram(t,h,pts,ic,sn,narr);
-  else if(sc.visual_type==='example') animFn=mkHDExample(t,h,pts,ic,sn,narr);
-  else if(sc.visual_type==='summary') animFn=mkHDSummary(t,h,pts,ic,sn,narr);
-  else                                animFn=mkHDConcept(t,h,pts,ic,sn,narr);
+  // ✅ Display 2D HD real-world diagram in canvas container
+  let hdDiagram = '';
+  const topicLower = (G.topicText || G.file?.name || '').toLowerCase();
+  
+  // Scene-specific 2D Ultra HD diagrams
+  if(sc.visual_type==='intro'){
+    hdDiagram = createHD2DIntro(h, ic, pts, topicLower);
+  } else if(sc.visual_type==='diagram'){
+    hdDiagram = createHD2DDiagram(h, pts, topicLower);
+  } else if(sc.visual_type==='example'){
+    hdDiagram = createHD2DExample(h, pts, topicLower);
+  } else if(sc.visual_type==='summary'){
+    hdDiagram = createHD2DSummary(h, pts, topicLower);
+  } else { // concept
+    hdDiagram = createHD2DConcept(h, pts, topicLower);
+  }
+  
+  // Show ONLY in canvas overlay (centered, not scrollable bottom)
+  const canvasDiagramContainer = document.getElementById('diagramSvgContainerCanvas');
+  if(canvasDiagramContainer){
+    canvasDiagramContainer.innerHTML = hdDiagram;
+  }
+  
+  // Simple canvas background with scene info (title bar)
+  animFn=()=>{
+    const bg=ctx.createRadialGradient(CW/2,CH*.3,0,CW/2,CH*.6,Math.max(CW,CH));
+    bg.addColorStop(0,t.b3+'cc');
+    bg.addColorStop(.6,t.b2);
+    bg.addColorStop(1,t.b1);
+    ctx.fillStyle=bg;
+    ctx.fillRect(0,0,CW,CH);
+    drawStars(0.3);
+    sceneHeader(t,h,ic,sn,_totalScenes);
+  };
 }
 
 // ══════════════════════════════
@@ -2904,85 +3775,90 @@ if(_origGenBtn){
   // ── Firebase Save (Real-time Admin Sync) ──
   function saveLeadToFirebase(name, phone, visitorId, source){
     try {
-      import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js").then(function(appMod){
-        import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js").then(function(dbMod){
-          var initializeApp = appMod.initializeApp;
-          var getFirestore  = dbMod.getFirestore;
-          var collection    = dbMod.collection;
-          var addDoc        = dbMod.addDoc;
-          var doc           = dbMod.doc;
-          var setDoc        = dbMod.setDoc;
-          var serverTimestamp = dbMod.serverTimestamp;
+      Promise.resolve()
+        .then(() => import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"))
+        .then(function(appMod){
+          return import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js").then(function(dbMod){
+            var initializeApp = appMod.initializeApp;
+            var getFirestore  = dbMod.getFirestore;
+            var collection    = dbMod.collection;
+            var addDoc        = dbMod.addDoc;
+            var doc           = dbMod.doc;
+            var setDoc        = dbMod.setDoc;
+            var serverTimestamp = dbMod.serverTimestamp;
 
-          var fbCfg = {
-            apiKey: "AIzaSyA3YNLYZVPz9h86PfpnrhuInLFPkuCk--A",
-            authDomain: "edusphere-80549.firebaseapp.com",
-            projectId: "edusphere-80549",
-            storageBucket: "edusphere-80549.firebasestorage.app",
-            messagingSenderId: "434274785382",
-            appId: "1:434274785382:web:5b3ec4f65bcd9a55e835a7"
-          };
+            var fbCfg = {
+              apiKey: "AIzaSyA3YNLYZVPz9h86PfpnrhuInLFPkuCk--A",
+              authDomain: "edusphere-80549.firebaseapp.com",
+              projectId: "edusphere-80549",
+              storageBucket: "edusphere-80549.firebasestorage.app",
+              messagingSenderId: "434274785382",
+              appId: "1:434274785382:web:5b3ec4f65bcd9a55e835a7"
+            };
 
-          // Reuse existing app if already initialized
-          var fbApp;
-          try { fbApp = initializeApp(fbCfg, "website-fb"); }
-          catch(e) {
-            var getApp = appMod.getApp;
-            try { fbApp = getApp("website-fb"); } catch(e2) { fbApp = initializeApp(fbCfg); }
-          }
-          var fbDb = getFirestore(fbApp);
+            // Reuse existing app if already initialized
+            var fbApp;
+            try { fbApp = initializeApp(fbCfg, "website-fb"); }
+            catch(e) {
+              var getApp = appMod.getApp;
+              try { fbApp = getApp("website-fb"); } catch(e2) { fbApp = initializeApp(fbCfg); }
+            }
+            var fbDb = getFirestore(fbApp);
 
-          var colors=['#4338ca','#10b981','#f59e0b','#6366f1','#f43f5e','#8b5cf6','#0ea5e9'];
-          var ac = colors[Math.floor(Math.random()*colors.length)];
-          var ini = (name||'?').split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);
-          var nowMs = Date.now();
+            var colors=['#4338ca','#10b981','#f59e0b','#6366f1','#f43f5e','#8b5cf6','#0ea5e9'];
+            var ac = colors[Math.floor(Math.random()*colors.length)];
+            var ini = (name||'?').split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);
+            var nowMs = Date.now();
 
-          // 1. Save to "learners" collection (Admin Learners page mein dikhega)
-          var learnerId = 'learner_' + phone + '_' + nowMs;
-          setDoc(doc(fbDb, "learners", learnerId), {
-            name: name,
-            phone: phone,
-            email: phone + '@visitor.edusphere',
-            exam: '',
-            plan: 'Free',
-            sessions: 0,
-            joinedAt: new Date(nowMs),
-            lastActive: new Date(nowMs),
-            ini: ini,
-            ac: ac,
-            source: 'website_popup',
-            visitorId: visitorId
-          }).catch(function(e){ console.log('[EduSphere] learner save:', e.message); });
+            // 1. Save to "learners" collection (Admin Learners page mein dikhega)
+            var learnerId = 'learner_' + phone + '_' + nowMs;
+            setDoc(doc(fbDb, "learners", learnerId), {
+              name: name,
+              phone: phone,
+              email: phone + '@visitor.edusphere',
+              exam: '',
+              plan: 'Free',
+              sessions: 0,
+              joinedAt: new Date(nowMs),
+              lastActive: new Date(nowMs),
+              ini: ini,
+              ac: ac,
+              source: 'website_popup',
+              visitorId: visitorId
+            }).catch(function(e){ console.log('[EduSphere] learner save:', e.message); });
 
-          // 2. Save to "leads" collection (Admin Leads page mein dikhega)
-          addDoc(collection(fbDb, "leads"), {
-            name: name,
-            phone: phone,
-            ts: new Date(nowMs),
-            visitorId: visitorId,
-            page: location.pathname,
-            source: source,
-            type: 'register'
-          }).catch(function(e){ console.log('[EduSphere] lead save:', e.message); });
+            // 2. Save to "leads" collection (Admin Leads page mein dikhega)
+            addDoc(collection(fbDb, "leads"), {
+              name: name,
+              phone: phone,
+              ts: new Date(nowMs),
+              visitorId: visitorId,
+              page: location.pathname,
+              source: source,
+              type: 'register'
+            }).catch(function(e){ console.log('[EduSphere] lead save:', e.message); });
 
-          // 3. Save to "visits" collection (Admin Real-time page mein dikhega)
-          addDoc(collection(fbDb, "visits"), {
-            name: name,
-            phone: phone,
-            learnerName: name,
-            ts: new Date(nowMs),
-            timestamp: new Date(nowMs),
-            visitorId: visitorId,
-            page: location.pathname,
-            source: source,
-            type: 'register'
-          }).catch(function(e){ console.log('[EduSphere] visit save:', e.message); });
+            // 3. Save to "visits" collection (Admin Real-time page mein dikhega)
+            addDoc(collection(fbDb, "visits"), {
+              name: name,
+              phone: phone,
+              learnerName: name,
+              ts: new Date(nowMs),
+              timestamp: new Date(nowMs),
+              visitorId: visitorId,
+              page: location.pathname,
+              source: source,
+              type: 'register'
+            }).catch(function(e){ console.log('[EduSphere] visit save:', e.message); });
 
-          console.log('[EduSphere] ✅ Firebase mein save ho gaya:', name, phone);
+          });
+        })
+        .catch(function(e){
+          // Silently handle network errors from Firebase imports
+          console.log('[EduSphere] Firebase not available:', e.message);
         });
-      });
-    } catch(e) {
-      console.log('[EduSphere] Firebase import error:', e.message);
+    } catch(e){
+      console.log('[EduSphere] Firebase error:', e.message);
     }
   }
 
