@@ -260,6 +260,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
   <div class="ni" data-page="coupons"><span class="ni-icon">🎟️</span>Coupons</div>
   <div class="sb-divider"></div>
   <div class="sb-sect">SYSTEM</div>
+  <div class="ni" data-page="aiconfig"><span class="ni-icon">🤖</span>AI Config</div>
   <div class="ni" data-page="settings"><span class="ni-icon">⚙️</span>Settings</div>
   <div class="ni" data-page="notifs"><span class="ni-icon">📣</span>Notifications</div>
   <div class="sb-bottom">
@@ -291,12 +292,17 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
     <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-label">Active (30 min)</div><div class="stat-value" id="st_active">0</div><div class="stat-sub" id="st_active_sub">No active users</div></div>
     <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-label">Total Sessions</div><div class="stat-value" id="st_sessions">0</div><div class="stat-sub" id="st_sessions_sub">0 sessions total</div></div>
     <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Revenue (est.)</div><div class="stat-value" id="st_rev">₹0</div><div class="stat-sub" id="st_rev_sub">0 paid subscribers</div></div>
+    <div class="stat-card" style="border-color:rgba(16,185,129,0.35)"><div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#10b981,transparent)"></div><div class="stat-icon">🔥</div><div class="stat-label">Topics Today</div><div class="stat-value" id="st_topicsToday" style="color:#10b981">0</div><div class="stat-sub up" id="st_topicsToday_sub">AI sessions today</div></div>
+    <div class="stat-card" style="border-color:rgba(6,182,212,0.35)"><div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#06b6d4,transparent)"></div><div class="stat-icon">📸</div><div class="stat-label">Q&A Sessions</div><div class="stat-value" id="st_qaSessions" style="color:#06b6d4">0</div><div class="stat-sub" id="st_qaSessions_sub">Screenshot uploads</div></div>
+    <div class="stat-card" style="border-color:rgba(245,158,11,0.35)"><div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#f59e0b,transparent)"></div><div class="stat-icon">🌐</div><div class="stat-label">Hinglish %</div><div class="stat-value" id="st_hinglish" style="color:#f59e0b">—</div><div class="stat-sub" id="st_hinglish_sub">Most used language</div></div>
+    <div class="stat-card" style="border-color:rgba(139,92,246,0.35)"><div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#8b5cf6,transparent)"></div><div class="stat-icon">🧠</div><div class="stat-label">Avg Scenes/Session</div><div class="stat-value" id="st_avgScenes" style="color:#8b5cf6">—</div><div class="stat-sub" id="st_avgScenes_sub">Scene completion</div></div>
   </div>
   <div class="chart-card">
     <div class="chart-title">⚡ QUICK ACTIONS</div>
-    <div class="quick-actions">
+    <div class="quick-actions" style="grid-template-columns:repeat(5,1fr)">
       <div class="qa-card" onclick="nav('learners')"><div class="qa-icon">👤</div><div class="qa-label">Learners</div></div>
       <div class="qa-card" onclick="nav('plans')"><div class="qa-icon">💎</div><div class="qa-label">Edit Plans</div></div>
+      <div class="qa-card" onclick="nav('website');setTimeout(()=>weTab('aiconfig',document.querySelector('#weTabs .tab-btn:nth-child(3)')),200)"><div class="qa-icon">🤖</div><div class="qa-label">AI Config</div></div>
       <div class="qa-card" onclick="nav('website')"><div class="qa-icon">✏️</div><div class="qa-label">Edit Website</div></div>
       <div class="qa-card" onclick="nav('notifs')"><div class="qa-icon">📣</div><div class="qa-label">Send Blast</div></div>
     </div>
@@ -595,7 +601,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
 
 <!-- ──────────── ANALYTICS ──────────── -->
 <div class="page" id="page-analytics">
-  <div class="page-hdr"><div><div class="page-title">📈 Analytics</div><div class="page-sub">Real data only</div></div></div>
+  <div class="page-hdr"><div><div class="page-title">📈 Analytics</div><div class="page-sub">Real data only — all metrics from actual learner activity</div></div></div>
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-label">Total Sessions</div><div class="stat-value" id="an_s">0</div></div>
     <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Total Learners</div><div class="stat-value" id="an_l">0</div></div>
@@ -606,13 +612,33 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
     <div class="chart-card"><div class="chart-title">🗣️ LANGUAGE USAGE</div><div id="anLang"><div class="zero-state" style="padding:30px 0"><div class="zero-icon">🌐</div><div class="zero-title">No session data yet</div></div></div></div>
     <div class="chart-card"><div class="chart-title">🎯 EXAM WISE</div><div id="anExam"><div class="zero-state" style="padding:30px 0"><div class="zero-icon">📚</div><div class="zero-title">No session data yet</div></div></div></div>
   </div>
+  <div class="section-grid">
+    <div class="chart-card">
+      <div class="chart-title">📊 SESSION TYPE BREAKDOWN</div>
+      <div id="anSessionType"><div class="zero-state" style="padding:24px 0"><div class="zero-icon">🎬</div><div class="zero-title">No session data yet</div></div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">📸 INPUT MODE (Text vs Image)</div>
+      <div id="anInputMode"><div class="zero-state" style="padding:24px 0"><div class="zero-icon">📸</div><div class="zero-title">No session data yet</div></div></div>
+    </div>
+  </div>
   <div class="chart-card"><div class="chart-title">🏆 TOP TOPICS</div><div id="anTopics"><div class="zero-state" style="padding:30px 0"><div class="zero-icon">🔍</div><div class="zero-title">No topic data available</div><div class="zero-sub">Data will appear once learners search for topics here</div></div></div></div>
 </div>
 
-<!-- ──────────── SESSIONS ──────────── -->
 <div class="page" id="page-sessions">
-  <div class="page-hdr"><div><div class="page-title">🎬 Sessions</div><div class="page-sub">All recorded sessions</div></div><div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="renderSessions()">🔄 Refresh</button></div></div>
-  <div class="table-card"><table><thead><tr><th>Learner</th><th>Topic</th><th>Exam</th><th>Language</th><th>Scenes</th><th>Time</th></tr></thead><tbody id="sessionsBody"></tbody></table></div>
+  <div class="page-hdr"><div><div class="page-title">🎬 Sessions</div><div class="page-sub">All recorded sessions</div></div><div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="renderSessions()">🔄 Refresh</button><button class="btn btn-ghost btn-sm" onclick="exportSessionsCSV()">📥 Export</button></div></div>
+  <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-label">Course Sessions</div><div class="stat-value" id="sess_course" style="color:#818cf8">0</div><div class="stat-sub">8-scene full lessons</div></div>
+    <div class="stat-card"><div class="stat-icon">📸</div><div class="stat-label">Q&A Sessions</div><div class="stat-value" id="sess_qa" style="color:#06b6d4">0</div><div class="stat-sub">Screenshot solutions</div></div>
+    <div class="stat-card"><div class="stat-icon">🌐</div><div class="stat-label">Top Language</div><div class="stat-value" id="sess_tplang" style="color:#10b981;font-size:18px">—</div><div class="stat-sub">Most used language</div></div>
+  </div>
+  <div class="table-card">
+    <div class="table-hdr">
+      <div class="table-title">📋 ALL SESSIONS</div>
+      <input class="search-inp" placeholder="Search topic..." oninput="filterSessions(this.value)" id="sessSearch">
+    </div>
+    <table><thead><tr><th>Learner</th><th>Topic</th><th>Type</th><th>Mode</th><th>Exam</th><th>Language</th><th>Scenes</th><th>Time</th></tr></thead><tbody id="sessionsBody"></tbody></table>
+  </div>
 </div>
 
 <!-- ──────────── FEEDBACK ──────────── -->
@@ -639,6 +665,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
   <div class="tab-row" id="weTabs">
     <div class="tab-btn on" onclick="weTab('hero',this)">🏠 Hero</div>
     <div class="tab-btn" onclick="weTab('teacher',this)">👩‍🏫 AI Teacher</div>
+    <div class="tab-btn" onclick="weTab('aiconfig',this)">🤖 AI Config</div>
     <div class="tab-btn" onclick="weTab('features',this)">✨ Features</div>
     <div class="tab-btn" onclick="weTab('chips',this)">⚡ Topics</div>
     <div class="tab-btn" onclick="weTab('branding',this)">🎨 Branding</div>
@@ -692,6 +719,90 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
         <input type="file" accept="image/*" id="ws_teacherImg" style="display:none" onchange="handleImgUpload('ws_teacherImg','teacherImgPreview','teacherAvatar')">
         <button class="btn btn-ghost btn-sm" style="width:100%" onclick="document.getElementById('ws_teacherImg').click()">📁 Upload Avatar</button>
         <div class="form-group" style="margin-top:10px"><div class="form-label">OR Image URL</div><input class="form-inp" id="ws_teacherImgUrl" placeholder="https://..." oninput="previewImgUrl(this,'teacherImgPreview')"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI CONFIG TAB -->
+  <div id="wet-aiconfig" class="we-tab-panel" style="display:none">
+    <div class="settings-grid">
+      <div class="settings-card">
+        <div class="s-title">🎙️ VOICE ENGINE</div>
+        <div class="form-group"><div class="form-label">Default Language</div>
+          <select class="form-inp" id="ai_defLang">
+            <option value="Hinglish">Hinglish (Recommended)</option>
+            <option value="Hindi">Hindi</option>
+            <option value="English">English (Indian)</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Voice Speed</div>
+          <select class="form-inp" id="ai_voiceSpeed">
+            <option value="0.65">🐢 Slow (0.65x) — clearest pronunciation</option>
+            <option value="0.75" selected>▶ Normal (0.75x)</option>
+            <option value="0.90">⚡ Fast (0.90x)</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Voice Pitch</div>
+          <select class="form-inp" id="ai_voicePitch">
+            <option value="1.0">Neutral (1.0)</option>
+            <option value="1.08" selected>Warm feminine (1.08) — Jennie</option>
+            <option value="1.15">High feminine (1.15)</option>
+          </select>
+        </div>
+        <div style="margin-top:14px">
+          <div class="toggle-row"><div><div class="toggle-label">Auto-speak on scene start</div><div class="toggle-sub">Lesson start hote hi Jennie bolne lagegi</div></div><div class="toggle on" id="ai_autoSpeak" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Show subtitle (subtitle bar)</div><div class="toggle-sub">Voice ke saath text neeche dikhega</div></div><div class="toggle on" id="ai_showSub" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+      </div>
+      <div class="settings-card">
+        <div class="s-title">🎬 SCENE SETTINGS</div>
+        <div class="form-group"><div class="form-label">Course Mode Scene Count</div>
+          <select class="form-inp" id="ai_sceneCount">
+            <option value="6">6 Scenes (faster)</option>
+            <option value="8" selected>8 Scenes (full lesson)</option>
+          </select>
+        </div>
+        <div style="margin-top:14px">
+          <div class="toggle-row"><div><div class="toggle-label">Q&A / Screenshot Mode</div><div class="toggle-sub">Image upload se question solution milega</div></div><div class="toggle on" id="ai_qaMode" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Show Solution Panel</div><div class="toggle-sub">Q&A mode mein solution card dikhega</div></div><div class="toggle on" id="ai_showSolution" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Scene Content Overlay</div><div class="toggle-sub">Canvas pe AI-generated content visible hoga</div></div><div class="toggle on" id="ai_sceneOverlay" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">Show Real-World Examples</div><div class="toggle-sub">Screen pe Indian examples dikhenge</div></div><div class="toggle on" id="ai_showExamples" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+      </div>
+      <div class="settings-card">
+        <div class="s-title">🧠 QUIZ ENGINE</div>
+        <div style="margin-top:4px">
+          <div class="toggle-row"><div><div class="toggle-label">Quiz Feature Enabled</div><div class="toggle-sub">Learner ko quiz de sakte hain</div></div><div class="toggle on" id="ai_quizEnabled" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="toggle-label">API-first Quiz Generation</div><div class="toggle-sub">AI se questions generate karo (fallback local)</div></div><div class="toggle on" id="ai_quizApi" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Questions Per Quiz</div>
+          <select class="form-inp" id="ai_quizCount">
+            <option value="3">3 Questions (quick)</option>
+            <option value="5" selected>5 Questions (standard)</option>
+            <option value="10">10 Questions (full test)</option>
+          </select>
+        </div>
+      </div>
+      <div class="settings-card">
+        <div class="s-title">🔑 AI MODELS (OpenRouter)</div>
+        <div class="info-banner" style="margin-bottom:12px;padding:10px 13px">
+          <span style="font-size:14px;flex-shrink:0">ℹ️</span>
+          <div style="font-size:11px">Website uses OpenRouter models. Course mode uses free text models, image/Q&A uses vision models. Models try in order until one succeeds.</div>
+        </div>
+        <div class="form-group"><div class="form-label">Primary Text Model</div>
+          <select class="form-inp" id="ai_textModel">
+            <option value="deepseek/deepseek-chat-v3-0324:free">DeepSeek V3 (Free) — Recommended</option>
+            <option value="meta-llama/llama-3.3-70b-instruct:free">Llama 3.3 70B (Free)</option>
+            <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash (Free)</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top:10px"><div class="form-label">Primary Vision Model (for images)</div>
+          <select class="form-inp" id="ai_visionModel">
+            <option value="google/gemini-2.0-flash-001">Gemini 2.0 Flash — Recommended</option>
+            <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash (Free)</option>
+            <option value="meta-llama/llama-3.2-11b-vision-instruct:free">Llama 3.2 Vision (Free)</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
@@ -834,18 +945,23 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
 
 <!-- ──────────── SETTINGS ──────────── -->
 <div class="page" id="page-settings">
-  <div class="page-hdr"><div><div class="page-title">⚙️ Settings</div></div><div class="hdr-actions"><button class="btn btn-success btn-sm" onclick="saveSettings()">💾 Save</button></div></div>
+  <div class="page-hdr"><div><div class="page-title">⚙️ Settings</div><div class="page-sub">Platform configuration — save karo to apply</div></div><div class="hdr-actions"><button class="btn btn-success btn-sm" onclick="saveSettings()">💾 Save Settings</button></div></div>
   <div class="settings-grid">
-    <div class="settings-card"><div class="s-title">🔒 ACCESS</div>
-      <div class="toggle-row"><div><div class="toggle-label">Maintenance Mode</div><div class="toggle-sub">Block website access</div></div><div class="toggle" id="tog-maint" onclick="this.classList.toggle('on')"></div></div>
-      <div class="toggle-row"><div><div class="toggle-label">New Registrations</div></div><div class="toggle on" id="tog-reg" onclick="this.classList.toggle('on')"></div></div>
-      <div class="toggle-row"><div><div class="toggle-label">Free Plan Access</div></div><div class="toggle on" id="tog-free" onclick="this.classList.toggle('on')"></div></div>
+    <div class="settings-card"><div class="s-title">🔒 ACCESS CONTROL</div>
+      <div class="toggle-row"><div><div class="toggle-label">Maintenance Mode</div><div class="toggle-sub">Block all website access</div></div><div class="toggle" id="tog-maint" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div><div class="toggle-label">New Registrations</div><div class="toggle-sub">Allow new learner sign-ups</div></div><div class="toggle on" id="tog-reg" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div><div class="toggle-label">Free Plan Access</div><div class="toggle-sub">Free tier learners can use platform</div></div><div class="toggle on" id="tog-free" onclick="this.classList.toggle('on')"></div></div>
     </div>
-    <div class="settings-card"><div class="s-title">🤖 AI CONFIG</div>
-      <div class="toggle-row"><div><div class="toggle-label">AI Generation</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-      <div class="toggle-row"><div><div class="toggle-label">Text-to-Speech</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-      <div class="toggle-row"><div><div class="toggle-label">Image Upload</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-      <div class="form-group" style="margin-top:12px"><div class="form-label">Max Scenes</div><input class="form-inp" id="set_scenes" type="number" value="8" min="1" max="20"></div>
+    <div class="settings-card"><div class="s-title">🤖 EDUSPHERE AI ENGINE</div>
+      <div class="toggle-row"><div><div class="toggle-label">AI Generation (Course Mode)</div><div class="toggle-sub">8-scene lesson generation</div></div><div class="toggle on" id="set_aiGen" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div><div class="toggle-label">Q&A / Screenshot Mode</div><div class="toggle-sub">Image upload se solution</div></div><div class="toggle on" id="set_qaMode" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div><div class="toggle-label">Text-to-Speech (Jennie Voice)</div><div class="toggle-sub">Hinglish TTS engine</div></div><div class="toggle on" id="set_tts" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div><div class="toggle-label">Quiz Engine</div><div class="toggle-sub">Post-lesson MCQ quiz</div></div><div class="toggle on" id="set_quiz" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div><div class="toggle-label">Scene Content Overlay</div><div class="toggle-sub">Content visible on canvas screen</div></div><div class="toggle on" id="set_overlay" onclick="this.classList.toggle('on')"></div></div>
+      <div class="form-group" style="margin-top:12px"><div class="form-label">Max Scenes per Course</div><input class="form-inp" id="set_scenes" type="number" value="8" min="1" max="12"></div>
+      <div class="form-group" style="margin-top:10px"><div class="form-label">Default Language</div>
+        <select class="form-inp" id="set_defLang"><option>Hinglish</option><option>Hindi</option><option>English</option></select>
+      </div>
     </div>
     <div class="settings-card"><div class="s-title">💳 PAYMENT</div>
       <div class="form-group"><div class="form-label">Gateway</div><select class="form-inp" id="set_gw"><option>Razorpay</option><option>Stripe</option><option>PayU</option></select></div>
@@ -855,6 +971,127 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
     <div class="settings-card"><div class="s-title">🔑 ADMIN</div>
       <div class="form-group"><div class="form-label">Admin Email</div><input class="form-inp" id="set_email" value="admin@edusphere.ai"></div>
       <div class="form-group" style="margin-top:10px"><div class="form-label">New Password</div><input class="form-inp" type="password" placeholder="Blank = no change"></div>
+      <div class="form-group" style="margin-top:10px">
+        <button class="btn btn-danger btn-sm" style="width:100%" onclick="if(confirm('Sab sessions clear karein?')){sv(K.sessions,[]);showToast('🗑️','Sessions cleared.');}">🗑️ Clear All Sessions</button>
+      </div>
+      <div class="form-group" style="margin-top:8px">
+        <button class="btn btn-ghost btn-sm" style="width:100%" onclick="exportAllData()">📥 Export All Data (JSON)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── AI CONFIG PAGE ──────────── -->
+<div class="page" id="page-aiconfig">
+  <div class="page-hdr">
+    <div><div class="page-title">🤖 AI Config</div><div class="page-sub">Jennie ki voice, scenes, quiz aur models — sab yahan configure karo</div></div>
+    <div class="hdr-actions">
+      <button class="btn btn-ghost btn-sm" onclick="nav('website')">🌐 Website Editor</button>
+      <button class="btn btn-success btn-sm" onclick="saveAIConfig()">💾 Save & Push to Website</button>
+    </div>
+  </div>
+
+  <!-- Live sync status banner -->
+  <div id="aiConfigSyncBanner" style="display:none;padding:10px 16px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.35);border-radius:12px;font-size:12px;color:#10b981;font-weight:700;display:flex;align-items:center;gap:10px">
+    <span style="font-size:16px">✅</span> Changes saved aur website par live ho gaye! Firebase + localStorage dono update.
+  </div>
+
+  <div class="settings-grid">
+    <!-- VOICE ENGINE -->
+    <div class="settings-card">
+      <div class="s-title">🎙️ JENNIE VOICE ENGINE</div>
+      <div class="form-group"><div class="form-label">Default Language</div>
+        <select class="form-inp" id="aic_defLang">
+          <option value="Hinglish">Hinglish (Recommended)</option>
+          <option value="Hindi">Hindi (Pure)</option>
+          <option value="English">English (Indian)</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-top:10px"><div class="form-label">Voice Speed</div>
+        <select class="form-inp" id="aic_voiceSpeed">
+          <option value="0.65">🐢 Slow (0.65x) — clearest pronunciation</option>
+          <option value="0.75">▶ Normal (0.75x) — Recommended</option>
+          <option value="0.90">⚡ Fast (0.90x)</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-top:10px"><div class="form-label">Voice Pitch (Jennie tone)</div>
+        <select class="form-inp" id="aic_voicePitch">
+          <option value="1.0">Neutral (1.0)</option>
+          <option value="1.08">Warm feminine (1.08) — Default Jennie</option>
+          <option value="1.15">High feminine (1.15)</option>
+        </select>
+      </div>
+      <div style="margin-top:14px">
+        <div class="toggle-row"><div><div class="toggle-label">Auto-speak on scene start</div><div class="toggle-sub">Play karte hi Jennie bolna shuru karegi</div></div><div class="toggle on" id="aic_autoSpeak" onclick="this.classList.toggle('on')"></div></div>
+        <div class="toggle-row"><div><div class="toggle-label">Show subtitle bar</div><div class="toggle-sub">Voice ke saath neeche text dikhega</div></div><div class="toggle on" id="aic_showSub" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+    </div>
+
+    <!-- SCENE SETTINGS -->
+    <div class="settings-card">
+      <div class="s-title">🎬 SCENE & CONTENT SETTINGS</div>
+      <div class="form-group"><div class="form-label">Course Mode Scene Count</div>
+        <select class="form-inp" id="aic_sceneCount">
+          <option value="6">6 Scenes (faster load)</option>
+          <option value="8">8 Scenes (full lesson) — Default</option>
+        </select>
+      </div>
+      <div style="margin-top:14px">
+        <div class="toggle-row"><div><div class="toggle-label">Q&A / Screenshot Mode</div><div class="toggle-sub">Image upload → instant solution mode</div></div><div class="toggle on" id="aic_qaMode" onclick="this.classList.toggle('on')"></div></div>
+        <div class="toggle-row"><div><div class="toggle-label">Solution Panel visible</div><div class="toggle-sub">Q&A mode mein green solution card dikhega</div></div><div class="toggle on" id="aic_showSolution" onclick="this.classList.toggle('on')"></div></div>
+        <div class="toggle-row"><div><div class="toggle-label">Scene Content Overlay</div><div class="toggle-sub">Canvas screen pe AI content dikhega</div></div><div class="toggle on" id="aic_sceneOverlay" onclick="this.classList.toggle('on')"></div></div>
+        <div class="toggle-row"><div><div class="toggle-label">Real-World Examples section</div><div class="toggle-sub">Indian examples screen pe visible honge</div></div><div class="toggle on" id="aic_showExamples" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+    </div>
+
+    <!-- QUIZ ENGINE -->
+    <div class="settings-card">
+      <div class="s-title">🧠 QUIZ ENGINE</div>
+      <div class="toggle-row"><div><div class="toggle-label">Quiz Feature Enabled</div><div class="toggle-sub">Lesson ke baad MCQ quiz milega</div></div><div class="toggle on" id="aic_quizEnabled" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div><div class="toggle-label">API Quiz Generation (AI)</div><div class="toggle-sub">AI se questions bante hain (local fallback bhi hai)</div></div><div class="toggle on" id="aic_quizApi" onclick="this.classList.toggle('on')"></div></div>
+      <div class="form-group" style="margin-top:12px"><div class="form-label">Questions Per Quiz</div>
+        <select class="form-inp" id="aic_quizCount">
+          <option value="3">3 Questions (quick)</option>
+          <option value="5">5 Questions (standard) — Default</option>
+          <option value="10">10 Questions (full test)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- AI MODELS -->
+    <div class="settings-card">
+      <div class="s-title">🔑 AI MODELS (OpenRouter)</div>
+      <div class="info-banner" style="margin-bottom:14px;padding:10px 13px;font-size:11px">
+        <span style="font-size:14px;flex-shrink:0">ℹ️</span>
+        <div>Models try in order until one succeeds. Course mode = text models. Image/Q&A = vision models.</div>
+      </div>
+      <div class="form-group"><div class="form-label">Primary Text Model (Course)</div>
+        <select class="form-inp" id="aic_textModel">
+          <option value="deepseek/deepseek-chat-v3-0324:free">DeepSeek V3 Free — Best quality</option>
+          <option value="meta-llama/llama-3.3-70b-instruct:free">Llama 3.3 70B Free</option>
+          <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash Free</option>
+          <option value="mistralai/mistral-7b-instruct:free">Mistral 7B Free (fast)</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-top:10px"><div class="form-label">Vision Model (Image Q&A)</div>
+        <select class="form-inp" id="aic_visionModel">
+          <option value="google/gemini-2.0-flash-001">Gemini 2.0 Flash — Best vision</option>
+          <option value="google/gemini-2.0-flash-exp:free">Gemini 2.0 Flash Free</option>
+          <option value="meta-llama/llama-3.2-11b-vision-instruct:free">Llama 3.2 Vision Free</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ANNOUNCEMENT BANNER -->
+    <div class="settings-card full">
+      <div class="s-title">📢 ANNOUNCEMENT BANNER (Website pe show hoga)</div>
+      <div class="form-group">
+        <div class="form-label">Banner Text (khali rakhne par hide hoga)</div>
+        <input class="form-inp" id="aic_announcement" placeholder="e.g. 🎉 New feature: Quiz engine launched! Try now.">
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted)">
+        💡 Yeh banner website ke top par flash hoga — promotions, feature launches, exam tips ke liye use karo
+      </div>
     </div>
   </div>
 </div>
@@ -987,10 +1224,85 @@ function nav(p){
   document.querySelectorAll('.ni').forEach(x=>x.classList.remove('on'));
   var _navEl=document.getElementById('page-'+p); if(_navEl) _navEl.classList.add('on');
   document.querySelectorAll(`.ni[data-page="${p}"]`).forEach(x=>x.classList.add('on'));
-  ({dashboard:renderDash,learners:renderLearners,analytics:renderAnalytics,sessions:renderSessions,
-    feedback_list:renderFeedback,plans:renderPlans,revenue:renderRevenue,coupons:renderCoupons,
-    topics:renderTopics,exams:renderExams,website:renderWebEditor,notifs:renderNotifLog,
-    realtime:renderRealtime}); var _nf=({dashboard:renderDash,learners:renderLearners,analytics:renderAnalytics,sessions:renderSessions,realtime:renderRealtime})[p]; if(typeof _nf==='function') _nf();
+  var _fnMap={dashboard:renderDash,learners:renderLearners,leads:renderLeads,analytics:renderAnalytics,
+    sessions:renderSessions,feedback_list:renderFeedback,plans:renderPlans,revenue:renderRevenue,
+    coupons:renderCoupons,topics:renderTopics,exams:renderExams,website:renderWebEditor,
+    notifs:renderNotifLog,realtime:renderRealtime,aiconfig:renderAIConfig};
+  var _nf=_fnMap[p]; if(typeof _nf==='function') _nf();
+}
+
+// ════════════════════════════════════════════
+// AI CONFIG PAGE
+// ════════════════════════════════════════════
+function renderAIConfig(){
+  const ai = ld('edu_ai_config', {});
+  // Load saved values into form
+  setV('aic_defLang',    ai.defLang    || 'Hinglish');
+  setV('aic_voiceSpeed', ai.voiceSpeed || '0.75');
+  setV('aic_voicePitch', ai.voicePitch || '1.08');
+  setTog('aic_autoSpeak',    ai.autoSpeak    !== false);
+  setTog('aic_showSub',      ai.showSub      !== false);
+  setV('aic_sceneCount', ai.sceneCount  || '8');
+  setTog('aic_qaMode',        ai.qaMode       !== false);
+  setTog('aic_showSolution',  ai.showSolution !== false);
+  setTog('aic_sceneOverlay',  ai.sceneOverlay !== false);
+  setTog('aic_showExamples',  ai.showExamples !== false);
+  setTog('aic_quizEnabled',   ai.quizEnabled  !== false);
+  setTog('aic_quizApi',       ai.quizApi      !== false);
+  setV('aic_quizCount',   ai.quizCount   || '5');
+  setV('aic_textModel',   ai.textModel   || 'deepseek/deepseek-chat-v3-0324:free');
+  setV('aic_visionModel', ai.visionModel || 'google/gemini-2.0-flash-001');
+  setV('aic_announcement', ai.announcement || '');
+  // Hide sync banner
+  const b = document.getElementById('aiConfigSyncBanner');
+  if(b) b.style.display = 'none';
+}
+
+function saveAIConfig(){
+  const ai = {
+    defLang:      document.getElementById('aic_defLang').value,
+    voiceSpeed:   document.getElementById('aic_voiceSpeed').value,
+    voicePitch:   document.getElementById('aic_voicePitch').value,
+    autoSpeak:    getTog('aic_autoSpeak'),
+    showSub:      getTog('aic_showSub'),
+    sceneCount:   document.getElementById('aic_sceneCount').value,
+    qaMode:       getTog('aic_qaMode'),
+    showSolution: getTog('aic_showSolution'),
+    sceneOverlay: getTog('aic_sceneOverlay'),
+    showExamples: getTog('aic_showExamples'),
+    quizEnabled:  getTog('aic_quizEnabled'),
+    quizApi:      getTog('aic_quizApi'),
+    quizCount:    document.getElementById('aic_quizCount').value,
+    textModel:    document.getElementById('aic_textModel').value,
+    visionModel:  document.getElementById('aic_visionModel').value,
+    announcement: document.getElementById('aic_announcement').value,
+    updatedAt:    Date.now()
+  };
+  // 1. Save to localStorage (website same-tab sync)
+  sv('edu_ai_config', ai);
+  // 2. Also update webCfg so saveWebsite picks it up
+  const c = ld(K.webCfg, {}); c.aiConfig = ai;
+  sv(K.webCfg, c);
+  // 3. Dispatch storage event → website tab auto-updates immediately
+  try {
+    window.dispatchEvent(new StorageEvent('storage', {key:'edu_ai_config', newValue:JSON.stringify(ai)}));
+    window.dispatchEvent(new StorageEvent('storage', {key:K.webCfg, newValue:JSON.stringify(c)}));
+  } catch(e){}
+  // 4. Push to Firebase siteContent (website Firebase listener picks it up)
+  pushAIConfigToFirebase(ai);
+  // 5. Show success banner
+  const b = document.getElementById('aiConfigSyncBanner');
+  if(b){ b.style.display = 'flex'; setTimeout(()=>b.style.display='none', 4000); }
+  showToast('✅', 'AI Config saved! Website par live ho gaya 🚀', 3500);
+}
+
+function pushAIConfigToFirebase(ai){
+  // This uses the same Firebase instance as saveWebsite
+  // We dispatch a custom event that the Firebase module can listen to
+  try {
+    window._fbPendingAIConfig = ai;
+    window.dispatchEvent(new CustomEvent('edu_push_ai_config', {detail: ai}));
+  } catch(e) { console.log('[Admin] Firebase push skipped:', e.message); }
 }
 document.querySelectorAll('.ni[data-page]').forEach(n=>n.addEventListener('click',()=>nav(n.dataset.page)));
 setInterval(()=>document.getElementById('liveTime').textContent=new Date().toLocaleTimeString('en-IN',{hour12:false}),1000);
@@ -1002,10 +1314,22 @@ function renderDash(){
   const L=ld(K.learners), S=ld(K.sessions), F=ld(K.feedback), A=ld(K.activity);
   const plans=ld(K.plans); const pMap={}; plans.forEach(p=>pMap[p.name]=p.price||0);
   const now=Date.now();
+  const todayStart=new Date(); todayStart.setHours(0,0,0,0); const t0=todayStart.getTime();
   const active=S.filter(s=>(now-s.timestamp)<30*60*1000).length;
   const revenue=L.reduce((r,l)=>r+(pMap[l.plan]||0),0);
   const paid=L.filter(l=>(pMap[l.plan]||0)>0).length;
   const todayL=L.filter(l=>(now-l.joinedAt)<86400000).length;
+  // New stats
+  const todaySess=S.filter(s=>s.timestamp>=t0);
+  const qaSess=S.filter(s=>s.type==='Solution'||s.mode==='image'||s.session_type==='Solution');
+  const courseSess=S.filter(s=>s.type==='Course'||s.session_type==='Course');
+  // Language breakdown
+  const langCounts={}; S.forEach(s=>{if(s.lang)langCounts[s.lang]=(langCounts[s.lang]||0)+1;});
+  const topLang=Object.entries(langCounts).sort((a,b)=>b[1]-a[1])[0];
+  const hinglishPct=topLang && S.length>0 ? Math.round((langCounts['Hinglish']||0)/S.length*100) : null;
+  // Avg scenes
+  const withScenes=S.filter(s=>s.scenes>0||s.scene_count>0);
+  const avgScenes=withScenes.length>0 ? (withScenes.reduce((a,s)=>a+(s.scenes||s.scene_count||0),0)/withScenes.length).toFixed(1) : null;
 
   document.getElementById('st_learners').textContent=L.length;
   document.getElementById('st_active').textContent=active;
@@ -1019,6 +1343,15 @@ function renderDash(){
   document.getElementById('st_rev_sub').textContent=paid===0?'0 paid subscribers':`${paid} paid subscriber${paid>1?'s':''}`;
   document.getElementById('st_rev_sub').className='stat-sub'+(paid>0?' up':'');
   document.getElementById('dashUpdated').textContent='Last updated: '+new Date().toLocaleTimeString('en-IN');
+  // New stats
+  document.getElementById('st_topicsToday').textContent=todaySess.length;
+  document.getElementById('st_topicsToday_sub').textContent=todaySess.length>0?`${courseSess.filter(s=>s.timestamp>=t0).length} course · ${qaSess.filter(s=>s.timestamp>=t0).length} Q&A`:'No sessions today';
+  document.getElementById('st_qaSessions').textContent=qaSess.length;
+  document.getElementById('st_qaSessions_sub').textContent=S.length>0?`${Math.round(qaSess.length/S.length*100)}% of all sessions`:'Screenshot uploads';
+  document.getElementById('st_hinglish').textContent=hinglishPct!==null?hinglishPct+'%':'—';
+  document.getElementById('st_hinglish_sub').textContent=topLang?`${topLang[0]}: ${topLang[1]} sessions`:'No sessions yet';
+  document.getElementById('st_avgScenes').textContent=avgScenes||'—';
+  document.getElementById('st_avgScenes_sub').textContent=withScenes.length>0?`From ${withScenes.length} course sessions`:'Scene completion';
 
   // sidebar badges
   document.getElementById('totalBadge').textContent=L.length;
@@ -1144,6 +1477,27 @@ function renderAnalytics(){
     document.getElementById('anExam').innerHTML=ee.map((e,i)=>
       `<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px"><span>${e[0]||'Unknown'}</span><span style="color:${pal[i%10]}">${e[1]}</span></div>
       <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(e[1]/me*100)}%;background:${pal[i%10]}"></div></div></div>`).join('');
+    // Session type breakdown
+    const courseCnt=S.filter(s=>s.type==='Course'||s.session_type==='Course').length;
+    const qaCnt=S.filter(s=>s.type==='Solution'||s.session_type==='Solution'||s.mode==='image').length;
+    const unknownCnt=S.length-courseCnt-qaCnt;
+    const stEntries=[['🎬 Course (8 Scenes)',courseCnt,'#818cf8'],['📸 Q&A / Screenshot',qaCnt,'#06b6d4'],['❓ Unknown',unknownCnt,'#6b7280']].filter(e=>e[1]>0);
+    const stMax=Math.max(...stEntries.map(e=>e[1]),1);
+    document.getElementById('anSessionType').innerHTML=stEntries.map(([label,cnt,color])=>
+      `<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px"><span>${label}</span><span style="color:${color}">${cnt} (${Math.round(cnt/S.length*100)}%)</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(cnt/stMax*100)}%;background:${color}"></div></div></div>`).join('');
+    // Input mode
+    const imgCnt=S.filter(s=>s.mode==='image'||s.input_type==='image').length;
+    const txtCnt=S.filter(s=>s.mode==='text'||s.mode==='topic'||s.input_type==='text').length;
+    const modeEntries=[['⌨️ Text / Type Karo',txtCnt,'#10b981'],['📸 Image Upload',imgCnt,'#f59e0b']].filter(e=>e[1]>0);
+    const mMax=Math.max(...modeEntries.map(e=>e[1]),1);
+    if(modeEntries.length>0){
+      document.getElementById('anInputMode').innerHTML=modeEntries.map(([label,cnt,color])=>
+        `<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--text2);margin-bottom:5px"><span>${label}</span><span style="color:${color}">${cnt} (${Math.round(cnt/(imgCnt+txtCnt||1)*100)}%)</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(cnt/mMax*100)}%;background:${color}"></div></div></div>`).join('');
+    } else {
+      document.getElementById('anInputMode').innerHTML=`<div class="zero-state" style="padding:20px 0"><div class="zero-icon">📸</div><div class="zero-title">No mode data — sessions will show after learners use image or text input</div></div>`;
+    }
     const tc={};S.forEach(s=>{if(s.topic)tc[s.topic]=(tc[s.topic]||0)+1;});
     const te=Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,10);
     if(te.length>0){const mt=te[0][1];
@@ -1157,17 +1511,52 @@ function renderAnalytics(){
 // ════════════════════════════════════════════
 // SESSIONS
 // ════════════════════════════════════════════
+let _sessFilter='';
+function filterSessions(q){_sessFilter=q.toLowerCase();renderSessions();}
 function renderSessions(){
   const S=ld(K.sessions);
-  document.getElementById('sessionsBody').innerHTML=!S.length?
-    `<tr><td colspan="6"><div class="zero-state"><div class="zero-icon">🎬</div><div class="zero-title">No sessions recorded yet</div><div class="zero-sub">Data will appear when a learner startsion kare tab yahan dikhega</div></div></td></tr>`:
-    [...S].sort((a,b)=>b.timestamp-a.timestamp).map(s=>
-      `<tr><td><div class="td-name">${s.learnerName||'Anonymous'}</div></td>
-      <td style="color:var(--text2)">${s.topic||'—'}</td>
-      <td><span class="badge badge-indigo">${s.exam||'—'}</span></td>
-      <td><span class="badge badge-muted">${s.lang||'—'}</span></td>
-      <td><span class="badge badge-green">${s.scenes||0} scenes</span></td>
-      <td style="color:var(--muted);font-size:11px">${ta(s.timestamp)}</td></tr>`).join('');
+  // Update mini stats
+  const courseSess=S.filter(s=>s.type==='Course'||s.session_type==='Course');
+  const qaSess=S.filter(s=>s.type==='Solution'||s.session_type==='Solution'||s.mode==='image');
+  const langCounts={};S.forEach(s=>{if(s.lang)langCounts[s.lang]=(langCounts[s.lang]||0)+1;});
+  const topLang=Object.entries(langCounts).sort((a,b)=>b[1]-a[1])[0];
+  const sc=document.getElementById('sess_course'); if(sc) sc.textContent=courseSess.length;
+  const sq=document.getElementById('sess_qa'); if(sq) sq.textContent=qaSess.length;
+  const sl=document.getElementById('sess_tplang'); if(sl) sl.textContent=topLang?topLang[0]:'—';
+  // Filter
+  const filtered=_sessFilter ? S.filter(s=>(s.topic||'').toLowerCase().includes(_sessFilter)||(s.learnerName||'').toLowerCase().includes(_sessFilter)) : S;
+  const sorted=[...filtered].sort((a,b)=>b.timestamp-a.timestamp);
+  const typeColor={Course:'badge-indigo',Solution:'badge-green'};
+  const modeMap={image:'📸 Image',text:'⌨️ Text',topic:'⌨️ Text'};
+  document.getElementById('sessionsBody').innerHTML=!sorted.length?
+    `<tr><td colspan="8"><div class="zero-state"><div class="zero-icon">🎬</div><div class="zero-title">${S.length===0?'No sessions recorded yet':'No results found'}</div><div class="zero-sub">Data will appear when learners start studying</div></div></td></tr>`:
+    sorted.map(s=>{
+      const stype=s.type||s.session_type||'Course';
+      const mode=modeMap[s.mode]||modeMap[s.input_type]||(stype==='Solution'?'📸 Image':'⌨️ Text');
+      const sceneCount=s.scenes||s.scene_count||0;
+      return `<tr>
+        <td><div class="td-name">${s.learnerName||'Anonymous'}</div></td>
+        <td style="color:var(--text2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${s.topic||''}">${s.topic||'—'}</td>
+        <td><span class="badge ${typeColor[stype]||'badge-muted'}">${stype==='Solution'?'📸 Q&A':'🎬 Course'}</span></td>
+        <td style="font-size:11px;color:var(--muted)">${mode}</td>
+        <td><span class="badge badge-indigo">${s.exam||'—'}</span></td>
+        <td><span class="badge badge-muted">${s.lang||'—'}</span></td>
+        <td><span class="badge ${sceneCount>0?'badge-green':'badge-muted'}">${sceneCount>0?sceneCount+' scenes':stype==='Solution'?'Q&A':'—'}</span></td>
+        <td style="color:var(--muted);font-size:11px">${ta(s.timestamp)}</td>
+      </tr>`;
+    }).join('');
+}
+function exportSessionsCSV(){
+  const S=ld(K.sessions);if(!S.length){showToast('⚠️','No sessions to export!');return;}
+  const rows=[['Learner','Topic','Type','Mode','Exam','Language','Scenes','Time'],
+    ...[...S].sort((a,b)=>b.timestamp-a.timestamp).map(s=>[
+      s.learnerName||'Anonymous', s.topic||'', s.type||s.session_type||'Course',
+      s.mode||'text', s.exam||'', s.lang||'', s.scenes||s.scene_count||0, ta(s.timestamp)
+    ])];
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n'));
+  a.download='edusphere_sessions_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();showToast('📥','Sessions CSV downloaded!');
 }
 
 // ════════════════════════════════════════════
@@ -1328,6 +1717,23 @@ function renderWebEditor(){
   document.getElementById('ws_lang').value=c.defLang||'Hinglish';
   document.getElementById('ws_teacherTag').value=c.teacherTag||'AI-powered • Always available • Speaks Hinglish';
   if(c.teacherImgUrl){document.getElementById('ws_teacherImgUrl').value=c.teacherImgUrl;previewImgUrl({value:c.teacherImgUrl},'teacherImgPreview');}
+  // AI CONFIG
+  const ai=c.aiConfig||{};
+  setV('ai_defLang', ai.defLang||'Hinglish');
+  setV('ai_voiceSpeed', ai.voiceSpeed||'0.75');
+  setV('ai_voicePitch', ai.voicePitch||'1.08');
+  setTog('ai_autoSpeak', ai.autoSpeak!==false);
+  setTog('ai_showSub', ai.showSub!==false);
+  setV('ai_sceneCount', ai.sceneCount||'8');
+  setTog('ai_qaMode', ai.qaMode!==false);
+  setTog('ai_showSolution', ai.showSolution!==false);
+  setTog('ai_sceneOverlay', ai.sceneOverlay!==false);
+  setTog('ai_showExamples', ai.showExamples!==false);
+  setTog('ai_quizEnabled', ai.quizEnabled!==false);
+  setTog('ai_quizApi', ai.quizApi!==false);
+  setV('ai_quizCount', ai.quizCount||'5');
+  setV('ai_textModel', ai.textModel||'deepseek/deepseek-chat-v3-0324:free');
+  setV('ai_visionModel', ai.visionModel||'google/gemini-2.0-flash-001');
   // FEATURES
   document.getElementById('ws_featTitle').value=c.featTitle||'Why EduSphere?';
   document.getElementById('ws_featSub').value=c.featSub||'AI-powered learning for every Indian student';
@@ -1382,6 +1788,8 @@ function renderWebEditor(){
     if(picker&&hex){picker.addEventListener('input',()=>{hex.value=picker.value;});}
   });
 }
+// Helper: set select/input value safely
+function setV(id,val){const el=document.getElementById(id);if(el)el.value=val;}
 function setTog(id,val){const el=document.getElementById(id);if(!el)return;val?el.classList.add('on'):el.classList.remove('on');}
 function getTog(id){var el=document.getElementById(id);return el?el.classList.contains('on'):false;}
 function syncColorHex(name){const h=document.getElementById('ws_color'+name+'Hex').value;if(/^#[0-9A-Fa-f]{6}$/.test(h))document.getElementById('ws_color'+name).value=h;}
@@ -1413,6 +1821,26 @@ function saveWebsite(){
   c.teacher=document.getElementById('ws_teacher').value;c.welcome=document.getElementById('ws_welcome').value;
   c.defLang=document.getElementById('ws_lang').value;c.teacherTag=document.getElementById('ws_teacherTag').value;
   c.teacherImgUrl=document.getElementById('ws_teacherImgUrl').value;
+  // AI CONFIG
+  c.aiConfig={
+    defLang:    document.getElementById('ai_defLang').value,
+    voiceSpeed: document.getElementById('ai_voiceSpeed').value,
+    voicePitch: document.getElementById('ai_voicePitch').value,
+    autoSpeak:  getTog('ai_autoSpeak'),
+    showSub:    getTog('ai_showSub'),
+    sceneCount: document.getElementById('ai_sceneCount').value,
+    qaMode:     getTog('ai_qaMode'),
+    showSolution: getTog('ai_showSolution'),
+    sceneOverlay: getTog('ai_sceneOverlay'),
+    showExamples: getTog('ai_showExamples'),
+    quizEnabled:  getTog('ai_quizEnabled'),
+    quizApi:      getTog('ai_quizApi'),
+    quizCount:    document.getElementById('ai_quizCount').value,
+    textModel:    document.getElementById('ai_textModel').value,
+    visionModel:  document.getElementById('ai_visionModel').value
+  };
+  // Save AI config also separately for easy access by website
+  sv('edu_ai_config', c.aiConfig);
   // FEATURES
   c.featTitle=document.getElementById('ws_featTitle').value;c.featSub=document.getElementById('ws_featSub').value;
   c.showFeatures=getTog('tog-features');
@@ -1447,8 +1875,47 @@ function previewWebsite(){showToast('👁️','Open the website in the same brow
 // SETTINGS
 // ════════════════════════════════════════════
 function saveSettings(){
-  sv(K.settings,{maintenance:document.getElementById('tog-maint').classList.contains('on'),registrations:document.getElementById('tog-reg').classList.contains('on'),freePlan:document.getElementById('tog-free').classList.contains('on'),maxScenes:document.getElementById('set_scenes').value,gateway:document.getElementById('set_gw').value});
+  const s={
+    maintenance: getTog('tog-maint'),
+    registrations: getTog('tog-reg'),
+    freePlan: getTog('tog-free'),
+    aiGen: getTog('set_aiGen'),
+    qaMode: getTog('set_qaMode'),
+    tts: getTog('set_tts'),
+    quiz: getTog('set_quiz'),
+    sceneOverlay: getTog('set_overlay'),
+    maxScenes: document.getElementById('set_scenes').value,
+    defLang: document.getElementById('set_defLang')?.value||'Hinglish',
+    gateway: document.getElementById('set_gw').value
+  };
+  sv(K.settings, s);
+  // Also sync to edu_ai_config for website to read
+  const aiCfg = ld('edu_ai_config',{});
+  aiCfg.qaMode = s.qaMode;
+  aiCfg.quizEnabled = s.quiz;
+  aiCfg.sceneOverlay = s.sceneOverlay;
+  aiCfg.defLang = s.defLang;
+  sv('edu_ai_config', aiCfg);
   showToast('✅','Settings saved!');
+}
+
+function exportAllData(){
+  const data={
+    learners: ld(K.learners),
+    sessions: ld(K.sessions),
+    feedback: ld(K.feedback),
+    leads: ld('edu_leads',[]),
+    activity: ld(K.activity),
+    plans: ld(K.plans),
+    settings: ld(K.settings,{}),
+    aiConfig: ld('edu_ai_config',{}),
+    exportedAt: new Date().toISOString()
+  };
+  const a=document.createElement('a');
+  a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(data,null,2));
+  a.download='edusphere_backup_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  showToast('📥','Full backup downloaded!',3500);
 }
 
 // ════════════════════════════════════════════
@@ -2015,7 +2482,7 @@ const fbApp = initializeApp(fbCfg, "admin-fb");
 const fbDb  = getFirestore(fbApp);
 
 // ─────────────────────────────────────────
-// 1. SAVE WEBSITE CONTENT (existing)
+// 1. SAVE WEBSITE CONTENT + AI CONFIG
 // ─────────────────────────────────────────
 const _orig = window.saveWebsite;
 window.saveWebsite = async function(){
@@ -2028,18 +2495,44 @@ window.saveWebsite = async function(){
     while(document.getElementById('chip_'+ci)){chips.push(document.getElementById('chip_'+ci).value);ci++;}
     const heroImgUrl = gv('ws_heroImgUrl') || stored.heroImgUrl || '';
     const showHero = (document.getElementById('tog-heroImg') && document.getElementById('tog-heroImg').classList.contains('on'));
+    // Get AI config from localStorage (may have been saved by saveAIConfig already)
+    let aiCfg = {};
+    try { aiCfg = JSON.parse(localStorage.getItem('edu_ai_config')||'{}'); } catch(e){}
     await setDoc(doc(fbDb,"siteContent","main"),{
       heroTitle:gv('ws_heroTitle'), heroSubText:gv('ws_heroSub'),
       heroImgUrl, showHeroImg:showHero,
       siteTitle:gv('ws_siteTitle'), proTip:gv('ws_welcome'),
+      teacherName:gv('ws_teacher') || 'Jennie',
       proTipTitle:'🚀 PRO TIP', heroTags:chips,
       quickChips:chips.map(t=>({label:t,topic:t.replace(/^[^a-zA-Z]*/,'').trim()})),
-      announcement:gv('ws_announcement')||'', brandName:'AI',
+      announcement:gv('ws_announcement')||aiCfg.announcement||'',
+      brandName:'AI',
+      aiConfig: aiCfg,
       updatedAt:new Date().toISOString()
     });
     showToast('🎉','Live! Website updated in real time!',4000);
   } catch(e){ showToast('⚠️','Firebase error: '+e.message,4000); }
 };
+
+// ─────────────────────────────────────────
+// 1b. AI CONFIG PUSH EVENT LISTENER
+// saveAIConfig() dispatches this event
+// ─────────────────────────────────────────
+window.addEventListener('edu_push_ai_config', async (e) => {
+  try {
+    const ai = e.detail || window._fbPendingAIConfig || {};
+    if(!ai || !ai.defLang) return;
+    // Get current siteContent to merge (don't overwrite hero etc.)
+    await setDoc(doc(fbDb,"siteContent","main"), {
+      aiConfig: ai,
+      announcement: ai.announcement || '',
+      updatedAt: new Date().toISOString()
+    }, { merge: true }); // merge:true = only update these fields, keep rest
+    console.log('[Admin] AI Config pushed to Firebase ✅');
+  } catch(err) {
+    console.log('[Admin] AI Config Firebase push failed:', err.message);
+  }
+});
 
 // ─────────────────────────────────────────
 // 2. REAL-TIME VISITOR LISTENER (NEW)
