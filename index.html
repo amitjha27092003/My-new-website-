@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FRSL68YFGP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-FRSL68YFGP');
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FRSL68YFGP">
 </script>
+
+<script>
+ window.dataLayer window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-FRSL68YFGP');
+</script>
+
 <meta name="google-site-verification" content="oIwVhT737rznEitBs6E-VdWBFdNv69ZqPojgwHw1_MU" />
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
@@ -4630,80 +4633,6 @@ window.addEventListener('load',()=>{
   const ctr = document.getElementById('heroTopicsCount');
   if(ctr) ctr.textContent = hist.length;
   setTimeout(()=>toast('👩‍🏫','Jennie ready hai! Topic upload karo ya type karo 🚀',3000),1200);
-
-  // ── Load admin config from localStorage on startup ──
-  // This applies whatever admin had saved (even if Firebase listener hasn't fired yet)
-  try {
-    const webCfg = JSON.parse(localStorage.getItem('edu_website_config')||'{}');
-    const aiCfg  = JSON.parse(localStorage.getItem('edu_ai_config')||'{}');
-
-    // 1. Hero image — apply if saved and toggle is on
-    const imgUrl = webCfg.heroImgUrl || '';
-    const showImg = webCfg.showHeroImg !== false;
-    // Valid image URL: data:image/... (base64) OR http/https URL
-    const isValidImg = imgUrl && (imgUrl.startsWith('data:image') || imgUrl.startsWith('http'));
-    if(isValidImg && showImg){
-        let heroImgEl = document.getElementById('adminHeroImage');
-        if(!heroImgEl){
-          heroImgEl = document.createElement('div');
-          heroImgEl.id = 'adminHeroImage';
-          heroImgEl.style.cssText = 'width:100%;max-height:220px;border-radius:14px;overflow:hidden;margin-top:14px;border:1px solid rgba(129,140,248,0.3);box-shadow:0 8px 32px rgba(0,0,0,0.4)';
-          const heroDiv = document.querySelector('.hero');
-          if(heroDiv) heroDiv.appendChild(heroImgEl);
-        }
-        heroImgEl.innerHTML = '<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:14px" onerror="this.parentElement.style.display=\'none\'">';
-        heroImgEl.style.display = 'block';
-      }
-    }
-
-    // 2. Hero title (guard: never apply base64 to title)
-    const titleVal = webCfg.heroTitle||'';
-    if(titleVal && !titleVal.startsWith('data:')){
-      const ht = document.getElementById('heroTitle');
-      if(ht) ht.textContent = titleVal;
-    }
-
-    // 3. Quick chips
-    if(webCfg.chips && webCfg.chips.length){
-      const qc = document.getElementById('quickChips');
-      if(qc) qc.innerHTML = webCfg.chips.map(ch=>{
-        const topic = ch.replace(/^[^a-zA-Z]*/,'').trim();
-        return '<div class="chip" onclick="quickT(\''+topic.replace(/'/g,"\\'")+'\')">' + ch + '</div>';
-      }).join('');
-    }
-
-    // 4. Announcement banner
-    const ann = (aiCfg.announcement) || (webCfg.aiConfig && webCfg.aiConfig.announcement) || '';
-    if(ann && !sessionStorage.getItem('ann_hidden')){
-      let annEl = document.getElementById('announcementBanner');
-      if(!annEl){
-        annEl = document.createElement('div');
-        annEl.id = 'announcementBanner';
-        annEl.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,#4338ca,#6366f1,#4338ca);color:white;text-align:center;font-size:12px;font-weight:800;padding:8px 40px;letter-spacing:.5px;box-shadow:0 2px 12px rgba(99,102,241,0.5)';
-        const closeBtn = document.createElement('span');
-        closeBtn.textContent = '✕';
-        closeBtn.style.cssText = 'position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;opacity:.7;font-size:14px';
-        closeBtn.onclick = ()=>{ annEl.style.display='none'; sessionStorage.setItem('ann_hidden','1'); };
-        annEl.appendChild(closeBtn);
-        annEl.insertBefore(document.createTextNode(ann), closeBtn);
-        document.body.insertBefore(annEl, document.body.firstChild);
-      }
-    }
-
-    // 5. AI Config — apply voice + language defaults
-    if(aiCfg.defLang && !G._langManuallySet){
-      G.lang = aiCfg.defLang;
-      const lr = document.getElementById('langReminder');
-      const hl = document.getElementById('heroLang');
-      const cl = document.getElementById('currLangLabel');
-      if(lr) lr.textContent = aiCfg.defLang;
-      if(hl) hl.textContent = aiCfg.defLang;
-      if(cl) cl.textContent = aiCfg.defLang;
-      document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('sel', o.dataset.l===aiCfg.defLang));
-    }
-    if(aiCfg.sceneCount) G._adminSceneCount = parseInt(aiCfg.sceneCount)||8;
-
-  } catch(e){ console.log('[EduSphere] Config load error:',e.message); }
 });
 
 // Reset action row when new topic generated
@@ -4954,196 +4883,6 @@ if(_origGenBtn){
   });
 })();
 
-</script>
-
-<!-- ════════════════════════════════════════════════════════
-     ADMIN REAL-TIME SYNC — Firebase siteContent listener
-     Admin se koi bhi change karo → website pe turant apply
-     ════════════════════════════════════════════════════════ -->
-<script type="module">
-import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-(function(){
-  var fbCfg = {
-    apiKey: "AIzaSyA3YNLYZVPz9h86PfpnrhuInLFPkuCk--A",
-    authDomain: "edusphere-80549.firebaseapp.com",
-    projectId: "edusphere-80549",
-    storageBucket: "edusphere-80549.firebasestorage.app",
-    messagingSenderId: "434274785382",
-    appId: "1:434274785382:web:5b3ec4f65bcd9a55e835a7"
-  };
-
-  var fbApp, fbDb;
-  try {
-    fbApp = getApps().find(a=>a.name==='website-content-fb') || initializeApp(fbCfg,'website-content-fb');
-    fbDb  = getFirestore(fbApp);
-  } catch(e){ console.log('[EduSphere] Content sync init failed:',e.message); return; }
-
-  // ── Apply siteContent data to website DOM ──
-  function applySiteContent(data){
-    if(!data) return;
-    try {
-      // 1. Hero title
-      var ht = document.getElementById('heroTitle');
-      if(ht && data.heroTitle) ht.textContent = data.heroTitle;
-
-      // 2. Site title (browser tab)
-      if(data.siteTitle) document.title = data.siteTitle;
-
-      // 3. Quick chips (topic shortcuts)
-      var qc = document.getElementById('quickChips');
-      if(qc && data.quickChips && data.quickChips.length){
-        qc.innerHTML = data.quickChips.map(function(c){
-          var label = typeof c==='string' ? c : (c.label||'');
-          var topic = typeof c==='string' ? c.replace(/^[^a-zA-Z]*/,'').trim() : (c.topic||label);
-          return '<div class="chip" onclick="quickT(\''+topic.replace(/'/g,"\\'")+'\')">' + label + '</div>';
-        }).join('');
-      }
-
-      // 4. Announcement banner
-      var ann = data.announcement || (data.aiConfig && data.aiConfig.announcement) || '';
-      var annEl = document.getElementById('announcementBanner');
-      if(!annEl && ann){
-        // Create banner if doesn't exist
-        annEl = document.createElement('div');
-        annEl.id = 'announcementBanner';
-        annEl.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,#4338ca,#6366f1,#4338ca);color:white;text-align:center;font-size:12px;font-weight:800;padding:8px 40px;letter-spacing:.5px;box-shadow:0 2px 12px rgba(99,102,241,0.5)';
-        var closeBtn = document.createElement('span');
-        closeBtn.textContent = '✕';
-        closeBtn.style.cssText = 'position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;opacity:.7;font-size:14px';
-        closeBtn.onclick = function(){ annEl.style.display='none'; sessionStorage.setItem('ann_hidden','1'); };
-        annEl.appendChild(closeBtn);
-        document.body.insertBefore(annEl, document.body.firstChild);
-      }
-      if(annEl){
-        if(ann && !sessionStorage.getItem('ann_hidden')){
-          // Set text (keep close button)
-          var textNode = annEl.childNodes[0];
-          if(textNode && textNode.nodeType===3) textNode.textContent = ann;
-          else annEl.insertBefore(document.createTextNode(ann), annEl.firstChild);
-          annEl.style.display = 'block';
-        } else if(!ann){
-          annEl.style.display = 'none';
-        }
-      }
-
-      // 5. AI Config — apply voice/scene settings if present
-      var ai = data.aiConfig;
-      if(ai && typeof ai === 'object'){
-        // Save to localStorage so website G object picks it up on next generate
-        try{ localStorage.setItem('edu_ai_config', JSON.stringify(ai)); }catch(e){}
-        // Apply default language if not already selected by user
-        if(ai.defLang && window.G && !window.G._langManuallySet){
-          window.G.lang = ai.defLang;
-          var langRem = document.getElementById('langReminder');
-          var heroLng = document.getElementById('heroLang');
-          var currLbl = document.getElementById('currLangLabel');
-          if(langRem) langRem.textContent = ai.defLang;
-          if(heroLng) heroLng.textContent = ai.defLang;
-          if(currLbl) currLbl.textContent = ai.defLang;
-          // Sync lang option selector
-          document.querySelectorAll('.lang-opt').forEach(function(o){
-            o.classList.toggle('sel', o.dataset.l===ai.defLang);
-          });
-        }
-        // Apply scene count
-        if(ai.sceneCount && window.G) window.G._adminSceneCount = parseInt(ai.sceneCount)||8;
-        // Apply voice settings to VOICE_PROFILES if available
-        if(window.VOICE_PROFILES){
-          var speed = parseFloat(ai.voiceSpeed)||0.75;
-          var pitch = parseFloat(ai.voicePitch)||1.08;
-          ['Hinglish','Hindi'].forEach(function(lang){
-            if(window.VOICE_PROFILES[lang]){
-              window.VOICE_PROFILES[lang].rate  = speed;
-              window.VOICE_PROFILES[lang].pitch = pitch;
-            }
-          });
-        }
-      }
-
-      // 6. Teacher name (Jennie)
-      if(data.teacherName){
-        document.querySelectorAll('.sub-speaker span').forEach(function(el){
-          if(el.textContent.includes('EXPLAINING')) el.textContent = (data.teacherName).toUpperCase()+' IS EXPLAINING';
-        });
-      }
-
-      // 7. Hero tags (exam chips in hero banner) - optional
-      if(data.heroTags && data.heroTags.length){
-        var htags = document.querySelector('.hero-tags');
-        if(htags) htags.innerHTML = data.heroTags.map(function(t){
-          return '<div class="htag">'+t+'</div>';
-        }).join('');
-      }
-
-      // 8. Hero image — show/hide in hero section
-      var heroImgUrl = data.heroImgUrl || '';
-      var showHeroImg = data.showHeroImg !== false;
-      // Guard: never render base64 from heroTitle (corruption case)
-      if(heroImgUrl && heroImgUrl.startsWith('data:') === false && heroImgUrl.length < 10) heroImgUrl = '';
-      var heroEl = document.getElementById('adminHeroImage');
-      if(heroImgUrl && showHeroImg){
-        if(!heroEl){
-          heroEl = document.createElement('div');
-          heroEl.id = 'adminHeroImage';
-          heroEl.style.cssText = 'width:100%;max-height:220px;border-radius:14px;overflow:hidden;margin-top:14px;border:1px solid rgba(129,140,248,0.3);box-shadow:0 8px 32px rgba(0,0,0,0.4)';
-          var heroDiv = document.querySelector('.hero');
-          if(heroDiv) heroDiv.appendChild(heroEl);
-        }
-        heroEl.innerHTML = '<img src="'+heroImgUrl+'" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:14px" onerror="this.parentElement.style.display=\'none\'">';
-        heroEl.style.display = 'block';
-      } else if(heroEl){
-        heroEl.style.display = 'none';
-      }
-
-      console.log('[EduSphere] ✅ Admin changes applied live! Updated:', Object.keys(data).join(', '));
-    } catch(e){ console.log('[EduSphere] applySiteContent error:',e.message); }
-  }
-
-  // ── Also handle localStorage storage event (same-browser fast sync) ──
-  window.addEventListener('storage', function(e){
-    if(e.key === 'edu_ai_config' && e.newValue){
-      try{
-        var ai = JSON.parse(e.newValue);
-        applySiteContent({aiConfig: ai, announcement: ai.announcement});
-        console.log('[EduSphere] localStorage AI Config sync applied');
-      } catch(err){}
-    }
-    if(e.key === 'edu_website_config' && e.newValue){
-      try{
-        var cfg = JSON.parse(e.newValue);
-        // Map webCfg fields to siteContent format
-        applySiteContent({
-          heroTitle:    cfg.heroTitle && !cfg.heroTitle.startsWith('data:') ? cfg.heroTitle : undefined,
-          siteTitle:    cfg.siteTitle,
-          quickChips:   cfg.chips,
-          heroTags:     cfg.chips,
-          heroImgUrl:   cfg.heroImgUrl,
-          showHeroImg:  cfg.showHeroImg,
-          announcement: cfg.aiConfig && cfg.aiConfig.announcement,
-          aiConfig:     cfg.aiConfig,
-          teacherName:  cfg.teacher
-        });
-        console.log('[EduSphere] localStorage webCfg sync applied');
-      } catch(err){}
-    }
-  });
-
-  // ── Firebase real-time listener — siteContent/main ──
-  try {
-    onSnapshot(doc(fbDb, "siteContent", "main"), function(snap){
-      if(!snap.exists()) return;
-      var data = snap.data();
-      applySiteContent(data);
-    }, function(err){
-      console.log('[EduSphere] siteContent listener:', err.code||err.message);
-    });
-    console.log('[EduSphere] 🔥 Admin sync listener active');
-  } catch(e){
-    console.log('[EduSphere] Sync listener skipped:', e.message);
-  }
-})();
 </script>
 </body>
 </html>
