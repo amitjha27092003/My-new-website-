@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FRSL68YFGP">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FRSL68YFGP">
 </script>
 
 <script>
@@ -2118,6 +2118,9 @@ function applyResult(r){
     // Don't show play buttons in solution mode
     document.getElementById('playBtn').style.display='none';
     document.getElementById('scBadge').textContent='Q&A';
+
+    // ✅ Show solution on canvas overlay too
+    renderSolutionOnCanvas(r);
     
   } else {
     // FULL COURSE MODE - 8 scenes with explanation
@@ -3374,6 +3377,91 @@ function createHD2DSummary(heading, points, topic){
   </svg>`;
 }
 
+// ══════════════════════════════════════════════════════════
+// SOLUTION CANVAS RENDERER — for screenshot/Q&A mode
+// ══════════════════════════════════════════════════════════
+function renderSolutionOnCanvas(r){
+  const overlay = document.getElementById('diagramOverlayContainer');
+  if(!overlay) return;
+
+  const topic    = r.topic_name || 'Question';
+  const question = r.question_summary || '';
+  const solution = r.solution_summary || '';
+  const keyPts   = r.key_points || [];
+  const examTips = r.exam_tips || [];
+  const diff     = r.difficulty || 'Medium';
+  const marks    = r.marks || '';
+
+  const diffColor = diff==='Hard'?'#f43f5e':diff==='Medium'?'#f59e0b':'#10b981';
+
+  // Key points HTML
+  const kpHTML = keyPts.slice(0,6).map((pt,i)=>{
+    const c = ['#818cf8','#10b981','#f59e0b','#f43f5e','#06b6d4','#e879f9'][i%6];
+    return `<div style="display:flex;align-items:flex-start;gap:9px;padding:8px 11px;background:${c}10;border:1px solid ${c}33;border-left:3px solid ${c};border-radius:0 8px 8px 0">
+      <span style="font-size:10px;font-weight:900;color:${c};flex-shrink:0;margin-top:2px">▸</span>
+      <span style="font-size:12px;color:#c7d2fe;line-height:1.5;font-weight:600">${pt}</span>
+    </div>`;
+  }).join('');
+
+  // Exam tips HTML
+  const tipsHTML = examTips.slice(0,3).map((t,i)=>
+    `<div style="padding:7px 11px;background:rgba(245,158,11,0.08);border-radius:7px;border-left:2px solid #f59e0b;font-size:11.5px;color:#fcd34d;line-height:1.5">⭐ ${t}</div>`
+  ).join('');
+
+  overlay.innerHTML = `
+    <div style="padding:14px 16px 20px;display:flex;flex-direction:column;gap:12px">
+
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:9px">
+          <div style="font-size:22px">📸</div>
+          <div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+              <span style="font-size:9px;font-weight:900;color:#10b981;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.4);border-radius:20px;padding:2px 9px;letter-spacing:1px">✅ SOLUTION</span>
+              ${marks ? `<span style="font-size:9px;font-weight:800;color:#f59e0b;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:20px;padding:2px 8px">${marks} marks</span>` : ''}
+              <span style="font-size:9px;font-weight:800;color:${diffColor};background:${diffColor}18;border:1px solid ${diffColor}44;border-radius:20px;padding:2px 8px">${diff}</span>
+            </div>
+            <div style="font-family:'Sora',sans-serif;font-size:14px;font-weight:900;color:#f0f0ff;line-height:1.3">${topic}</div>
+          </div>
+        </div>
+      </div>
+
+      ${question ? `
+      <!-- Question -->
+      <div style="padding:10px 13px;background:rgba(99,102,241,0.08);border:1px solid rgba(129,140,248,0.25);border-radius:10px">
+        <div style="font-size:9px;font-weight:900;color:#818cf8;letter-spacing:1.5px;margin-bottom:5px">❓ QUESTION</div>
+        <div style="font-size:12.5px;color:#c7d2fe;line-height:1.6;font-weight:600">${question}</div>
+      </div>` : ''}
+
+      ${solution ? `
+      <!-- Solution -->
+      <div style="padding:11px 13px;background:rgba(16,185,129,0.07);border:1.5px solid rgba(16,185,129,0.35);border-radius:10px">
+        <div style="font-size:9px;font-weight:900;color:#10b981;letter-spacing:1.5px;margin-bottom:6px">✅ SOLUTION</div>
+        <div style="font-size:12.5px;color:#d1fae5;line-height:1.7;font-weight:600;white-space:pre-wrap">${solution}</div>
+      </div>` : ''}
+
+      ${kpHTML ? `
+      <!-- Key Points -->
+      <div style="background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.15);border-radius:10px;padding:11px 12px">
+        <div style="font-size:9px;font-weight:900;color:#a5b4fc;letter-spacing:1.5px;margin-bottom:7px">📌 KEY POINTS</div>
+        <div style="display:flex;flex-direction:column;gap:6px">${kpHTML}</div>
+      </div>` : ''}
+
+      ${tipsHTML ? `
+      <!-- Exam Tips -->
+      <div style="background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:11px 12px">
+        <div style="font-size:9px;font-weight:900;color:#f59e0b;letter-spacing:1.5px;margin-bottom:7px">💡 EXAM TIPS</div>
+        <div style="display:flex;flex-direction:column;gap:5px">${tipsHTML}</div>
+      </div>` : ''}
+
+    </div>`;
+
+  overlay.style.visibility = 'visible';
+  overlay.style.opacity    = '1';
+  overlay.style.zIndex     = '15';
+  overlay.scrollTop        = 0;
+}
+
 // ══════════════════════════════
 // SCENE RENDERER — ACTUAL AI CONTENT ON SCREEN
 // ══════════════════════════════
@@ -3412,167 +3500,201 @@ function renderSceneContent(sc, idx, total){
   const overlay = document.getElementById('diagramOverlayContainer');
   if(!overlay) return;
 
-  const vd  = sc.visual_data || {};
-  const heading = vd.heading || sc.title || '';
-  const pts = vd.points || [];
-  const icon = vd.icon || '💡';
-  const vtype = sc.visual_type || 'concept';
-  const narr = sc.narration || '';
-  const sn = idx + 1;
-  const tot = total || G.scenes.length;
+  const vd      = sc.visual_data || {};
+  const heading = vd.heading || sc.title || 'Scene '+(idx+1);
+  const icon    = vd.icon || (sc.visual_type==='intro'?'🎯':sc.visual_type==='diagram'?'🔗':sc.visual_type==='example'?'📝':sc.visual_type==='summary'?'✅':'💡');
+  const vtype   = sc.visual_type || 'concept';
+  const narr    = sc.narration || '';
+  const sn      = idx + 1;
+  const tot     = total || G.scenes.length;
 
-  // Theme colors per scene type
+  // ── Get points — multiple fallback sources ──
+  let pts = [];
+  if(vd.points && Array.isArray(vd.points) && vd.points.filter(p=>p&&p.trim()).length > 0){
+    pts = vd.points.filter(p=>p&&p.trim());
+  } else if(vd.terms && Array.isArray(vd.terms)){
+    pts = vd.terms.filter(p=>p&&p.trim());
+  } else if(vd.steps && Array.isArray(vd.steps)){
+    pts = vd.steps.filter(p=>p&&p.trim());
+  } else if(vd.items && Array.isArray(vd.items)){
+    pts = vd.items.filter(p=>p&&p.trim());
+  } else {
+    // ── Last resort: extract key sentences from narration ──
+    const nSents = narr.split(/[.!?।]+/).map(s=>s.trim()).filter(s=>s.length>20 && s.length<200);
+    // Pick meaningful sentences (not just connectors)
+    pts = nSents.filter(s => {
+      const sl = s.toLowerCase();
+      return !sl.startsWith('dekho') && !sl.startsWith('samjho') && !sl.startsWith('toh') && s.length > 30;
+    }).slice(0, 5);
+    // If still nothing, just take first 5 sentences
+    if(pts.length === 0) pts = nSents.slice(0, 5);
+  }
+
+  // ── Theme colors per scene type ──
   const typeTheme = {
-    intro:   { accent:'#818cf8', bg:'rgba(99,102,241,0.12)',  border:'rgba(129,140,248,0.5)', badge:'🎯 INTRO' },
-    concept: { accent:'#a5b4fc', bg:'rgba(99,102,241,0.08)',  border:'rgba(129,140,248,0.35)', badge:'💡 CONCEPT' },
-    diagram: { accent:'#06b6d4', bg:'rgba(6,182,212,0.08)',   border:'rgba(6,182,212,0.4)',  badge:'🔗 DIAGRAM' },
-    example: { accent:'#10b981', bg:'rgba(16,185,129,0.08)',  border:'rgba(16,185,129,0.4)', badge:'📝 EXAMPLES' },
-    summary: { accent:'#f59e0b', bg:'rgba(245,158,11,0.08)',  border:'rgba(245,158,11,0.4)', badge:'✅ SUMMARY' }
+    intro:   { accent:'#818cf8', bg:'rgba(99,102,241,0.15)',  border:'rgba(129,140,248,0.5)', badge:'🎯 INTRO',    label:'Introduction' },
+    concept: { accent:'#a5b4fc', bg:'rgba(99,102,241,0.12)',  border:'rgba(129,140,248,0.4)', badge:'💡 CONCEPT',  label:'Core Concept' },
+    diagram: { accent:'#06b6d4', bg:'rgba(6,182,212,0.12)',   border:'rgba(6,182,212,0.5)',   badge:'🔗 DIAGRAM',  label:'Diagram' },
+    example: { accent:'#10b981', bg:'rgba(16,185,129,0.12)',  border:'rgba(16,185,129,0.5)',  badge:'📝 EXAMPLES', label:'Real Examples' },
+    summary: { accent:'#f59e0b', bg:'rgba(245,158,11,0.12)',  border:'rgba(245,158,11,0.5)',  badge:'✅ SUMMARY',  label:'Summary' }
   };
   const th = typeTheme[vtype] || typeTheme.concept;
 
-  // Extract real-world examples from narration sentences
-  // Look for "jaise", "example", "like", "e.g." patterns
+  // ── Extract real-world examples from narration ──
   const examplePhrases = [];
-  const narSents = narr.split(/[.!?।]+/).filter(s => s.trim().length > 15);
+  const narSents = narr.split(/[.!?।]+/).filter(s => s.trim().length > 20);
   narSents.forEach(s => {
     const sl = s.toLowerCase();
     if(sl.includes('jaise') || sl.includes('example') || sl.includes('jab tum') ||
        sl.includes('phone') || sl.includes('paani') || sl.includes('ghar') ||
        sl.includes('aam') || sl.includes('battery') || sl.includes('school') ||
-       sl.includes('like ') || sl.includes('e.g.') || sl.includes('real life') ||
-       sl.includes('daily life') || sl.includes('roz') || sl.includes('rozana')){
+       sl.includes('jaise ki') || sl.includes('real life') || sl.includes('daily life') ||
+       sl.includes('roz') || sl.includes('bilkul jaise')){
       examplePhrases.push(s.trim());
     }
   });
 
-  // Point cards HTML
   const ptColors = ['#818cf8','#10b981','#f59e0b','#f43f5e','#06b6d4','#e879f9','#fb923c'];
+
+  // ── Build points HTML per scene type ──
   let ptsHTML = '';
 
   if(vtype === 'intro'){
-    // Intro: big icon + heading + first 2 points as key focus
     ptsHTML = `
-      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;margin-bottom:24px">
-        <div style="font-size:64px;line-height:1;filter:drop-shadow(0 0 20px ${th.accent}88)">${icon}</div>
-        <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:900;color:#f0f0ff;text-align:center;text-shadow:0 0 20px ${th.accent}66;max-width:700px">${heading}</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-          ${pts.slice(0,3).map(p=>`<div style="background:${th.bg};border:1px solid ${th.border};border-radius:20px;padding:6px 16px;font-size:12px;color:${th.accent};font-weight:700">${p.slice(0,60)}</div>`).join('')}
-        </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:10px 0 4px">
+        <div style="font-size:56px;line-height:1;filter:drop-shadow(0 0 16px ${th.accent}99)">${icon}</div>
+        <div style="font-family:'Sora',sans-serif;font-size:20px;font-weight:900;color:#f0f0ff;text-align:center;text-shadow:0 0 16px ${th.accent}55;line-height:1.3;max-width:600px">${heading}</div>
+        ${pts.length > 0 ? `
+        <div style="display:flex;flex-direction:column;gap:8px;width:100%;margin-top:4px">
+          ${pts.slice(0,4).map((p,i)=>{
+            const c=ptColors[i%ptColors.length];
+            return `<div style="display:flex;align-items:flex-start;gap:10px;padding:9px 13px;background:${c}14;border:1px solid ${c}40;border-radius:10px">
+              <span style="color:${c};font-size:14px;flex-shrink:0;margin-top:1px">▸</span>
+              <span style="font-size:12.5px;color:#d1d5ff;line-height:1.6;font-weight:600">${p}</span>
+            </div>`;
+          }).join('')}
+        </div>` : ''}
       </div>`;
+
   } else if(vtype === 'example'){
-    // Examples: each point as a real-world example card
     ptsHTML = pts.slice(0,4).map((ex, i) => {
       const c = ptColors[i % ptColors.length];
-      const exNarr = examplePhrases[i] || '';
-      return `<div style="background:${c}12;border:2px solid ${c}44;border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;animation:scPtIn .4s ease-out ${i*0.1}s both">
-        <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,${c}33,${c}66);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;box-shadow:0 0 10px ${c}44">
-          ${['🇮🇳','📱','🏠','⚗️'][i] || '📌'}
-        </div>
-        <div>
-          <div style="font-size:13px;font-weight:800;color:${c};margin-bottom:4px">Example ${i+1}</div>
+      const exIcons = ['🇮🇳','📱','🏠','⚗️','🔋','💧'];
+      const exNarr = examplePhrases[i] ? `"${examplePhrases[i].slice(0,100)}..."` : '';
+      return `<div style="background:${c}12;border:1.5px solid ${c}40;border-radius:12px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start">
+        <div style="width:34px;height:34px;border-radius:9px;background:${c}25;border:1px solid ${c}55;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px">${exIcons[i]||'📌'}</div>
+        <div style="min-width:0">
+          <div style="font-size:11px;font-weight:900;color:${c};margin-bottom:4px;letter-spacing:.5px">EXAMPLE ${i+1}</div>
           <div style="font-size:12.5px;color:#c7d2fe;line-height:1.6;font-weight:600">${ex}</div>
-          ${exNarr ? `<div style="font-size:11px;color:rgba(199,210,254,0.6);margin-top:5px;font-style:italic">"${exNarr.slice(0,90)}..."</div>` : ''}
+          ${exNarr ? `<div style="font-size:11px;color:${c}99;margin-top:5px;font-style:italic">${exNarr}</div>` : ''}
         </div>
       </div>`;
     }).join('');
+
   } else if(vtype === 'diagram'){
-    // Diagram: flow/mind-map style showing terms with connections
-    ptsHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">` +
+    ptsHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">` +
       pts.slice(0,6).map((pt, i) => {
         const c = ptColors[i % ptColors.length];
-        const parts = pt.split(/[:\-–—]/);
-        const term = parts[0]?.trim() || pt;
-        const def  = parts.slice(1).join(' ').trim() || '';
-        return `<div style="background:${c}10;border:1px solid ${c}44;border-radius:12px;padding:12px 14px;animation:scPtIn .35s ease-out ${i*0.08}s both">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-            <div style="width:6px;height:6px;border-radius:50%;background:${c};flex-shrink:0"></div>
-            <div style="font-size:12px;font-weight:900;color:${c}">${term.slice(0,35)}</div>
+        const parts = pt.split(/[:–—]/);
+        const term = parts.length > 1 ? parts[0].trim() : pt.slice(0,40);
+        const def  = parts.length > 1 ? parts.slice(1).join(' ').trim() : '';
+        return `<div style="background:${c}0f;border:1px solid ${c}40;border-radius:11px;padding:11px 13px">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:${def?'6':'0'}px">
+            <div style="width:8px;height:8px;border-radius:50%;background:${c};flex-shrink:0;box-shadow:0 0 6px ${c}"></div>
+            <div style="font-size:12px;font-weight:900;color:${c};line-height:1.3">${term}</div>
           </div>
-          ${def ? `<div style="font-size:11.5px;color:#c7d2fe;line-height:1.5;font-weight:600;padding-left:14px">${def.slice(0,80)}</div>` : ''}
+          ${def ? `<div style="font-size:11.5px;color:#b0bbd4;line-height:1.5;font-weight:600;padding-left:15px">${def.slice(0,90)}</div>` : ''}
         </div>`;
       }).join('') + `</div>`;
+
   } else if(vtype === 'summary'){
-    // Summary: numbered recap cards
     ptsHTML = pts.slice(0,5).map((pt, i) => {
       const c = ptColors[i % ptColors.length];
-      return `<div style="display:flex;align-items:flex-start;gap:12px;padding:11px 14px;background:${c}0d;border:1px solid ${c}33;border-radius:12px;animation:scPtIn .4s ease-out ${i*0.1}s both">
-        <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,${c}44,${c}66);color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;font-family:'Sora',sans-serif">${i+1}</div>
+      return `<div style="display:flex;align-items:flex-start;gap:11px;padding:10px 13px;background:${c}0d;border:1px solid ${c}30;border-radius:11px">
+        <div style="width:26px;height:26px;min-width:26px;border-radius:7px;background:linear-gradient(135deg,${c}44,${c}77);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;font-family:'Sora',sans-serif">${i+1}</div>
         <div style="font-size:12.5px;color:#d1d5ff;line-height:1.6;font-weight:600">${pt}</div>
       </div>`;
     }).join('');
+
   } else {
-    // Concept: clean point rows with full text
-    ptsHTML = pts.slice(0,5).map((pt, i) => {
+    // concept / default
+    ptsHTML = pts.slice(0,6).map((pt, i) => {
       const c = ptColors[i % ptColors.length];
-      const parts = pt.split(/[:\-–—]/);
+      const parts = pt.split(/[:–—]/);
       const term = parts.length > 1 ? parts[0].trim() : '';
       const body = parts.length > 1 ? parts.slice(1).join(' ').trim() : pt;
-      return `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);border-left:3px solid ${c};border-radius:0 10px 10px 0;animation:scPtIn .35s ease-out ${i*0.08}s both">
-        <div style="width:22px;height:22px;border-radius:50%;background:${c}22;border:1.5px solid ${c}88;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
-          <span style="font-size:10px;font-weight:900;color:${c}">${i+1}</span>
+      return `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 13px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.14);border-left:3px solid ${c};border-radius:0 10px 10px 0">
+        <div style="width:20px;height:20px;min-width:20px;border-radius:50%;background:${c}20;border:1.5px solid ${c}70;display:flex;align-items:center;justify-content:center;margin-top:1px">
+          <span style="font-size:9px;font-weight:900;color:${c}">${i+1}</span>
         </div>
-        <div>
-          ${term ? `<span style="font-size:12px;font-weight:900;color:${c}">${term} — </span>` : ''}
-          <span style="font-size:12.5px;color:#c7d2fe;line-height:1.6;font-weight:600">${body}</span>
+        <div style="min-width:0">
+          ${term ? `<div style="font-size:11px;font-weight:900;color:${c};margin-bottom:2px">${term}</div>` : ''}
+          <div style="font-size:12.5px;color:#c7d2fe;line-height:1.6;font-weight:600">${body}</div>
         </div>
       </div>`;
     }).join('');
   }
 
-  // Real-world examples section (from narration, shown for all types)
+  // ── Real-world examples strip (shown for non-example scenes) ──
   let examplesHTML = '';
   if(examplePhrases.length > 0 && vtype !== 'example'){
     examplesHTML = `
-      <div style="margin-top:14px;padding:12px 14px;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.25);border-radius:12px">
-        <div style="font-size:10px;font-weight:900;color:#10b981;letter-spacing:1.5px;margin-bottom:8px">🌍 REAL-WORLD EXAMPLES</div>
-        <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="margin-top:12px;padding:11px 13px;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.22);border-radius:11px">
+        <div style="font-size:9px;font-weight:900;color:#10b981;letter-spacing:1.5px;margin-bottom:7px">🌍 REAL-WORLD EXAMPLES</div>
+        <div style="display:flex;flex-direction:column;gap:5px">
           ${examplePhrases.slice(0,3).map(ex =>
-            `<div style="font-size:12px;color:#a7f3d0;line-height:1.6;padding:6px 10px;background:rgba(16,185,129,0.06);border-radius:8px;border-left:2px solid #10b981">→ ${ex}</div>`
+            `<div style="font-size:11.5px;color:#a7f3d0;line-height:1.6;padding:5px 9px;background:rgba(16,185,129,0.05);border-radius:7px;border-left:2px solid #10b981">→ ${ex}</div>`
           ).join('')}
         </div>
       </div>`;
   }
 
-  // Build full overlay HTML
+  // ── Narration preview strip at bottom ──
+  const narrationPreview = narr.length > 30
+    ? `<div style="margin-top:10px;padding:9px 13px;background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.12);border-radius:9px;font-size:11px;color:rgba(199,210,254,0.55);font-style:italic;line-height:1.5">
+        🎙️ ${narr.slice(0,140)}${narr.length>140?'…':''}
+      </div>`
+    : '';
+
+  // ── Progress dots ──
+  const dotsHTML = Array.from({length:tot},(_,di)=>{
+    const w  = di===idx ? '16px' : '5px';
+    const bg = di===idx ? th.accent : (di<idx ? 'rgba(129,140,248,0.45)' : 'rgba(99,102,241,0.18)');
+    return `<div style="width:${w};height:5px;border-radius:3px;background:${bg};transition:all .3s"></div>`;
+  }).join('');
+
+  // ── Final HTML into overlay ──
   overlay.innerHTML = `
-    <div style="width:100%;height:100%;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:0">
-      <!-- Scene header bar -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-shrink:0">
+    <div style="padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px;min-height:100%">
+
+      <!-- Header -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0">
         <div style="display:flex;align-items:center;gap:10px">
-          <div style="font-size:28px;filter:drop-shadow(0 0 8px ${th.accent}88)">${icon}</div>
+          <div style="font-size:26px;line-height:1;filter:drop-shadow(0 0 8px ${th.accent}88)">${icon}</div>
           <div>
-            <div style="display:flex;align-items:center;gap:7px">
-              <span style="font-size:9px;font-weight:900;color:${th.accent};background:${th.bg};border:1px solid ${th.border};border-radius:20px;padding:2px 10px;letter-spacing:1.5px">${th.badge}</span>
-              <span style="font-size:9px;color:rgba(199,210,254,0.5);font-weight:700">SCENE ${sn}/${tot}</span>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+              <span style="font-size:9px;font-weight:900;color:${th.accent};background:${th.bg};border:1px solid ${th.border};border-radius:20px;padding:2px 9px;letter-spacing:1px">${th.badge}</span>
+              <span style="font-size:9px;color:rgba(199,210,254,0.4);font-weight:700">SCENE ${sn} / ${tot}</span>
             </div>
-            <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:900;color:#f0f0ff;margin-top:3px;text-shadow:0 0 12px ${th.accent}55">${heading}</div>
+            <div style="font-family:'Sora',sans-serif;font-size:15px;font-weight:900;color:#f0f0ff;line-height:1.3;max-width:500px">${heading}</div>
           </div>
         </div>
-        <!-- scene progress dots -->
-        <div style="display:flex;gap:4px;align-items:center">
-          ${Array.from({length:tot},(_,di)=>{
-            const w = di===idx ? '18px' : '6px';
-            const bg = di===idx ? th.accent : (di<idx ? 'rgba(129,140,248,0.5)' : 'rgba(99,102,241,0.2)');
-            return `<div style="width:${w};height:6px;border-radius:3px;background:${bg};transition:all .3s"></div>`;
-          }).join('')}
-        </div>
+        <div style="display:flex;gap:3px;align-items:center;flex-shrink:0;padding-top:6px">${dotsHTML}</div>
       </div>
 
-      <!-- Content area -->
-      <div style="display:flex;flex-direction:column;gap:9px;flex:1">
-        ${ptsHTML}
+      <!-- Content -->
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${ptsHTML || `<div style="padding:12px;color:rgba(199,210,254,0.5);font-size:12px;font-style:italic">Loading content…</div>`}
         ${examplesHTML}
+        ${narrationPreview}
       </div>
     </div>`;
 
-  // Make overlay visible
+  // Show overlay
   overlay.style.visibility = 'visible';
-  overlay.style.opacity = '1';
-  overlay.style.zIndex = '15';
-  overlay.style.pointerEvents = 'auto';
-  // Scroll to top on each new scene
-  overlay.scrollTop = 0;
+  overlay.style.opacity    = '1';
+  overlay.style.zIndex     = '15';
+  overlay.scrollTop        = 0;
 }
 
 // ═══ SCENE CONTENT CARD UPDATER ═══
