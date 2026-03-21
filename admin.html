@@ -686,7 +686,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
         <div class="s-title">🖼️ HERO IMAGE / BANNER</div>
         <div id="heroImgPreview" style="width:100%;height:120px;border-radius:12px;background:rgba(99,102,241,0.1);border:2px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px;overflow:hidden">🖼️</div>
         <div class="form-group"><div class="form-label">Upload Image</div>
-          <input type="file" accept="image/*" id="ws_heroImg" style="display:none" onchange="handleImgUpload('ws_heroImg','heroImgPreview','heroTitle')">
+          <input type="file" accept="image/*" id="ws_heroImg" style="display:none" onchange="handleImgUpload('ws_heroImg','heroImgPreview','heroImgUrl')">
           <button class="btn btn-ghost btn-sm" style="width:100%" onclick="document.getElementById('ws_heroImg').click()">📁 Choose Image</button>
         </div>
         <div class="form-group" style="margin-top:8px"><div class="form-label">OR Image URL</div><input class="form-inp" id="ws_heroImgUrl" placeholder="https://..." oninput="previewImgUrl(this,'heroImgPreview')"></div>
@@ -1696,8 +1696,15 @@ function weTab(name,el){
 }
 function renderWebEditor(){
   const c=ld(K.webCfg,{});
-  // HERO
-  document.getElementById('ws_heroTitle').value=c.heroTitle||'Welcome to EduSphere AI 🎬';
+  // HERO — guard against corrupted heroTitle (base64 image accidentally saved there)
+  const rawHeroTitle = c.heroTitle||'';
+  const safeHeroTitle = rawHeroTitle.startsWith('data:') ? '' : rawHeroTitle;
+  if(rawHeroTitle.startsWith('data:') && !c.heroImgUrl){
+    // Rescue: move corrupted value to heroImgUrl
+    c.heroImgUrl = rawHeroTitle; c.heroTitle = ''; sv(K.webCfg,c);
+    showToast('🔧','Hero image rescued from title field! Save karo to apply.',4000);
+  }
+  document.getElementById('ws_heroTitle').value = safeHeroTitle || 'EduSphere AI — India ka Smartest Teacher 🎬';
   document.getElementById('ws_heroSub').value=c.heroSub||'Upload any topic — the AI teacher will explain it in Hinglish.';
   document.getElementById('ws_ctaText').value=c.ctaText||'Start Learning Free 🚀';
   document.getElementById('ws_ctaLink').value=c.ctaLink||'#start';
@@ -1795,9 +1802,32 @@ function getTog(id){var el=document.getElementById(id);return el?el.classList.co
 function syncColorHex(name){const h=document.getElementById('ws_color'+name+'Hex').value;if(/^#[0-9A-Fa-f]{6}$/.test(h))document.getElementById('ws_color'+name).value=h;}
 function handleImgUpload(inputId,previewId,cfgKey){
   const file=document.getElementById(inputId).files[0];if(!file)return;
+  // Validate: reject if file is too large (>2MB) — base64 would be too big for title
+  if(file.size > 2*1024*1024){ showToast('⚠️','Image too large! 2MB se chhoti image use karo.',4000); return; }
   const reader=new FileReader();
-  reader.onload=e=>{const url=e.target.result;const prev=document.getElementById(previewId);if(prev){if(prev.tagName==='IMG'){prev.src=url;}else{prev.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover">`;}}
-    const c=ld(K.webCfg,{});c[cfgKey]=url;sv(K.webCfg,c);showToast('🖼️','Image saved!');};
+  reader.onload=e=>{
+    const url=e.target.result;
+    // Show preview
+    const prev=document.getElementById(previewId);
+    if(prev){
+      if(prev.tagName==='IMG'){ prev.src=url; }
+      else{ prev.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover">`; }
+    }
+    // Save to correct cfgKey (must be 'heroImgUrl' or 'teacherImgUrl', never 'heroTitle')
+    const validImgKeys=['heroImgUrl','teacherImgUrl','logoUrl'];
+    if(!validImgKeys.includes(cfgKey)){
+      showToast('❌','Internal error: wrong key. Please refresh.',3000);
+      console.error('[Admin] handleImgUpload: invalid cfgKey='+cfgKey);
+      return;
+    }
+    const c=ld(K.webCfg,{});
+    c[cfgKey]=url;
+    sv(K.webCfg,c);
+    // Also update the URL input field so Save button picks it up
+    const urlInputId = cfgKey==='heroImgUrl'?'ws_heroImgUrl':cfgKey==='teacherImgUrl'?'ws_teacherImgUrl':null;
+    if(urlInputId){ const inp=document.getElementById(urlInputId); if(inp) inp.value=url; }
+    showToast('🖼️','Image saved! "Save All Changes" dabao to apply.',3000);
+  };
   reader.readAsDataURL(file);
 }
 function previewImgUrl(inputEl,previewId){const url=inputEl.value||inputEl;const prev=document.getElementById(previewId);if(!prev||!url)return;prev.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='❌ Invalid URL'">`;}
@@ -1810,7 +1840,10 @@ function removeChip(i){const c=ld(K.webCfg,{});(c.chips||[]).splice(i,1);sv(K.we
 function saveWebsite(){
   const c=ld(K.webCfg,{});
   // HERO
-  c.heroTitle=document.getElementById('ws_heroTitle').value;c.heroSub=document.getElementById('ws_heroSub').value;
+  // HERO — guard: never save base64 image data as heroTitle
+  const rawTitle = document.getElementById('ws_heroTitle').value;
+  c.heroTitle = rawTitle.startsWith('data:') ? (c.heroTitle||'EduSphere AI') : rawTitle;
+  c.heroSub=document.getElementById('ws_heroSub').value;
   c.ctaText=document.getElementById('ws_ctaText').value;c.ctaLink=document.getElementById('ws_ctaLink').value;
   c.heroImgUrl=document.getElementById('ws_heroImgUrl').value;c.showHeroImg=getTog('tog-heroImg');
   // STATS
@@ -2498,8 +2531,10 @@ window.saveWebsite = async function(){
     // Get AI config from localStorage (may have been saved by saveAIConfig already)
     let aiCfg = {};
     try { aiCfg = JSON.parse(localStorage.getItem('edu_ai_config')||'{}'); } catch(e){}
+    const rawHT = gv('ws_heroTitle');
+    const safeHT = rawHT.startsWith('data:') ? (stored.heroTitle||'EduSphere AI') : rawHT;
     await setDoc(doc(fbDb,"siteContent","main"),{
-      heroTitle:gv('ws_heroTitle'), heroSubText:gv('ws_heroSub'),
+      heroTitle: safeHT, heroSubText:gv('ws_heroSub'),
       heroImgUrl, showHeroImg:showHero,
       siteTitle:gv('ws_siteTitle'), proTip:gv('ws_welcome'),
       teacherName:gv('ws_teacher') || 'Jennie',
