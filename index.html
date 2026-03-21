@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FRSL68YFGP"></script>
-
-<script>
+  
+  <script>
  window.dataLayer window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
@@ -314,6 +312,76 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .exp-tab.on{background:linear-gradient(135deg,#4338ca,#6366f1);color:white;box-shadow:var(--glow-indigo)}
 .exp-tab:hover:not(.on){color:var(--indigo-light);background:rgba(99,102,241,0.1)}
 
+/* ── HINGLISH TEXT FORMATTING ── */
+.hint-box{
+  display:inline;
+  position:relative;
+  cursor:help;
+  border-bottom:2px dotted #10b981;
+  color:inherit;
+  font-weight:inherit;
+  background:none;
+  padding:0;
+  margin:0;
+  font-size:inherit;
+  white-space:normal;
+  box-shadow:none;
+  transition:all .2s
+}
+
+.hint-box:hover{
+  border-bottom:2px solid #10b981;
+  background:rgba(16,185,129,0.15);
+  padding:0 2px;
+  border-radius:3px;
+}
+
+.hint-box::after{
+  content:attr(data-pronunciation);
+  position:absolute;
+  bottom:100%;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(16,185,129,0.95);
+  color:white;
+  padding:6px 10px;
+  border-radius:6px;
+  font-size:11px;
+  white-space:nowrap;
+  z-index:1000;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .2s;
+  margin-bottom:6px;
+  font-weight:700;
+  box-shadow:0 4px 12px rgba(16,185,129,0.4)
+}
+
+.hint-box:hover::after{
+  opacity:1
+}
+
+.hindi-word{
+  background:linear-gradient(135deg,rgba(245,158,11,0.25),rgba(249,115,22,0.15));
+  color:#f59e0b;
+  font-weight:800;
+  padding:2px 6px;
+  border-radius:4px;
+  border-left:2px solid rgba(245,158,11,0.6);
+  padding-left:8px
+}
+
+.important-term{
+  color:#60a5fa;
+  font-weight:800;
+  border-bottom:2px solid rgba(96,165,250,0.5);
+  padding-bottom:2px;
+  background:rgba(59,130,246,0.1);
+  padding:0 4px;
+  border-radius:3px;
+  box-shadow:0 0 6px rgba(59,130,246,0.2)
+}
+
 /* ── QUIZ SECTION ── */
 .quiz-wrap{display:none;flex-direction:column;gap:14px}
 .quiz-wrap.show{display:flex}
@@ -366,7 +434,16 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 /* ── HD DIAGRAM SECTION ── */
 .hd-diagram-wrapper{width:100%;min-height:420px;background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(99,102,241,0.08));border:2px solid rgba(129,140,248,0.35);border-radius:20px;margin-bottom:24px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:32px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)}
 .hd-diagram-canvas{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
-.diagram-svg{max-width:100%;max-height:100%;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.3))}
+.diagram-svg{max-width:100%;max-height:100%;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.3));animation:diagramFadeIn 0.8s ease-out}
+
+/* 🎬 ANIMATED DIAGRAM KEYFRAMES */
+@keyframes diagramFadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+@keyframes float-up{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
+@keyframes glow-pulse{0%,100%{filter:drop-shadow(0 0 8px rgba(129,140,248,0.4))}50%{filter:drop-shadow(0 0 20px rgba(129,140,248,0.8))}}
+@keyframes circle-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes slide-in-left{from{transform:translateX(-30px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes slide-in-right{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
 
 </style>
 </head>
@@ -517,9 +594,19 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
       </div>
       
       <!-- NEW: HD Diagram Container (replaces loading screen) -->
-      <div id="diagramOverlayContainer" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(13,11,46,0.95),rgba(20,15,60,0.95));backdrop-filter:blur(12px);z-index:15;pointer-events:auto;visibility:hidden;opacity:0;transition:opacity 0.4s,visibility 0.4s">
+      <div id="diagramOverlayContainer" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(13,11,46,0.95),rgba(20,15,60,0.95));backdrop-filter:blur(12px);z-index:15;pointer-events:auto;visibility:hidden;opacity:0;transition:opacity 0.4s,visibility 0.4s ease-in-out">
+        <style>
+          #diagramOverlayContainer svg circle, 
+          #diagramOverlayContainer svg rect,
+          #diagramOverlayContainer svg text { animation: diagramFadeIn 0.6s ease-out backwards; }
+          #diagramOverlayContainer svg circle:nth-child(2) { animation-delay: 0.1s; }
+          #diagramOverlayContainer svg circle:nth-child(3) { animation-delay: 0.2s; }
+          #diagramOverlayContainer svg circle:nth-child(4) { animation-delay: 0.3s; }
+          #diagramOverlayContainer svg circle:nth-child(5) { animation-delay: 0.4s; }
+          #diagramOverlayContainer svg circle[filter*="glow"] { animation: glow-pulse 2s ease-in-out infinite; }
+        </style>
         <div style="width:100%;height:100%;max-width:1400px;max-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 40px;overflow-y:auto;border-radius:0">
-          <div style="font-size:12px;font-weight:900;color:#818cf8;letter-spacing:1.5px;margin-bottom:30px;text-transform:uppercase">📊 HD EDUCATIONAL DIAGRAM</div>
+          <div style="font-size:12px;font-weight:900;color:#818cf8;letter-spacing:1.5px;margin-bottom:30px;text-transform:uppercase;animation:float-up 0.8s ease-out">📊 HD ANIMATED DIAGRAM</div>
           <div id="diagramSvgContainerCanvas" style="width:100%;height:auto;min-height:600px;max-height:85vh;display:flex;align-items:center;justify-content:center;background:rgba(13,11,46,0.5);border:2px solid rgba(129,140,248,0.3);border-radius:20px;overflow:hidden;padding:40px"></div>
         </div>
       </div>
@@ -1291,169 +1378,129 @@ async function startGen(){
     document.getElementById('loadTxt').textContent=msgs[++mi%msgs.length];
   },3000);
 
-  // Language instructions
+  // Language instructions - IMPROVED FOR ENGAGING VOICE
   const langInstr = {
-    'Hinglish': `STRICT HINGLISH ONLY — Roman script. Mix Hindi + English EXACTLY like Indian students speak.
+    'Hinglish': `ABSOLUTELY PURE HINGLISH - NO ENGLISH! Mix Hindi and English naturally word-by-word, NOT sentence by sentence.
 
-KEY HINGLISH WORDS (use every sentence):
-dekho, samjho, bilkul, matlab, kyunki, isliye, lekin, toh, bahut, thoda, haan, haan na, na, asal mein, basically, actually, jaise ki, samajhte ho, clear hai na, iska matlab, sabse important
+VOICE TONE: Enthusiastic, friendly, like a desi coaching teacher. Sound ALIVE, not robotic!
 
-STRUCTURE - Make sentences NATURAL:
-Start: "Dekho...", "Samjho...", "Basically...", "Matlab..."
-Middle: "toh", "kyunki", "isliye", "lekin", "aur"
-End: "na?", "samajh aaya?", "clear?", "bilkul simple hai na?"
+MANDATORY HINGLISH WORDS (use in EVERY paragraph):
+- Connectors: toh, matlab, kyunki, isliye, aur, lekin, bas, waise, jaise
+- Emphasis: bilkul, bahut, thoda, ekdum, bilkul seedha, bilkul sahi
+- Engagement: dekho, samjho, suno, samajhte ho, clear hai na, haan na, pakka
+- Emotion: amazing, fantastic, crazy, powerful, mind-blowing, heavy
+- Examples: jaise, example de rahu, samjha dena, yaad rakhna
 
-EXAMPLES OF PERFECT HINGLISH:
-- "Dekho, photosynthesis basically ek process hai jisme plants sunlight ko energy mein convert karte hain. Jaise ki tum lunch khate ho aur energy pate ho, waise hi plants sunlight khate hain aur apna khana banate hain. Samajh gaye na?"
-- "Iska matlab agar plant ko sunlight nahi milegi toh voh apna khana nahi bana payega. Simple logic hai na?"
-- "Toh yaad rakho - sunlight + water + CO2 = glucose. Hamesha yaad rakhna."
+CRITICAL: In EVERY sentence, mix at least 1-2 Hindi words. Examples:
+❌ WRONG: "Photosynthesis is the process where plants make their own food."
+✅ RIGHT: "Dekho, photosynthesis matlab yeh process hai jisme plants apna khana khud banate hain!"
 
-TONE - Like a cool senior friend:
-- "Suno na, yeh concept bahut important hai"
-- "Dekho, basically yeh hota hai"
-- "Toh iska matlab kya hai - ki..."
-- "Bilkul simple - samajh jaoge"
+❌ WRONG: "Plants need sunlight, water, and carbon dioxide."
+✅ RIGHT: "Plants ko sunlight chahiye, water chahiye, aur carbon dioxide bhi chahiye!"
 
-USE 1-2 EMOJIS PER NARRATION naturally.
-AVOID: Pure English, textbook style, "Arre", "yaar", formal tone`,
+❌ WRONG: "This is very important for exams."
+✅ RIGHT: "Yeh bilkul zaroor exam mein aayega! Bahut important hai!"
 
-    'Hindi': `PURE HINDI — Roman script only (NO Devanagari). Clear, simple Hindi jaise ek accha teacher bolata hai.
+PARAGRAPH STRUCTURE (mandatory):
+- Start with engagement: "Dekho", "Samjho", "Suno na", "Yaad rakho"
+- Mix languages naturally: Every 2-3 words, alternate between English-Hindi
+- Use similes from Indian daily life: "Jaise paani mein namak dissolve hota hai...", "Bilkul aise hi..."
+- Include personal touch: "Tumhara phone", "Tumhara school", "Tumhari padhai"
+- End with check-in: "Samajh gaye?", "Clear?", "Bilkul na?"
 
-KEY HINDI WORDS (use every sentence):
-dekho, samajhte hain, bilkul seedha, matlab, kyunki, isliye, lekin, toh, haan bilkul, asal mein, sabse important, samajh mein aaya, theek hai
+EXAMPLE OF PERFECT HINGLISH PARAGRAPH:
+"Dekho na, photosynthesis ek bahut hi amazing process hai! Asal mein, plants apna khana khud banate hain, jaise tum apne lunch khate ho. Toh iska matlab kya hai? Plants ko sunlight chahiye, water chahiye, aur carbon dioxide bhi. Agar tum ek plant ko pure dark room mein rakh do toh voh weakly ho jayega kyunki sunlight nahi milega. Bilkul jaise tumhara phone battery charge nahi hone se band ho jata hai, waise hi plant bina light ke apna energy nahi bana sakta. Samajhte ho na? Toh always yaad rakho - light plus water plus CO2 equals glucose. Yeh padhai exam mein zaroor aayega!"
 
-STRUCTURE - Natural Hindi:
-Start: "Dekho...", "Samajhte ho...", "Bilkul seedha..."
-Middle: "toh", "matlab", "kyunki", "lekin"
-End: "samajh mein aaya na?", "theek hai?", "bilkul?"
+NO FORMAL ENGLISH: Avoid "In this context", "Let us examine", "The aforementioned", "One could argue"
+NO PURE HINDI EITHER: Balance ho - mix karo naturally!
 
-EXAMPLES OF GOOD HINDI:
-- "Dekho bhai, photosynthesis ek prakriya hai jisme plants suraj ki roshni ko apne liye khana banate hain."
-- "Iska matlab agar plant ko roshni nahi milegi toh voh mar jayega."
-- "Toh sabse important baat yeh hai ke - roshni, pani, aur carbon dioxide - teeno zaroori hain."
+EXAM CONTEXT: Always relate to "${G.examType}" exam preparation. Give marks tips, chapter-specific details, common mistakes.`,
 
-TONE - Caring, friendly:
-- Use "dekho", "samajhte ho", "haan bilkul"
-- Ask: "Samajh mein aaya?", "Theek hai?", "Pata hai na?"
-- Be casual: "Bilkul simple hai", "Aasan baat hai", "Suno na"
+    'Hindi': `PURE HINDI - NO ENGLISH MIXING! Likhna bilkul aise jaise desi elder sister samjha rahi ho.
 
-USE 1-2 EMOJIS naturally per narration.
-AVOID: English mixing, formal style, textbook language`,
+VOICE TONE: Garam, passionate, caring. Samajh aane wali bhasha. Emoshanal aur clear.
 
-    'English': `INDIAN ENGLISH ONLY — Warm, friendly, like an Indian teacher.
+MANDATORY HINDI WORDS (har paragraph mein):
+- Connectors: toh, matlab, kyunki, isliye, aur, lekin, par, bas
+- Emphasis: bilkul, bahut, thoda, ekdum, zaroor, pakkaa, sach
+- Engagement: dekho, samjho, suno, samajhte ho, samajh gaye, pakka
+- Examples: jaise, udaharan, yaad rakho, dekh lo
+- Emotion: amazing, fantastic, powerful, bahut zaroor, important
 
-KEY PATTERNS (use constantly):
-So basically, Now see, What happens is, The thing is, Isn't it, Got it, Very simple only, Let me tell you, You know what, Think about it, Imagine if
+HINDI EXAMPLES:
+"Dekho bhai, photosynthesis ek bilkul amazing process hai! Asal mein, plants apna khana khud banate hain. Suno na, yeh sach hai. Plants ko sunlight se energy milti hai, bilkul jaise tum khana khate ho. Toh iska matlab kya hai? Plants ko light chahiye, water chahiye, aur air bhi chahiye. Agar light nahi milegi toh plant mar jayega! Bilkul seedha logic hai. Toh hamesha yaad rakho - sunlight plus water plus CO2 equals glucose. Samajh mein aaya?"
 
 STRUCTURE:
-Start: "So basically...", "Now see...", "The thing is..."
-Connect: "Which means", "That's why", "In other words", "Here's the thing"
-End: "Got it?", "Makes sense?", "Clear?", "Isn't it?"
+- Emoshanal hooks: "Dekho bhai", "Suno na", "Yaad rakho"
+- Clear explanations: Simple sentences, no complex grammar
+- Real examples: Aam papad, pani, school, ghar ke examples
+- Check-ins: "Samajh mein aaya?", "Bilkul seedha na?", "Haan na?"
 
-EXAMPLES OF PERFECT INDIAN ENGLISH:
-- "So basically, photosynthesis is when plants use sunlight to make their own food. Think about it - you eat food and get energy. Same way, plants eat sunlight and make glucose."
-- "Now see, if the plant doesn't get sunlight, it cannot make food. Very simple only, isn't it?"
-- "Remember this - Sunlight + Water + CO2 = Glucose. This is the formula you must remember."
+EXAM TIPS INCLUDED: "${G.examType}" exam ke liye specific points dena.`,
 
-TONE - Like a caring sir/didi:
-- "Listen carefully", "Pay attention", "This is very important only"
-- "You see what happens is...", "The point here is..."
-- "Right? Got it?", "Makes sense, isn't it?"
+    'English': `CLEAR, WARM, ENGAGING INDIAN ENGLISH. Not British textbook - friendly coaching style!
 
-USE 1-2 EMOJIS naturally per narration.
-AVOID: Formal tone, British English, American slang, textbook style`
+VOICE TONE: Like favorite teacher explaining. Warm, genuine, interested. Show passion!
+
+KEY PHRASES (use naturally):
+- So basically, now see, here is the thing, think about it, imagine
+- Isn't it, got it, right, absolutely, really, you know
+- This is the key point, this matters, listen, remember this
+- Indian touch: "na" at end of sentences, "only" emphasis, "no"
+
+EXAMPLE:
+"Look na, photosynthesis is genuinely fascinating! Really! Plants make their own food. Can you imagine? When you eat, you get energy. Same thing! Plants eat sunlight and convert it to energy. Think about it - plants need light, water, and air. Make sense na? Without light, the plant cannot survive, no. So always remember - sunlight plus water plus carbon dioxide equals glucose. Simple logic, isn't it? This will definitely come in your exam!"
+
+STRUCTURE:
+- Natural hooks: "Look", "Listen", "Imagine", "Think about it"
+- Simple sentences: Max 12-15 words per sentence
+- Daily life examples: Phone battery, water, clothes drying
+- Indian English flavor: "na", "no", "only", "isn't it"
+- Check-ins: "Got it?", "Make sense?", "Isn't it?"
+
+EXAM TIPS: "${G.examType}" specific strategies.`,
   };
   const li = langInstr[G.lang] || langInstr['Hinglish'];
 
   const sys = `OUTPUT FORMAT: Return ONLY a valid JSON object. No text before or after. No markdown. No triple backticks. Start with { end with }.
 
-YOU ARE JENNIE — a passionate, energetic Indian coaching teacher. You explain like a warm elder sister. Language being used: ${G.lang}.
+YOU ARE JENNIE — a passionate, energetic Indian coaching teacher. You explain like a warm elder sister. 
+
+⚠️ CRITICAL LANGUAGE ENFORCEMENT ⚠️
+Language being used: ${G.lang}
+YOU MUST RESPOND IN ${G.lang} ONLY!
+- If ${G.lang} is Hinglish → Write PURE HINGLISH mixing Hindi and English
+- If ${G.lang} is Hindi → Write PURE HINDI, zero English
+- If ${G.lang} is English → Write INDIAN ENGLISH with "na", "no", "only"
+
+IF YOU WRITE IN ANY OTHER LANGUAGE OR MIX LANGUAGES WRONG, YOU HAVE FAILED!
 
 LANGUAGE RULE — MOST IMPORTANT:
 ${li}
 
-TONE by language:
-- Hinglish: Natural desi mix. "toh", "matlab", "kyunki", "dekho", "samjho", "bas", "waise". Check-ins: "Samajh aaya?", "Simple hai na?"
-- Hindi: Pure Hindi feel. "toh", "matlab", "kyunki", "dekho bhai", "samajhte hain", "bilkul sahi". Check-ins: "Samajh mein aaya?", "Bilkul seedha hai na?"
-- English: Indian English warmth. "Now see", "So basically", "The thing is", "Isn't it?", "Got it?", "Very simple only". Check-ins: "Got it?", "Simple isn't it?"
+ADDITIONAL STRICTNESS FOR ALL NARRATIONS:
+✓ MUST sound natural in selected language
+✓ MUST use language-specific phrases/connectors
+✓ MUST include 2-3 Indian daily-life examples
+✓ MUST have 1-2 check-in questions
+✓ MUST be 6-8 sentences minimum (more = better)
+✓ MUST relate to ${G.examType} exam
 
-BANNED always: "yaar", "Arre", "In this scene", "In this lesson", "Let us explore", "We will learn", "Today we", "Welcome"
-- 1-2 emojis per narration, placed naturally
-- Exam tips woven in naturally
+❌ ABSOLUTELY FORBIDDEN:
+- Pure English sentences when Hinglish selected
+- Pure Hindi only when Hinglish selected  
+- Generic textbook tone
+- "Let me explain", "In this context", "One could argue"
+- Formal academic language
 
-YOUR MOST CRITICAL JOB — DETAILED REAL WORLD EXPLANATIONS:
-EVERY scene must:
-1. Start with a RELATABLE hook (question or surprising fact)
-2. Explain the CONCEPT clearly using 2-3 real Indian examples
-3. Answer the "WHY" and "HOW" questions completely
-4. Use ANALOGIES that match the student's daily life
-5. Build from SIMPLE to COMPLEX gradually
-6. End with a MEMORABLE insight or mnemonic
+PROOF OF CORRECT LANGUAGE:
+Before you generate JSON, ask yourself:
+1. Does every narration START with language-appropriate hook? ("Dekho"/"Suno" for Hindi, "Dekho na" for Hinglish, "Look na" for English)
+2. Does every narration FLOW naturally in selected language?
+3. Does it sound like warm teacher, not textbook?
+4. Are there real Indian examples in each narration?
 
-NARRATION QUALITY CHECKLIST:
-- Is it 6-8 flowing sentences? (Not short, not list-style)
-- Does it use 2-3 SPECIFIC Indian examples? (Not generic)
-- Does it explain WHY this concept matters?
-- Does it answer "how does it work?"
-- Does it use natural language transitions? (toh, matlab, kyunki, etc)
-- Is it in proper ${G.lang}? (No mixing, no textbook)
-- Does it feel like a friend explaining, not a book?
-
-EXAMPLE REAL WORLD SCENARIOS (reference only):
-- Osmosis? Soak aam papad in water - it swells up because water moves inside
-- Gravity? Ball falls down, water flows downhill, everything goes toward Earth
-- Refraction? Straw in water looks bent from side, fish appears shallower than actual
-- Newton's 3rd Law? Push wall in swimming pool, you go backward. Push ground, you jump up.
-- Evaporation? Wet clothes dry in sun because water turns into air/vapor
-- Photosynthesis? Plant eats sunlight like you eat food - converts to energy
-
-SCENE ORDER (ALL 8 REQUIRED - COMPLETE COURSE):
-1. INTRO - Start with a shocking fact or relatable question. Hook them in 2-3 sentences. Example: "Do you know plants actually eat sunlight? Sounds crazy right? Bilkul but that's exactly what happens!"
-   Narration: 6-8 sentences with hook + why it matters + teaser
-
-2. CONCEPT - Core theory explained deeply. WHY does this concept exist? HOW does it actually work?
-   Narration: Explain concept + 2 real examples + why important
-   Use a clear analogy from Indian daily life
-
-3. DIAGRAM - The structure/components/steps. Use specific terms from the topic.
-   Narration: Name each component + briefly explain what each does
-
-4. CONCEPT - Deeper layer. New perspective. Different angle of understanding.
-   Narration: Explain the "why behind the why" + consequences + real impact
-
-5. EXAMPLE - 3 specific real-world applications/scenarios.
-   Narration: For each example, explain clearly how concept applies
-   Make each example VIVID and SPECIFIC
-
-6. CONCEPT - What students get wrong. Misconceptions addressed directly.
-   Narration: State the wrong belief + explain why it's wrong + give correct understanding
-
-7. EXAMPLE - Exact exam strategy. Show sample answer structure. Mark distribution.
-   Narration: This is exactly how you write answer in exam + what examiners look for + how to get full marks
-
-8. SUMMARY - Full recap. Mnemonic/trick. Final motivational push.
-   Narration: Recap all 8 scenes quickly + give clever trick to remember + encourage student
-
-NARRATION GUIDELINES (CRITICAL):
-- Minimum 6 sentences per scene (more is better, make it DETAILED)
-- Use SPECIFIC examples, never generic placeholders
-- Explain the REASONING behind concepts
-- Connect scenes logically
-- Use natural language in ${G.lang}
-- Sound like a warm teacher, not a textbook
-- Include 1-2 check-in questions per narration ("Samajh aaya?", "Clear?", "Got it?")
-
-DIAGRAM POINTS: 5 actual specific terms. Max 3 words each.
-CONCEPT POINTS: Punchy sentences (max 12 words). Make it impactful.
-EXAMPLE POINTS: Vivid scenarios (max 20 words). Specific Indian context.
-SUMMARY POINTS: Key takeaways (max 12 words). Start with action word.
-
-Exam level: ${G.examType}. Language: ${G.lang}. COMPLETE all 8 scenes with FULL narrations.
-
-Return this EXACT JSON (all 8 scenes fully filled, zero generic placeholders):
-{"topic_name":"Topic Name","scenes":[{"title":"Scene 1 Title","narration":"6-8 sentence natural ${G.lang} narration","visual_type":"intro","visual_data":{"heading":"Heading","points":["point1","point2","point3"],"color_theme":"blue","icon":"🎯"}},{"title":"Scene 2 Title","narration":"...","visual_type":"concept","visual_data":{"heading":"...","points":["...","...","...","..."],"color_theme":"green","icon":"💡"}},{"title":"Scene 3 Title","narration":"...","visual_type":"diagram","visual_data":{"heading":"...","points":["Term1","Term2","Term3","Term4","Term5"],"color_theme":"orange","icon":"🔬"}},{"title":"Scene 4 Title","narration":"...","visual_type":"concept","visual_data":{"heading":"...","points":["...","...","...","..."],"color_theme":"purple","icon":"⚡"}},{"title":"Scene 5 Title","narration":"...","visual_type":"example","visual_data":{"heading":"...","points":["Specific Example 1","Specific Example 2","Specific Example 3"],"color_theme":"green","icon":"📝"}},{"title":"Scene 6 Title","narration":"...","visual_type":"concept","visual_data":{"heading":"...","points":["Misconception 1","Misconception 2","Misconception 3"],"color_theme":"red","icon":"⚠️"}},{"title":"Scene 7 Title","narration":"...","visual_type":"example","visual_data":{"heading":"...","points":["Exam point 1","Exam point 2","Exam point 3"],"color_theme":"blue","icon":"🏆"}},{"title":"Scene 8 Title","narration":"...","visual_type":"summary","visual_data":{"heading":"...","points":["Key 1","Key 2","Key 3","Key 4"],"color_theme":"purple","icon":"✅"}}],"key_concepts":["Term 1: definition","Term 2: definition","Term 3: definition","Term 4: definition","Term 5: definition","Term 6: definition"],"full_explanation":"Surprising hook PARA_BREAK Core theory deeply explained PARA_BREAK How it works with real example PARA_BREAK Self-invented specific real-world examples PARA_BREAK Common mistakes PARA_BREAK Exam strategy for ${G.examType}","quick_notes":["Note 1: key fact","Note 2: key fact","Note 3: key fact","Note 4: key fact","Note 5: key fact","Note 6: key fact","Note 7: key fact","Note 8: key fact"],"exam_tips":["Tip 1: exam strategy","Tip 2: common mistake to avoid","Tip 3: marks tip","Tip 4: remember this","Tip 5: short trick"]}
-
-RULES: No apostrophes in JSON strings. All strings single line. No line breaks inside strings. All 8 scenes required. color_theme: blue green orange purple red only.`;
+If answer is NO to any, REWRITE THAT NARRATION!`;
 
   try {
     const userContent = G.topicText
@@ -1461,32 +1508,151 @@ RULES: No apostrophes in JSON strings. All strings single line. No line breaks i
 
 ===== CRITICAL INSTRUCTIONS FOR NARRATIONS =====
 
-EACH NARRATION MUST BE 12-18 SENTENCES MINIMUM (not 6-8).
-If you write less than 12 sentences, you have failed.
+🔊 MANDATORY SYLLABLE BREAKING FOR DIFFICULT WORDS:
+
+When you write a difficult/scientific word, you MUST break it into syllables and explain meaning.
+
+SYLLABLE BREAKING RULES (ABSOLUTELY MANDATORY):
+1. Break scientific words into syllables: pho-to-SYN-the-sis
+2. Explain WHAT each syllable means: PHOTO (light) + SYNTHESIS (making)
+3. Show meaning clearly: "So PHOTO-synthesis = making from light"
+4. Repeat word naturally: Use it in next sentence in context
+
+CRITICAL FORMAT FOR EVERY DIFFICULT WORD:
+❌ NEVER: "photosynthesis [foh-toh-SIN-thuh-sis]"
+❌ NEVER: Put phonetic brackets in narration
+✅ ALWAYS: "Dekho, photosynthesis - photo matlab light, synthesis matlab banana. Toh light se banana, yeh photosynthesis hai!"
+
+SCIENCE WORD PRONUNCIATION TEACHING (EXACT EXAMPLES):
+1. Photosynthesis = PHOTO (light) + SYNTHESIS (making) = "light se banana"
+2. Mitochondria = MITO (small) + CHONDRIA (grain) = "small grains that power cells"
+3. Enzyme = EN (in) + ZYME (ferment/break) = "breaks food down"
+4. Glucose = GLUC (sweet) + OSE (sugar) = "sweet sugar molecule"
+5. Chlorophyll = CHLORO (green) + PHYLL (leaf) = "green pigment in leaves"
+6. Photosynthesis = PHOTO (light) + SYNTHESIS (putting together) = making food with light
+7. Respiration = RE (again) + SPIRARE (breathe) = breathing process
+8. Osmosis = OSMOS (push/impulse) + IS (state/process) = water pushing through
+
+PRONUNCIATION TEACHING FLOW (FOR EACH DIFFICULT WORD):
+Step 1: Say word clearly in sentence
+Step 2: Break into syllables: "WORD = syl-la-ble"
+Step 3: Explain each part: "syl means X, la means Y"
+Step 4: Complete meaning: "So WORD means..."
+Step 5: Use in example: "Jaise... toh yeh WORD...: 
+Step 6: Repeat in next sentence: Use word naturally
+
+EXACT COMPLETE NARRATION EXAMPLE (with proper syllable teaching):
+"Dekho, photosynthesis. Photo matlab light, synthesis matlab banana. Toh light se food banana, yeh photosynthesis hai! Plants ko sunlight chahiye aur water bhi. Inse plants apna glucose - glucose matlab sugar - banate hain. Jaise tum khana khate ho aur energy milti hai, bilkul waise hi! Yeh glucose cells mein jayega. Ab cells mein mitochondria hote hain - mito matlab small, chondria matlab particles. Mitochondria iska kaam energy dena hai. Jaise battery phone ko charge karta hai, waise mitochondria cells ko power deta hai! Toh photosynthesis bilkul exam mein aayega! Samajhte ho na?"
+
+KEY PRONUNCIATION REQUIREMENTS:
+✓ EVERY difficult word must be broken into syllables
+✓ EVERY syllable must have its meaning explained
+✓ NO [phonetic] brackets EVER - only word parts and meanings
+✓ Teach pronunciation through EXPLANATION and REPETITION
+✓ Student hears natural flow and learns naturally
+✓ Must be audible and clear when text-to-speech reads it
+
+COMPLETE EXPLANATION REQUIREMENTS:
+Before you submit JSON, verify each narration:
+1. ✓ Does it explain WHAT this concept is? (Definition)
+2. ✓ Does it explain WHY it matters? (Importance/use)
+3. ✓ Does it explain HOW it works? (Step-by-step process)
+4. ✓ Does it have 2-3 Indian examples? (Phone, water, food, etc.)
+5. ✓ Does it break difficult words? (Syllables + meanings)
+6. ✓ Does it sound like natural ${G.lang}? (Warm, not robotic)
+
+If NO to ANY requirement, REWRITE THAT NARRATION IMMEDIATELY!
+
+NOW PROCEED WITH LANGUAGE-SPECIFIC RULES BELOW:
+
+MANDATORY LANGUAGE: You MUST write ONLY in ${G.lang}. No code-switching, no mixing wrong languages!
+
+${G.lang === 'Hinglish' ? `
+HINGLISH NARRATIONS (12-18 sentences, MIXED Hindi-English):
+- EVERY sentence must have at least 1 Hindi word: toh, matlab, kyunki, jaise, bilkul, dekho, samjho
+- Mix naturally: English concept + Hindi connectors/emotion
+- Start with: "Dekho", "Samjho", "Toh dekho"
+- Include: "matlab", "asal mein", "bilkul", "samajhte ho"
+- End with: "Samajh gaye?", "Clear?", "Bilkul na?"
+
+STRUCTURE FOR EACH HINGLISH NARRATION (12-18 sentences):
+1. Hook: "Dekho [topic] ek bahut important concept hai!"
+2-3. Why it matters: "Yeh important kyun hai? Iska benefit kya hai?"
+4-7. Definition + explanation: "Matlab yeh process hai...", "Iska matlab..."
+8-11. Real examples: 3-4 specific Indian examples (phone, paani, aam papad, clothes)
+12-15. How it works: Step by step in Hinglish
+16-18. Emotional: "Samajh aaya?", "Bilkul?", "Haan na?"
+
+EXACT EXAMPLE OF CORRECT HINGLISH NARRATION (teaching pronunciation naturally, NO brackets):
+"Dekho, photosynthesis. Photo matlab light, synthesis matlab banana. Toh light se food banana, yeh photosynthesis hai! Plants ko sunlight chahiye, water chahiye. Inse plants apna glucose - glucose matlab sugar - banate hain. Jaise tum khana khate ho aur energy milti hai, bilkul waise hi! Ab glucose cells mein jayega aur mitochondria - mito matlab small, chondria matlab particles - iska kaam energy dena hai. Bilkul jaise battery phone ko charge karta hai, waise mitochondria cells ko power deta hai! Toh photosynthesis zaroor exam mein aayega! Samajhte ho na? Bilkul simple concept hai!"
+
+NOTICE: 
+- photosynthesis explained by breaking "photo" + "synthesis"
+- glucose explained as "glucose matlab sugar"
+- mitochondria explained by parts "mito" + "chondria"
+- NO brackets, NO phonetic text
+- Natural flow, easy to understand
+- Student hears, learns, remembers naturally!
+
+HINGLISH WORDS TO USE (in EVERY narration):
+- Start: Dekho, Samjho, Toh dekho, Matlab, Listen
+- Connect: toh, matlab, kyunki, isliye, aur, lekin
+- Emphasis: bilkul, bahut, thoda, ekdum, zaroor
+- End: na, bilkul, haan, samajh aaya, clear hai
+` : G.lang === 'Hindi' ? `
+HINDI NARRATIONS (12-18 sentences, PURE HINDI):
+- ZERO English words - everything in Hindi only!
+- Use: "dekho", "samjho", "suno", "matlab", "toh", "kyunki"
+- Natural Hindi flow, not translated English
+- End with: "Samajh aaya?", "Bilkul seedha na?"
+
+STRUCTURE FOR EACH HINDI NARRATION (12-18 sentences):
+1. Hook: "Dekho [topic] ek bahut important process hai!"
+2-3. Why it matters: "Yeh kyon zaroor hai?"
+4-7. Definition: "Matlab yeh..."
+8-11. Real examples: 3-4 Indian examples
+12-15. How it works: Step by step Hindi explanation
+16-18. Emotional wrap-up
+
+EXACT EXAMPLE OF PERFECT HINDI NARRATION (12 sentences):
+"Dekho bhai, photosynthesis ek bahut hi amazing process hai! Asal mein, plants apna khana khud banate hain. Toh matlab yeh hai ki plants ko sunlight chahiye. Sunlight se plants ko energy milti hai. Jaise tum khana khate ho toh tumhein energy milti hai, bilkul waise hi plants sunlight se energy lete hain! Plants ko pani bhi chahiye aur hava bhi. Agar plants ko sunlight nahi milegi toh marr jayega. Dekho, jab tum plants ko andhere mein rakhte ho toh voh kamzor ho jata hai na? Bilkul, sunlight ke bina plant apna khana nahi bana sakta. Toh sunlight bilkul zaroor hai! Padhai mein yeh asaan concept hai! Samajh mein aaya?"
+
+HINDI WORDS TO USE (in EVERY narration):
+- Start: Dekho, Samjho, Suno, Matlab, Listen
+- Connect: toh, matlab, kyunki, isliye, aur, par
+- Emphasis: bilkul, bahut, thoda, ekdum, zaroor
+- End: na, bilkul, haan, samajh aaya, seedha
+` : `
+ENGLISH NARRATIONS (12-18 sentences, INDIAN ENGLISH):
+- Proper English but with Indian flavor: "na", "no", "only", "isn't it"
+- Use: "So basically", "Think about it", "Listen", "Imagine"
+- Natural, warm coaching teacher tone
+- End with: "Got it?", "Make sense?", "Isn't it?"
+
+STRUCTURE FOR EACH ENGLISH NARRATION (12-18 sentences):
+1. Hook: "Look na, [topic] is genuinely fascinating!"
+2-3. Why it matters: "This really matters because..."
+4-7. Explanation: "So basically..."
+8-11. Real examples: 3-4 Indian examples
+12-15. How it works: Step by step explanation
+16-18. Emotional wrap-up with check-in
+
+EXACT EXAMPLE OF PERFECT ENGLISH NARRATION (12 sentences):
+"Look na, photosynthesis is genuinely fascinating! Really! Plants make their own food. Think about it - plants need sunlight for energy. So basically, sunlight gives plants energy to grow. When you eat lunch, you get energy, isn't it? Same thing! Plants eat sunlight and convert it to energy. Plants also need water and air, no. If the plant doesn't get sunlight, it becomes weak. Imagine - when you keep a plant in the dark, it becomes pale and weak, na? Sunlight is absolutely necessary, no. So always remember - plants need light, water, and air. This will definitely come in your exam! Got it?"
+
+ENGLISH PHRASES TO USE (in EVERY narration):
+- Start: Look na, Listen, Imagine, Think about it, So basically
+- Connect: So, because, that's why, here's the thing, isn't it
+- Emphasis: really, absolutely, genuinely, definitely, no
+- End: na, no, isn't it, got it, make sense
+`}
 
 SENTENCE RULES (so voice speaks every word):
 - Each sentence MAXIMUM 12 words (shorter = clearer)
 - End every sentence with period, question mark, or exclamation
 - Use ONE idea per sentence (not compound)
 - Write in SHORT, SIMPLE words
-- Use natural language transitions: "toh", "matlab", "kyunki", "isliye", "aur"
-
-STRUCTURE FOR EACH NARRATION (12-18 sentences):
-1. Hook: "Dekho...", "Samjho...", "Listen..."
-2-3. Why it matters: "Yeh important kyun hai?", "Iska benefit kya hai?"
-4-7. Definition + explanation: "Matlab yeh hai...", "Iska matlab..."
-8-11. Real examples: 3-4 specific Indian examples from daily life
-12-15. How it works: Step by step explanation
-16-18. Emotional connection: "Samajh aaya?", "Clear?", "Bilkul?"
-
-EXACT EXAMPLE OF GOOD NARRATION (12 sentences):
-"Dekho, photosynthesis ek bahut important process hai. Asal mein, plants apna khana khud banate hain. Toh matlab yeh hai ki plants ko light chahiye. Iska matlab plants sunlight se energy lete hain. Jaise tum lunch khate ho, plants sunlight khate hain. Plants water se bhi kuch lete hain. Air se bhi plants ko kuch zarurat hai. Agar plant ko sunlight nahi milegi toh voh mar jayega. Dekho, jab tum plant ko shade mein rakhte ho toh voh weak ho jata hai. Bilkul, sunlight key bina plant apna khana nahi bana sakta. Toh sunlight bahut important hai plants ke liye. Samajh gaye na?"
-
-HINDI/HINGLISH WORDS TO USE (in EVERY narration):
-- Start sentences: Dekho, Samjho, Toh dekho, Matlab, Basically, Listen
-- Connecting: toh, matlab, kyunki, isliye, aur, lekin
-- Ending: na, bilkul, haan, samajh aaya, clear hai, got it
-- "iska matlab", "iska fayda", "iska karan", "isliye important hai"
+- Use natural language transitions appropriate to ${G.lang}
 
 REAL EXAMPLES (use 2-3 in EVERY narration):
 - Aam papad, water, phone, car, clothes, food, school, family
@@ -1494,17 +1660,18 @@ REAL EXAMPLES (use 2-3 in EVERY narration):
 - SPECIFIC: "Jab tum aam papad ko pani mein daalte ho", NOT "Indian example"
 
 WHAT TO AVOID:
+✗ Writing in wrong language for ${G.lang}
+✗ Mixing English when ${G.lang} is Hindi only
+✗ Mixing Hindi when ${G.lang} is English only
 ✗ Short sentences (less than 12 total)
-✗ Complex grammar
-✗ Pure English or pure Hindi (mix naturally)
+✗ Complex grammar or textbook language
 ✗ Generic examples
-✗ Textbook language
 ✗ "Let us explore", "In this scene", "Welcome"
-✓ 12-18 sentences
+✓ LANGUAGE STRICT - ONLY ${G.lang}!
+✓ 12-18 sentences of proper flow
 ✓ Simple short sentences (max 12 words each)
 ✓ Specific Indian examples
-✓ Natural language transitions
-✓ Warm, friendly tone
+✓ Warm, friendly tone in selected language
 
 Return COMPLETE JSON with 12-18 sentence narrations for ALL 8 scenes. Start with {`
       : null;
@@ -1524,6 +1691,14 @@ SCREENSHOT ANALYSIS MODE - FULL COURSE GENERATION:
 5. Explain WHY and HOW concept works
 6. Build from SIMPLE to COMPLEX across scenes
 7. Use NATURAL ${G.lang} (no textbook, no formal)
+
+🔊 NATURAL PRONUNCIATION TEACHING - NO VISIBLE HINTS:
+Teach hard words by breaking them into simple parts.
+NEVER use [pronunciation] brackets in text.
+
+Example:
+❌ WRONG: "photosynthesis [foh-toh-SIN-thuh-sis]"
+✅ RIGHT: "photosynthesis - photo matlab light, synthesis matlab banana"
 
 SCENE ORDER (all 8 required):
 1. intro   - Hook + why important
@@ -1836,11 +2011,24 @@ function applyResult(r){
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
       
-      document.getElementById('quickNotesText').innerHTML = 
-        '<div style="background:rgba(16,185,129,0.1);border-left:4px solid #10b981;padding:16px;border-radius:8px;margin-bottom:16px">'+
-        '<div style="color:#10b981;font-weight:900;margin-bottom:8px;font-size:13px">✅ SOLUTION SUMMARY</div>'+
-        '<div style="color:#c7d2fe;line-height:1.8;font-size:13px;white-space:pre-wrap">'+sanitizedSolution+'</div>'+
-        '</div>';
+      const solutionEl = document.getElementById('quickNotesText');
+      if(solutionEl){
+        solutionEl.innerHTML = 
+          '<div style="background:rgba(16,185,129,0.1);border-left:4px solid #10b981;padding:16px;border-radius:8px;margin-bottom:16px;display:block;visibility:visible;opacity:1">'+
+          '<div style="color:#10b981;font-weight:900;margin-bottom:8px;font-size:13px">✅ SOLUTION</div>'+
+          '<div style="color:#c7d2fe;line-height:1.8;font-size:13px;white-space:pre-wrap">'+sanitizedSolution+'</div>'+
+          '</div>';
+        
+        // CRITICAL: Make sure solution is visible
+        solutionEl.style.display = 'block';
+        solutionEl.style.visibility = 'visible';
+        solutionEl.style.opacity = '1';
+        
+        // Scroll to solution
+        setTimeout(() => {
+          solutionEl.scrollIntoView({behavior:'smooth',block:'nearest'});
+        }, 300);
+      }
     }
 
     // Key points (escape HTML)
@@ -2850,31 +3038,131 @@ function createHD2DConcept(heading, points, topic){
 
 function createHD2DDiagram(heading, points, topic){
   const termsList = points.slice(0, 5);
+  
+  // TOPIC-SPECIFIC DIAGRAMS
+  let diagramSVG = '';
+  
+  // Chain Reactions / Nuclear diagrams
+  if(topic.includes('chain') || topic.includes('reaction') || topic.includes('nuclear')){
+    diagramSVG = `<svg viewBox="0 0 900 550" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:rgba(13,11,46,0.2);border-radius:16px">
+      <defs>
+        <filter id="glow-chain" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <polygon points="0 0, 10 3, 0 6" fill="#a5b4fc"/>
+        </marker>
+      </defs>
+      
+      <rect width="900" height="550" fill="rgba(13,11,46,0.4)" rx="16"/>
+      <rect x="40" y="20" width="820" height="80" fill="rgba(139,92,246,0.15)" stroke="rgba(139,92,246,0.6)" stroke-width="2.5" rx="12"/>
+      <text x="450" y="75" text-anchor="middle" font-size="32" fill="#c084fc" font-weight="900" font-family="Sora,sans-serif">⚛️ ${heading}</text>
+      
+      <!-- Step 1: Neutron -->
+      <circle cx="120" cy="240" r="20" fill="rgba(139,92,246,0.4)" stroke="#c084fc" stroke-width="2.5" filter="url(#glow-chain)"/>
+      <text x="120" y="250" text-anchor="middle" font-size="16" fill="#e0e7ff" font-weight="bold">n</text>
+      <text x="120" y="275" text-anchor="middle" font-size="10" fill="#a5b4fc">Neutron</text>
+      
+      <!-- Arrow 1 -->
+      <path d="M 150 240 L 200 240" stroke="rgba(139,92,246,0.6)" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)"/>
+      
+      <!-- Step 2: Nucleus split -->
+      <circle cx="260" cy="240" r="35" fill="rgba(139,92,246,0.3)" stroke="#c084fc" stroke-width="3" filter="url(#glow-chain)"/>
+      <text x="260" y="250" text-anchor="middle" font-size="18" fill="#e0e7ff" font-weight="bold">U</text>
+      <text x="260" y="275" text-anchor="middle" font-size="9" fill="#a5b4fc">Nucleus</text>
+      
+      <!-- Split products -->
+      <path d="M 295 220 L 340 190" stroke="rgba(59,130,246,0.5)" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+      <path d="M 295 260 L 340 290" stroke="rgba(59,130,246,0.5)" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+      
+      <!-- Fragment 1 -->
+      <circle cx="380" cy="190" r="20" fill="rgba(59,130,246,0.3)" stroke="#60a5fa" stroke-width="2"/>
+      <text x="380" y="200" text-anchor="middle" font-size="13" fill="#93c5fd" font-weight="bold">Ba</text>
+      
+      <!-- Fragment 2 -->
+      <circle cx="380" cy="290" r="20" fill="rgba(59,130,246,0.3)" stroke="#60a5fa" stroke-width="2"/>
+      <text x="380" y="300" text-anchor="middle" font-size="13" fill="#93c5fd" font-weight="bold">Kr</text>
+      
+      <!-- Neutrons produced -->
+      <circle cx="500" cy="160" r="16" fill="rgba(168,85,247,0.3)" stroke="#c084fc" stroke-width="2" filter="url(#glow-chain)"/>
+      <text x="500" y="168" text-anchor="middle" font-size="12" fill="#e0e7ff" font-weight="bold">n</text>
+      
+      <circle cx="500" cy="240" r="16" fill="rgba(168,85,247,0.3)" stroke="#c084fc" stroke-width="2" filter="url(#glow-chain)"/>
+      <text x="500" y="248" text-anchor="middle" font-size="12" fill="#e0e7ff" font-weight="bold">n</text>
+      
+      <circle cx="500" cy="320" r="16" fill="rgba(168,85,247,0.3)" stroke="#c084fc" stroke-width="2" filter="url(#glow-chain)"/>
+      <text x="500" y="328" text-anchor="middle" font-size="12" fill="#e0e7ff" font-weight="bold">n</text>
+      
+      <!-- Energy release -->
+      <circle cx="630" cy="240" r="28" fill="rgba(251,191,36,0.25)" stroke="#fbbf24" stroke-width="2.5"/>
+      <text x="630" y="252" text-anchor="middle" font-size="28" fill="#fcd34d" font-weight="bold">⚡</text>
+      <text x="630" y="280" text-anchor="middle" font-size="9" fill="#f59e0b">Energy!</text>
+      
+      <!-- Chain reaction arrow -->
+      <path d="M 620 180 Q 580 120 320 120 Q 180 120 140 200" stroke="rgba(251,191,36,0.6)" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+      <text x="200" y="110" text-anchor="middle" font-size="11" fill="#fbbf24" font-weight="700">CHAIN REACTION!</text>
+      
+      <!-- Real World Examples Section - GENERATED BY AI -->
+      <rect x="40" y="370" width="820" height="160" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5" rx="10"/>
+      <text x="450" y="395" text-anchor="middle" font-size="14" fill="#c084fc" font-weight="700" font-family="Plus Jakarta Sans,sans-serif">🌍 REAL WORLD EXAMPLES</text>
+      
+      <!-- Example boxes - content comes from narration points -->
+      <rect x="60" y="410" width="240" height="110" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.4)" stroke-width="1" rx="8"/>
+      <text x="180" y="432" text-anchor="middle" font-size="10" fill="#a5b4fc" font-weight="700">📌 Example 1</text>
+      <text x="180" y="450" text-anchor="middle" font-size="8" fill="#818cf8" font-weight="500">(See narration below)</text>
+      
+      <rect x="330" y="410" width="240" height="110" fill="rgba(251,146,60,0.1)" stroke="rgba(251,146,60,0.4)" stroke-width="1" rx="8"/>
+      <text x="450" y="432" text-anchor="middle" font-size="10" fill="#fed7aa" font-weight="700">📌 Example 2</text>
+      <text x="450" y="450" text-anchor="middle" font-size="8" fill="#fbbf24" font-weight="500">(See narration below)</text>
+      
+      <rect x="600" y="410" width="240" height="110" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.4)" stroke-width="1" rx="8"/>
+      <text x="720" y="432" text-anchor="middle" font-size="10" fill="#86efac" font-weight="700">📌 Example 3</text>
+      <text x="720" y="450" text-anchor="middle" font-size="8" fill="#22c55e" font-weight="500">(See narration below)</text>
+    </svg>`;
+  }
+  
+  // If no topic-specific diagram, use default
+  else {
+    diagramSVG = createDefaultDiagram(heading, termsList);
+  }
+  
+  return diagramSVG;
+}
+
+function createDefaultDiagram(heading, termsList){
   let termsHTML = '';
   termsList.forEach((term, i) => {
     const angle = (i / termsList.length) * Math.PI * 2 - Math.PI / 2;
     const x = 450 + Math.cos(angle) * 140;
-    const y = 220 + Math.sin(angle) * 140;
+    const y = 240 + Math.sin(angle) * 140;
     const colors = ['#ec4899', '#6366f1', '#10b981', '#f59e0b', '#06b6d4'];
+    const bgColor = colors[i % colors.length];
+    
     termsHTML += `
       <g>
-        <line x1="450" y1="220" x2="${x}" y2="${y}" stroke="rgba(129,140,248,0.3)" stroke-width="2" stroke-dasharray="5,5"/>
-        <circle cx="${x}" cy="${y}" r="35" fill="rgba(${colors[i].slice(1).match(/.{1,2}/g).map((c,j)=>j<3?parseInt(c,16):'').join(',')},0.2)" stroke="${colors[i]}" stroke-width="2" filter="drop-shadow(0 4px 12px rgba(0,0,0,0.3))"/>
-        <text x="${x}" y="${y+2}" text-anchor="middle" font-size="11" fill="#e0e7ff" font-weight="bold">${term.substring(0,15)}</text>
-      </circle>
+        <line x1="450" y1="240" x2="${x}" y2="${y}" stroke="rgba(129,140,248,0.5)" stroke-width="2.5" stroke-dasharray="5,5" opacity="0.8"/>
+        <circle cx="${x}" cy="${y}" r="42" fill="${bgColor}15" stroke="${bgColor}" stroke-width="3" filter="drop-shadow(0 6px 16px ${bgColor}40)"/>
+        <text x="${x}" y="${y+2}" text-anchor="middle" font-size="12" fill="#e0e7ff" font-weight="bold" font-family="Plus Jakarta Sans,sans-serif">${term.substring(0,18)}</text>
+      </g>
     `;
   });
   
-  return `<svg viewBox="0 0 900 500" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
-    <rect width="900" height="500" fill="rgba(13,11,46,0.3)"/>
-    <rect x="50" y="30" width="800" height="70" fill="rgba(99,102,241,0.1)" stroke="rgba(129,140,248,0.4)" stroke-width="2" rx="10"/>
-    <text x="450" y="80" text-anchor="middle" font-size="28" fill="#a5b4fc" font-weight="bold">🔬 ${heading}</text>
-    <circle cx="450" cy="220" r="50" fill="rgba(99,102,241,0.25)" stroke="rgba(129,140,248,0.8)" stroke-width="3" filter="drop-shadow(0 0 20px rgba(99,102,241,0.5))"/>
-    <text x="450" y="230" text-anchor="middle" font-size="36" fill="#a5b4fc" font-weight="bold">⚡</text>
+  return `<svg viewBox="0 0 900 550" class="diagram-svg" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;background:rgba(13,11,46,0.2);border-radius:16px">
+    <rect width="900" height="550" fill="rgba(13,11,46,0.4)" rx="16"/>
+    <rect x="40" y="20" width="820" height="80" fill="rgba(99,102,241,0.15)" stroke="rgba(129,140,248,0.6)" stroke-width="2.5" rx="12"/>
+    <text x="450" y="75" text-anchor="middle" font-size="32" fill="#a5b4fc" font-weight="900" font-family="Sora,sans-serif">🔬 ${heading}</text>
+    
+    <circle cx="450" cy="240" r="58" fill="rgba(99,102,241,0.3)" stroke="rgba(129,140,248,0.9)" stroke-width="3.5" filter="drop-shadow(0 0 24px rgba(99,102,241,0.6))"/>
+    <circle cx="450" cy="240" r="48" fill="rgba(139,92,246,0.2)" stroke="rgba(165,180,252,0.5)" stroke-width="1.5"/>
+    <text x="450" y="250" text-anchor="middle" font-size="44" fill="#a5b4fc" font-weight="bold">⚡</text>
+    
     ${termsHTML}
-    <rect x="50" y="400" width="800" height="80" fill="rgba(99,102,241,0.08)" stroke="rgba(129,140,248,0.3)" stroke-width="1" rx="8"/>
-    <text x="450" y="430" text-anchor="middle" font-size="13" fill="#c7d2fe" font-weight="600">यह structure समझना बहुत important है! सभी concepts को याद रखो। 📝</text>
-    <text x="450" y="460" text-anchor="middle" font-size="12" fill="#a5b4fc">Exam में diagram draw करने के लिए यह pattern जरूरी है!</text>
+    
+    <rect x="40" y="420" width="820" height="110" fill="rgba(99,102,241,0.12)" stroke="rgba(129,140,248,0.4)" stroke-width="1.5" rx="10"/>
+    <text x="450" y="445" text-anchor="middle" font-size="13" fill="#c7d2fe" font-weight="700">📌 AI-Generated Content Below</text>
+    <text x="450" y="467" text-anchor="middle" font-size="11" fill="#a5b4fc" font-weight="600">👇 Narration में detailed explanation है</text>
+    <text x="450" y="488" text-anchor="middle" font-size="10" fill="#818cf8" font-weight="500">Real examples और applications narration में मिलेंगे</text>
   </svg>`;
 }
 
@@ -2894,9 +3182,9 @@ function createHD2DExample(heading, points, topic){
       </g>
     `).join('')}
     <rect x="50" y="380" width="800" height="100" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.3)" stroke-width="1" rx="8"/>
-    <text x="450" y="410" text-anchor="middle" font-size="13" fill="#c7d2fe" font-weight="bold">💡 इन examples को समझो और अपने शब्दों में explain करो!</text>
-    <text x="450" y="440" text-anchor="middle" font-size="12" fill="#10b981">Exam में ऐसे ही examples 2-3 marks के लिए लिखने होते हैं। 📍</text>
-    <text x="450" y="465" text-anchor="middle" font-size="11" fill="#a5b4fc">Real-world examples सबसे important हैं scoring के लिए!</text>
+    <text x="450" y="410" text-anchor="middle" font-size="12" fill="#c7d2fe" font-weight="bold">💡 AI-Generated Examples</text>
+    <text x="450" y="432" text-anchor="middle" font-size="10" fill="#10b981">👇 Real-world examples narration में दिए गए हैं</text>
+    <text x="450" y="454" text-anchor="middle" font-size="9" fill="#a5b4fc">प्रत्येक example को समझने के लिए narration पढ़ो</text>
   </svg>`;
 }
 
@@ -2915,7 +3203,7 @@ function createHD2DSummary(heading, points, topic){
       </g>
     `).join('')}
     <rect x="50" y="430" width="800" height="50" fill="rgba(139,92,246,0.12)" stroke="rgba(139,92,246,0.5)" stroke-width="2" rx="8"/>
-    <text x="450" y="465" text-anchor="middle" font-size="13" fill="#a5b4fc" font-weight="bold">🎯 यह summary याद रखो! Exam के लिए यही key points हैं।</text>
+    <text x="450" y="465" text-anchor="middle" font-size="12" fill="#a5b4fc" font-weight="bold">📌 AI-Generated Summary from Content</text>
   </svg>`;
 }
 
@@ -2954,6 +3242,15 @@ function renderScene(sc,idx,total){
   const canvasDiagramContainer = document.getElementById('diagramSvgContainerCanvas');
   if(canvasDiagramContainer){
     canvasDiagramContainer.innerHTML = hdDiagram;
+  }
+  
+  // FORCE overlay to be visible for diagram display
+  const diagramOverlay = document.getElementById('diagramOverlayContainer');
+  if(diagramOverlay){
+    diagramOverlay.style.visibility = 'visible';
+    diagramOverlay.style.opacity = '1';
+    diagramOverlay.style.zIndex = '15';
+    diagramOverlay.style.pointerEvents = 'auto';
   }
   
   // Simple canvas background with scene info (title bar)
@@ -3283,6 +3580,62 @@ function mkHDSummary(t,h,pts,ic,sn,narr){return()=>{
 // ══════════════════════════════════════════
 // TYPEWRITER
 // ══════════════════════════════════════════
+// HINGLISH SMART FORMATTER - Word-level mixing
+// ══════════════════════════════════════════
+function formatHinglishText(text){
+  // Step 1: Identify Hindi words commonly used in Hinglish context
+  const hindiWordsList = ['hai', 'hain', 'matlab', 'lekin', 'kyunki', 'toh', 'aur', 'isliye', 'bilkul', 
+    'haan', 'na', 'nahi', 'iska', 'uska', 'sabka', 'kya', 'kon', 'kahan', 'kaun', 'dekho', 'samjho', 
+    'sunao', 'suno', 'jaise', 'waise', 'bahut', 'thoda', 'abhi', 'phir', 'fir', 'bhi', 'ek', 'do', 'teen',
+    'char', 'paanch', 'sau', 'hazar', 'lakh', 'fayda', 'karan', 'sath', 'pehle', 'baad', 'pehlay',
+    'asal', 'mein', 'se', 'tak', 'par', 'ko', 'ke', 'ka', 'ki', 'ho', 'ho', 'gaya', 'liya', 'diya'];
+  
+  // Step 2: Process text for pronunciation hints in [brackets] - extract and store them
+  let pronunciationMap = {};
+  let processed = text.replace(/(\w+)\s*\[([^\]]+)\]/g, (match, word, pronunciation) => {
+    pronunciationMap[word.toLowerCase()] = pronunciation;
+    // Return word without brackets, hint will be added via data attribute
+    return word;
+  });
+  
+  // Step 3: Highlight important terms marked with **
+  processed = processed.replace(/\*\*([^\*]+)\*\*/g, (match, term) => {
+    return `<span class="important-term">${term}</span>`;
+  });
+  
+  // Step 4: Add pronunciation hints back as data attributes for hover tooltip
+  processed = processed.replace(/\b(\w+)\b/g, (match, word) => {
+    const lowerWord = word.toLowerCase();
+    if(pronunciationMap[lowerWord]){
+      return `<span class="hint-box" data-pronunciation="🔊 ${pronunciationMap[lowerWord]}">${word}</span>`;
+    }
+    return word;
+  });
+  
+  // Step 5: Smart highlighting of Hindi words (one per sentence, for natural flow)
+  const sentences = processed.split(/([.!?]+)/);
+  let result = '';
+  for(let i=0; i<sentences.length; i+=2){
+    let sent = sentences[i];
+    let punct = sentences[i+1] || '';
+    
+    // Find first hindi word in this sentence
+    let foundWord = false;
+    for(let hw of hindiWordsList){
+      const regex = new RegExp(`\\b${hw}\\b`, 'gi');
+      if(regex.test(sent) && !foundWord){
+        sent = sent.replace(new RegExp(`\\b${hw}\\b`, 'gi'), 
+          `<span class="hindi-word">${hw}</span>`);
+        foundWord = true;
+      }
+    }
+    result += sent + punct;
+  }
+  
+  return result;
+}
+
+// ══════════════════════════════════════════
 function typewrite(el,text){
   el.innerHTML='';
   const paras=text.split(/\n+/).filter(p=>p.trim());
@@ -3290,10 +3643,23 @@ function typewrite(el,text){
   const spd=Math.max(6,2200/Math.max(text.length,1));
   function tick(){
     if(pi>=paras.length)return;
-    if(ci===0){const p=document.createElement('p');p.style.marginBottom='12px';el.appendChild(p);}
+    if(ci===0){
+      const p=document.createElement('p');
+      p.style.marginBottom='12px';
+      el.appendChild(p);
+    }
     const pEl=el.querySelectorAll('p')[pi];
-    if(ci<paras[pi].length){pEl.textContent+=paras[pi][ci++];setTimeout(tick,spd);}
-    else{pi++;ci=0;setTimeout(tick,spd*4);}
+    if(ci<paras[pi].length){
+      pEl.textContent+=paras[pi][ci++];
+      setTimeout(tick,spd);
+    }
+    else{
+      // Apply Hinglish formatting to completed paragraph
+      const formattedHTML = formatHinglishText(pEl.textContent);
+      pEl.innerHTML = formattedHTML;
+      pi++;ci=0;
+      setTimeout(tick,spd*4);
+    }
   }
   tick();
 }
