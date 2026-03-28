@@ -1,4 +1,8 @@
-User-agent: *
-   Allow: /
+# robots.txt — EduSphere AI
+# https://www.edusphereai.in/robots.txt
 
-   Sitemap: https://edusphereai.in/sitemap.xml
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.edusphereai.in/sitemap.xml
