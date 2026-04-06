@@ -1532,12 +1532,23 @@ function loadFile(f){
     img.src=ev.target.result;
     img.style.cssText='max-width:100%;max-height:130px;object-fit:contain;border-radius:10px;display:block';
     box.appendChild(img);
-    
-    // Store image URL for canvas display
     G.uploadedImageUrl = ev.target.result;
-    
+
+    // Image ready — generate button enable karo
+    // AI automatically image se topic extract karega
     document.getElementById('genBtn').disabled=false;
-    toast('📸','Image loaded! Ready to generate 🚀');
+
+    // Reset input field
+    const inp = document.getElementById('topicInput');
+    inp.style.borderColor='';
+    inp.style.boxShadow='';
+    inp.placeholder='Optional: Topic manually type karo ya chodo (AI image se read kar lega)';
+
+    document.getElementById('uzSub').innerHTML=
+      '<strong style="color:var(--green)">✅ Image ready!</strong> '+
+      '<span style="color:var(--muted);font-size:10px"> AI image se topic read karega automatically</span>';
+
+    toast('📸','Image ready! Generate dabao — AI topic khud read kar lega 🤖', 3500);
   };
   reader.onerror=()=>{ toast('❌','File read failed. Try again.'); };
   reader.readAsDataURL(f);
@@ -1546,13 +1557,29 @@ function loadFile(f){
 function useText(){
   const t=document.getElementById('topicInput').value.trim();
   if(!t){toast('⚠️','Please enter a topic first!');return;}
-  G.topicText=t; G.file=null;
-  document.getElementById('uzIcon').textContent='📝';
-  document.getElementById('uzSub').innerHTML='<strong style="color:var(--indigo)">'+t+'</strong>';
+  G.topicText=t;
+
+  // Reset input highlight (was highlighted for image upload case)
+  const inp = document.getElementById('topicInput');
+  inp.style.borderColor='';
+  inp.style.boxShadow='';
+  inp.placeholder='e.g. Photosynthesis, Newton\'s Laws, French Revolution...';
+
+  // If image also uploaded, keep G.file — both topic + image context milega
   const box=document.getElementById('previewBox');
-  box.innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:40px;margin-bottom:8px">📝</div><div style="color:var(--indigo);font-weight:800;font-size:14px">'+t+'</div><div style="color:var(--muted);font-size:11px;margin-top:4px">Ready to generate</div></div>';
+  if(!G.file){
+    G.file=null;
+    box.innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:40px;margin-bottom:8px">📝</div><div style="color:var(--indigo);font-weight:800;font-size:14px">'+t+'</div><div style="color:var(--muted);font-size:11px;margin-top:4px">Ready to generate</div></div>';
+    document.getElementById('uzIcon').textContent='📝';
+    document.getElementById('uzSub').innerHTML='<strong style="color:var(--indigo)">'+t+'</strong>';
+  } else {
+    // Image + topic dono hain
+    document.getElementById('uzSub').innerHTML=
+      '<strong style="color:var(--green)">✅ Image + Topic ready!</strong> '+
+      '<span style="color:var(--muted);font-size:10px"> "'+t+'"</span>';
+  }
   document.getElementById('genBtn').disabled=false;
-  toast('📝','"'+t+'" ready!');
+  toast('📝','"'+t+'" ready! Generate karo 🚀');
 }
 
 function quickT(t){
@@ -1791,6 +1818,7 @@ If answer is NO to any, REWRITE THAT NARRATION!`;
   try {
     const userContent = G.topicText
       ? `Topic: "${G.topicText}". Exam: ${G.examType}. Language: ${G.lang}.
+${G.file ? '\n[Note: Student uploaded a question/topic image. The topic has been extracted from it: "'+G.topicText+'". Generate full lesson on this exact topic.]\n' : ''}
 
 ===== CRITICAL INSTRUCTIONS FOR NARRATIONS =====
 
@@ -1963,52 +1991,49 @@ Return COMPLETE JSON with 12-18 sentence narrations for ALL 8 scenes. Start with
       : null;
 
     let imgContent = null;
-    if(!G.topicText && G.file){
-      const {b64,mime}=await readB64(G.file);
-      imgContent=[
-        {type:'image_url',image_url:{url:'data:'+mime+';base64,'+b64}},
-        {type:'text',text:`
-SCREENSHOT ANALYSIS MODE - FULL COURSE GENERATION:
 
-1. Identify the question/topic from image
-2. Generate 8 COMPLETE SCENES (like full course lesson)
-3. Each narration MUST be 6-8 sentences - DETAILED
-4. Use SPECIFIC Indian examples (2-3 per scene)
-5. Explain WHY and HOW concept works
-6. Build from SIMPLE to COMPLEX across scenes
-7. Use NATURAL ${G.lang} (no textbook, no formal)
-
-🔊 NATURAL PRONUNCIATION TEACHING - NO VISIBLE HINTS:
-Teach hard words by breaking them into simple parts.
-NEVER use [pronunciation] brackets in text.
-
-Example:
-❌ WRONG: "photosynthesis [foh-toh-SIN-thuh-sis]"
-✅ RIGHT: "photosynthesis - photo matlab light, synthesis matlab banana"
-
-SCENE ORDER (all 8 required):
-1. intro   - Hook + why important
-2. concept - Core theory + 2 examples
-3. diagram - 5 specific terms explained
-4. concept - Deeper mechanism + real impact
-5. example - 3 vivid Indian examples
-6. concept - Misconceptions clarified
-7. example - Exact exam answer strategy
-8. summary - Recap + mnemonic + motivation
-
-NARRATION RULES:
-- Minimum 6-8 sentences per scene
-- Use natural language transitions (toh, matlab, kyunki)
-- Sound like warm teacher/friend
-- Explain reasoning behind concepts
-- SPECIFIC Indian examples only
-- Include 1-2 check-in questions per narration
-
-Return FULL JSON with complete 8 scenes:
-{"topic_name":"Topic","scenes":[8 COMPLETE scenes],"key_concepts":[...],"full_explanation":"...","quick_notes":[...],"exam_tips":[...]}
-
-NO solution summaries. FULL COURSE ONLY. JSON start with {`}
-      ];
+    // ── IMAGE TOPIC EXTRACTION ──
+    // Agar image upload hai aur topic manually type nahi kiya
+    // toh Anthropic API se image read karke topic extract karo
+    if(G.file && !G.topicText){
+      document.getElementById('loadTxt').textContent = 'IMAGE READ HO RAHI HAI...';
+      try{
+        const {b64,mime} = await readB64(G.file);
+        const extractResp = await fetch('https://api.anthropic.com/v1/messages',{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            'anthropic-version':'2023-06-01',
+            'anthropic-dangerous-direct-browser-access':'true'
+          },
+          body:JSON.stringify({
+            model:'claude-haiku-4-5-20251001',
+            max_tokens:300,
+            messages:[{
+              role:'user',
+              content:[
+                {type:'image',source:{type:'base64',media_type:mime,data:b64}},
+                {type:'text',text:'This is a student question or textbook screenshot. Extract ONLY the main topic/question as a short phrase (max 15 words). Return ONLY the topic text, nothing else. Example: "Spinal cord injury signals disruption" or "Photosynthesis process in plants"'}
+              ]
+            }]
+          })
+        });
+        if(extractResp.ok){
+          const ed = await extractResp.json();
+          const extracted = (ed.content&&ed.content[0]&&ed.content[0].text||'').trim();
+          if(extracted && extracted.length > 3){
+            G.topicText = extracted;
+            console.log('[Image] ✅ Topic extracted:', extracted);
+            // Update UI to show extracted topic
+            document.getElementById('topicInput').value = extracted;
+            document.getElementById('uzSub').innerHTML =
+              '<strong style="color:var(--green)">📖 Topic: '+extracted+'</strong>';
+          }
+        }
+      }catch(imgErr){
+        console.warn('[Image] Extract failed:', imgErr.message);
+        // Silent fail — will use file name fallback
+      }
     }
 
     // ── GROQ ONLY — Fast, Free, No Credit Issues ──
@@ -2022,16 +2047,10 @@ NO solution summaries. FULL COURSE ONLY. JSON start with {`}
 
     // ── CRITICAL FIX: userContent kabhi null nahi hona chahiye ──
     // Groq vision support nahi karta, image case mein topic name se content banao
-    const safeUserContent = userContent || (() => {
-      const topicGuess = G.file ? G.file.name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ') : 'General Topic';
-      return `Topic: "${topicGuess}". Exam: ${G.examType||'General'}. Language: ${G.lang||'Hinglish'}.
-
-Generate a complete 8-scene animated course lesson in ${G.lang||'Hinglish'} for this topic.
-
-Return FULL JSON:
-{"topic_name":"${topicGuess}","scenes":[8 complete scenes with title, type, narration, keyPoints, diagram fields],"key_concepts":[],"full_explanation":"","quick_notes":[],"exam_tips":[]}
-
-Start with {`;
+    // safeUserContent — G.topicText ab hamesha available hoga (useText() required after image upload)
+    const safeUserContent = userContent || (()=>{
+      const t = G.topicText || (G.file ? G.file.name.replace(/\.[^.]+$/,'').replace(/[_-]/g,' ') : 'General Topic');
+      return `Topic: "${t}". Exam: ${G.examType||'General'}. Language: ${G.lang||'Hinglish'}.\n\nGenerate a complete 8-scene animated course lesson. Return FULL JSON starting with {`;
     })();
 
     let resp=null, lastErr=null;
