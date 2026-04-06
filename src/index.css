@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 230 25% 7%;
+    --foreground: 210 40% 96%;
+
+    --card: 230 25% 11%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 230 25% 11%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 265 89% 62%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 230 25% 16%;
+    --secondary-foreground: 210 40% 96%;
+
+    --muted: 230 20% 18%;
+    --muted-foreground: 220 10% 55%;
+
+    --accent: 172 66% 50%;
+    --accent-foreground: 230 25% 7%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 230 20% 18%;
+    --input: 230 20% 18%;
+    --ring: 265 89% 62%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 230 25% 9%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 265 89% 62%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 230 25% 16%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 230 20% 18%;
+    --sidebar-ring: 265 89% 62%;
+
+    /* Custom tokens */
+    --glass: 230 25% 14%;
+    --glass-border: 230 20% 22%;
+    --glow-primary: 265 89% 62%;
+    --glow-accent: 172 66% 50%;
+    --gradient-start: 265 89% 62%;
+    --gradient-end: 172 66% 50%;
+
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-card/60 backdrop-blur-xl border border-glass-border rounded-xl;
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:bg-card/80 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5;
+  }
+
+  .glow-text {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+
+  .glow-border {
+    @apply border border-primary/30 shadow-lg shadow-primary/10;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+}
