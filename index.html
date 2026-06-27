@@ -109,35 +109,56 @@
   <!-- Font preload for LCP improvement -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap"/>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 /* fonts loaded via preload in <head> — no duplicate @import needed */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --indigo:#4f46e5;--indigo2:#4338ca;--indigo3:#ede9fe;--indigo-light:#4f46e5;--indigo-soft:#eef2ff;
-  --bg:#f1f4fb;--card:#ffffff;--card2:#f8f9ff;--border:rgba(99,102,241,0.13);--border2:rgba(99,102,241,0.22);
-  --text:#1a1a3e;--text2:#3730a3;--muted:#64748b;
-  --green:#059669;--coral:#dc2626;--gold:#b45309;
-  --glow-indigo:0 4px 24px rgba(99,102,241,0.18),0 1px 6px rgba(99,102,241,0.1);
-  --glow-green:0 4px 16px rgba(5,150,105,0.18);
-  --glow-gold:0 4px 16px rgba(180,83,9,0.18);
-  --shadow:0 2px 8px rgba(99,102,241,0.09),0 1px 3px rgba(0,0,0,0.05);
-  --shadow-lg:0 8px 40px rgba(99,102,241,0.14),0 2px 10px rgba(0,0,0,0.07);
-  --text3d:0 1px 0 rgba(255,255,255,0.95),0 2px 4px rgba(99,102,241,0.12);
-  --card3d:0 1px 0 rgba(255,255,255,1) inset,0 0 0 1px rgba(99,102,241,0.09),0 4px 0 rgba(99,102,241,0.07),0 8px 20px rgba(99,102,241,0.1),0 20px 40px rgba(99,102,241,0.05);
+  /* ── Premium Violet-Indigo Palette ── */
+  --indigo:#5b4fcf;--indigo2:#4338ca;--indigo3:#ede9fe;--indigo-light:#5b4fcf;--indigo-soft:#f0eeff;
+  /* ── Ultra-Premium Light Backgrounds ── */
+  --bg:linear-gradient(145deg,#faf9ff 0%,#f3f0ff 40%,#fdf8f0 100%);
+  --bg-solid:#f7f5ff;
+  --card:#ffffff;--card2:#fdfcff;
+  /* ── Borders ── */
+  --border:rgba(91,79,207,0.12);--border2:rgba(91,79,207,0.2);
+  /* ── Text ── */
+  --text:#1e1a3c;--text2:#3730a3;--muted:#6b7280;
+  /* ── Accent Colors ── */
+  --green:#047857;--coral:#dc2626;
+  --gold:#c97c1a;--gold-soft:#fff8ee;--gold-border:rgba(201,124,26,0.25);
+  /* ── Shadows & Glows ── */
+  --glow-indigo:0 4px 28px rgba(91,79,207,0.2),0 1px 8px rgba(91,79,207,0.12);
+  --glow-green:0 4px 18px rgba(4,120,87,0.2);
+  --glow-gold:0 4px 18px rgba(201,124,26,0.22);
+  --shadow:0 2px 10px rgba(91,79,207,0.08),0 1px 3px rgba(0,0,0,0.04);
+  --shadow-lg:0 8px 40px rgba(91,79,207,0.13),0 2px 12px rgba(0,0,0,0.06);
+  /* ── Premium 3D Card Effect ── */
+  --text3d:0 1px 0 rgba(255,255,255,1),0 2px 4px rgba(91,79,207,0.1);
+  --card3d:0 1px 0 rgba(255,255,255,1) inset,0 0 0 1px rgba(91,79,207,0.08),0 4px 0 rgba(91,79,207,0.06),0 8px 24px rgba(91,79,207,0.09),0 24px 48px rgba(91,79,207,0.04);
 }
-html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:rgba(99,102,241,0.22);border-radius:4px}
-::-webkit-scrollbar-track{background:rgba(99,102,241,0.04)}
+html,body{height:100%;overflow:hidden;background:var(--bg-solid);background-image:radial-gradient(ellipse at 0% 0%,rgba(91,79,207,0.07) 0%,transparent 60%),radial-gradient(ellipse at 100% 100%,rgba(201,124,26,0.06) 0%,transparent 60%),radial-gradient(ellipse at 50% 50%,rgba(255,255,255,0.8) 0%,transparent 100%);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:rgba(91,79,207,0.2);border-radius:4px}
+::-webkit-scrollbar-track{background:rgba(91,79,207,0.03)}
+
+/* ── PREMIUM LIGHT THEME ENHANCEMENTS ── */
+/* Subtle grain texture overlay for premium paper feel */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.35}
+
+/* Premium gold accent for active states */
+.ni.on{background:linear-gradient(90deg,rgba(91,79,207,0.1),rgba(91,79,207,0.04));color:#5b4fcf;font-weight:800;box-shadow:0 1px 0 rgba(255,255,255,0.95) inset}
+.ni.on::before{content:'';position:absolute;left:0;top:10%;bottom:10%;width:3px;background:linear-gradient(180deg,#5b4fcf,#c97c1a);border-radius:0 3px 3px 0;box-shadow:0 0 8px rgba(91,79,207,0.3)}
 
 /* ── TOPBAR ── */
 #app{display:flex;height:100vh;flex-direction:column}
-.topbar{height:62px;background:rgba(255,255,255,0.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:relative;z-index:100;border-bottom:1px solid rgba(99,102,241,0.1);box-shadow:0 1px 0 rgba(255,255,255,0.9),0 4px 24px rgba(99,102,241,0.08)}
-.topbar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(99,102,241,0.3),transparent)}
-.logo-wrap{display:flex;align-items:center;gap:0;background:linear-gradient(135deg,#eef2ff,#e0e7ff);border-radius:12px;padding:4px 14px 4px 8px;box-shadow:0 2px 10px rgba(99,102,241,0.15),0 1px 0 rgba(255,255,255,1) inset,0 0 0 1px rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.18)}
+.topbar{height:62px;background:rgba(255,255,255,0.92);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:relative;z-index:100;border-bottom:1px solid rgba(91,79,207,0.1);box-shadow:0 1px 0 rgba(255,255,255,0.95),0 4px 28px rgba(91,79,207,0.07),0 1px 12px rgba(201,124,26,0.04)}
+.topbar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(91,79,207,0.3),rgba(201,124,26,0.25),transparent)}
+.logo-wrap{display:flex;align-items:center;gap:0;background:linear-gradient(135deg,#f0eeff,#ebe5ff);border-radius:12px;padding:4px 14px 4px 8px;box-shadow:0 2px 12px rgba(91,79,207,0.14),0 1px 0 rgba(255,255,255,1) inset,0 0 0 1px rgba(91,79,207,0.14);border:1px solid rgba(91,79,207,0.18)}
 .logo-wrap img{height:36px;object-fit:contain;filter:brightness(1)}
-.logo-ai{background:linear-gradient(135deg,#4f46e5,#6366f1);color:white;font-size:9px;font-weight:900;letter-spacing:2px;padding:2px 7px;border-radius:6px;margin-left:8px;text-shadow:0 1px 2px rgba(0,0,0,0.2);box-shadow:0 2px 8px rgba(79,70,229,0.4),0 1px 0 rgba(255,255,255,0.25) inset}
+.logo-ai{background:linear-gradient(135deg,#5b4fcf,#c97c1a);color:white;font-size:9px;font-weight:900;letter-spacing:2px;padding:2px 7px;border-radius:6px;margin-left:8px;text-shadow:0 1px 2px rgba(0,0,0,0.2);box-shadow:0 2px 8px rgba(91,79,207,0.4),0 1px 0 rgba(255,255,255,0.25) inset}
 
 .topbar-right{display:flex;align-items:center;gap:10px}
 .lang-pill{display:flex;align-items:center;gap:6px;background:rgba(99,102,241,0.07);border:1px solid rgba(99,102,241,0.18);border-radius:20px;padding:6px 14px;cursor:pointer;transition:all .2s;color:#4f46e5;font-size:12px;font-weight:700;box-shadow:0 1px 0 rgba(255,255,255,0.9),0 2px 6px rgba(99,102,241,0.07)}
@@ -153,7 +174,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .body{display:flex;flex:1;overflow:hidden}
 
 /* ── SIDEBAR ── */
-.sidebar{width:224px;background:linear-gradient(180deg,#ffffff,#f8f9ff);border-right:1px solid rgba(99,102,241,0.1);padding:16px 10px;display:flex;flex-direction:column;gap:3px;flex-shrink:0;overflow-y:auto;box-shadow:2px 0 16px rgba(99,102,241,0.06)}
+.sidebar{width:224px;background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(253,252,255,0.95));border-right:1px solid rgba(91,79,207,0.09);padding:16px 10px;display:flex;flex-direction:column;gap:3px;flex-shrink:0;overflow-y:auto;box-shadow:2px 0 20px rgba(91,79,207,0.05),1px 0 0 rgba(201,124,26,0.04)}
 .sb-logo{padding:0 8px 14px;border-bottom:1px solid rgba(99,102,241,0.1);margin-bottom:6px}
 .sb-logo-text{font-family:'Sora',sans-serif;font-size:10px;font-weight:900;color:#4f46e5;letter-spacing:3px}
 .sb-sect{font-size:9px;font-weight:900;color:rgba(79,70,229,0.4);letter-spacing:2.5px;padding:12px 10px 5px;text-transform:uppercase}
@@ -163,16 +184,16 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .ni.on::before{content:'';position:absolute;left:0;top:10%;bottom:10%;width:3px;background:linear-gradient(180deg,#4f46e5,#6366f1);border-radius:0 3px 3px 0;box-shadow:0 0 6px rgba(99,102,241,0.4)}
 .ni-icon{font-size:16px;width:22px;text-align:center}
 .exam-badge{margin-left:auto;font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px}
-.sb-card{margin:auto 6px 6px;background:linear-gradient(135deg,#4f46e5,#6366f1,#818cf8);border-radius:14px;padding:14px;color:white;border:1px solid rgba(99,102,241,0.3);box-shadow:0 4px 0 rgba(67,56,202,0.25),0 8px 24px rgba(79,70,229,0.22),0 1px 0 rgba(255,255,255,0.25) inset}
+.sb-card{margin:auto 6px 6px;background:linear-gradient(135deg,#4338ca,#5b4fcf,#c97c1a);border-radius:14px;padding:14px;color:white;border:1px solid rgba(91,79,207,0.3);box-shadow:0 4px 0 rgba(43,36,163,0.3),0 8px 28px rgba(91,79,207,0.25),0 1px 0 rgba(255,255,255,0.25) inset}
 .sb-card-title{font-size:11px;font-weight:900;letter-spacing:1px;margin-bottom:5px;text-shadow:0 1px 2px rgba(0,0,0,0.2)}
 .sb-card-text{font-size:10px;opacity:0.92;line-height:1.7;font-weight:600}
 
 /* ── PAGES ── */
-.page{flex:1;overflow-y:auto;padding:20px 24px;display:none;flex-direction:column;gap:16px;background:radial-gradient(ellipse at 20% 0%,rgba(99,102,241,0.06) 0%,transparent 55%),radial-gradient(ellipse at 80% 100%,rgba(99,102,241,0.04) 0%,transparent 55%),var(--bg)}
+.page{flex:1;overflow-y:auto;padding:20px 24px;display:none;flex-direction:column;gap:16px;background:radial-gradient(ellipse at 15% 0%,rgba(91,79,207,0.05) 0%,transparent 50%),radial-gradient(ellipse at 85% 100%,rgba(201,124,26,0.04) 0%,transparent 50%),#f7f5ff}
 .page.on{display:flex}
 
 /* ── HERO STRIP ── */
-.hero{background:linear-gradient(135deg,#4f46e5,#6366f1,#818cf8);border-radius:18px;padding:24px 30px;color:white;position:relative;overflow:hidden;flex-shrink:0;border:1px solid rgba(99,102,241,0.3);box-shadow:0 4px 0 rgba(67,56,202,0.35),0 8px 40px rgba(79,70,229,0.28),0 1px 0 rgba(255,255,255,0.2) inset}
+.hero{background:linear-gradient(135deg,#4338ca 0%,#5b4fcf 40%,#7c6fd4 70%,#8b6914 100%);border-radius:18px;padding:24px 30px;color:white;position:relative;overflow:hidden;flex-shrink:0;border:1px solid rgba(91,79,207,0.35);box-shadow:0 4px 0 rgba(55,48,163,0.4),0 8px 40px rgba(91,79,207,0.3),0 1px 0 rgba(255,255,255,0.2) inset}
 .hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.14),transparent 70%)}
 .hero::after{content:'';position:absolute;bottom:-50px;right:100px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.08),transparent 70%)}
 .hero-title{font-family:'Sora',sans-serif;font-size:22px;font-weight:900;margin-bottom:5px;text-shadow:0 1px 2px rgba(0,0,0,0.15),0 2px 8px rgba(0,0,0,0.1);letter-spacing:.5px}
@@ -207,7 +228,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(99,102,241,0.3),transparent)}
 .preview-box{border:1.5px solid rgba(99,102,241,0.12);border-radius:12px;min-height:130px;height:auto;background:rgba(99,102,241,0.03);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;padding:4px}
 .preview-box img{max-width:100%;max-height:130px;object-fit:contain;border-radius:10px;display:block}
-.gen-btn{background:linear-gradient(135deg,#4338ca,#4f46e5,#6366f1);color:white;font-family:'Sora',sans-serif;font-weight:900;font-size:14px;letter-spacing:1px;border:none;border-radius:14px;padding:15px;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;position:relative;overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,0.2);box-shadow:0 1px 0 rgba(255,255,255,0.22) inset,0 4px 0 rgba(55,48,163,0.6),0 6px 20px rgba(79,70,229,0.35);border-top:1px solid rgba(255,255,255,0.2)}
+.gen-btn{background:linear-gradient(135deg,#4338ca,#5b4fcf,#6b5fd4);color:white;font-family:'Sora',sans-serif;font-weight:900;font-size:14px;letter-spacing:1px;border:none;border-radius:14px;padding:15px;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;position:relative;overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,0.2);box-shadow:0 1px 0 rgba(255,255,255,0.22) inset,0 4px 0 rgba(43,36,163,0.55),0 6px 24px rgba(91,79,207,0.38);border-top:1px solid rgba(255,255,255,0.2)}
 .gen-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,0.12),transparent);transform:translateX(-100%);transition:transform .5s}
 .gen-btn:hover:not(:disabled)::after{transform:translateX(100%)}
 .gen-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,0.22) inset,0 6px 0 rgba(55,48,163,0.6),0 10px 28px rgba(79,70,229,0.45)}
@@ -220,13 +241,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 
 /* ── STATS ROW ── */
 .stats-row{display:flex;gap:9px;flex-wrap:wrap}
-.stat-chip{background:#ffffff;border:1px solid rgba(99,102,241,0.12);border-radius:20px;padding:6px 15px;font-size:11px;color:#3730a3;font-weight:700;display:flex;align-items:center;gap:6px;box-shadow:0 1px 0 #fff inset,0 2px 8px rgba(99,102,241,0.09)}
-.stat-chip span{color:#4f46e5;font-weight:900}
+.stat-chip{background:rgba(255,255,255,0.95);border:1px solid rgba(91,79,207,0.12);border-radius:20px;padding:6px 15px;font-size:11px;color:#3730a3;font-weight:700;display:flex;align-items:center;gap:6px;box-shadow:0 1px 0 #fff inset,0 2px 10px rgba(91,79,207,0.08)}
+.stat-chip span{color:#5b4fcf;font-weight:900}
 
-/* ── CANVAS PLAYER ── */
-.player{position:relative;background:#ffffff;border-radius:18px;overflow:hidden;border:1px solid rgba(99,102,241,0.15);height:clamp(280px,55vw,520px);box-shadow:0 1px 0 #fff inset,0 0 0 1px rgba(99,102,241,0.1),0 8px 40px rgba(99,102,241,0.14)}
+/* ── CANVAS PLAYER — Luxury Frame ── */
+.player{position:relative;background:#fff;border-radius:22px;overflow:hidden;border:1px solid rgba(91,79,207,0.13);height:clamp(280px,55vw,520px);box-shadow:0 1px 0 #fff inset,0 0 0 1px rgba(91,79,207,0.08),0 12px 50px rgba(91,79,207,0.16),0 2px 8px rgba(201,124,26,0.06)}
 @media(max-width:600px){
-  .player{height:clamp(240px,60vw,340px);border-radius:14px}
+  .player{height:clamp(240px,60vw,340px);border-radius:16px}
   .main-grid{grid-template-columns:1fr}
   .panels{grid-template-columns:1fr}
   .page{padding:12px 14px;gap:12px}
@@ -240,103 +261,104 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 }
 #sceneCanvas{position:absolute;top:0;left:0;width:100%;height:100%;display:block}
 
-/* Loading overlay */
-.load-ov{position:absolute;inset:0;background:linear-gradient(135deg,#f8f9ff,#eef2ff,#e0e7ff);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:20;transition:opacity .6s,visibility .6s}
+/* Loading overlay — luxury */
+.load-ov{position:absolute;inset:0;background:linear-gradient(145deg,#fdfcff,#f0eeff,#fffaf0);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:20;transition:opacity .6s,visibility .6s}
 .load-ov.hide{opacity:0;visibility:hidden;pointer-events:none}
-.load-spin{width:56px;height:56px;border:3px solid rgba(99,102,241,0.15);border-top-color:#4f46e5;border-right-color:#6366f1;border-radius:50%;animation:spin .7s linear infinite;box-shadow:0 0 16px rgba(99,102,241,0.2)}
+.load-spin{width:56px;height:56px;border:3px solid rgba(91,79,207,0.12);border-top-color:#5b4fcf;border-right-color:#c97c1a;border-radius:50%;animation:spin .8s linear infinite;box-shadow:0 0 20px rgba(91,79,207,0.18)}
 @keyframes spin{to{transform:rotate(360deg)}}
-.load-title{color:#4f46e5;font-family:'Sora',sans-serif;font-size:14px;font-weight:900;letter-spacing:2.5px;text-align:center}
-.load-sub{color:#64748b;font-size:11px;text-align:center;font-weight:600}
-.load-bar-wrap{width:220px;height:3px;background:rgba(99,102,241,0.12);border-radius:3px;overflow:hidden}
-.load-bar{height:100%;background:linear-gradient(90deg,#4338ca,#6366f1,#818cf8);border-radius:3px;animation:lbar 3.5s ease-in-out infinite}
+.load-title{background:linear-gradient(135deg,#5b4fcf,#c97c1a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'Sora',sans-serif;font-size:14px;font-weight:900;letter-spacing:2.5px;text-align:center}
+.load-sub{color:#6b7280;font-size:11px;text-align:center;font-weight:600}
+.load-bar-wrap{width:220px;height:3px;background:rgba(91,79,207,0.1);border-radius:3px;overflow:hidden}
+.load-bar{height:100%;background:linear-gradient(90deg,#4338ca,#5b4fcf,#c97c1a);border-radius:3px;animation:lbar 3.5s ease-in-out infinite}
 @keyframes lbar{0%{width:5%}60%{width:82%}100%{width:96%}}
 
 /* Scene info */
 .sc-overlay{position:absolute;top:12px;left:12px;display:flex;gap:7px;align-items:center;z-index:10;pointer-events:none}
-.sc-badge{background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border:1px solid rgba(99,102,241,0.2);border-radius:20px;padding:5px 13px;color:#4f46e5;font-size:10px;font-weight:900;font-family:'Sora',sans-serif;letter-spacing:2px;box-shadow:0 2px 8px rgba(99,102,241,0.12)}
-.sc-title-tag{background:rgba(255,255,255,0.82);backdrop-filter:blur(12px);border-radius:20px;padding:5px 13px;color:#3730a3;font-size:11px;font-weight:700;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:1px solid rgba(99,102,241,0.15)}
+.sc-badge{background:rgba(255,255,255,0.9);backdrop-filter:blur(16px);border:1px solid rgba(91,79,207,0.18);border-radius:20px;padding:5px 13px;color:#5b4fcf;font-size:10px;font-weight:900;font-family:'Sora',sans-serif;letter-spacing:2px;box-shadow:0 2px 10px rgba(91,79,207,0.1)}
+.sc-title-tag{background:rgba(255,255,255,0.85);backdrop-filter:blur(16px);border-radius:20px;padding:5px 13px;color:#3730a3;font-size:11px;font-weight:700;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:1px solid rgba(91,79,207,0.12)}
 
 /* AI indicator */
-.ai-ind{position:absolute;top:12px;right:12px;z-index:10;display:none;align-items:center;gap:5px;background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border:1px solid rgba(5,150,105,0.3);border-radius:20px;padding:5px 12px;box-shadow:0 2px 8px rgba(5,150,105,0.12)}
+.ai-ind{position:absolute;top:12px;right:12px;z-index:10;display:none;align-items:center;gap:5px;background:rgba(255,255,255,0.9);backdrop-filter:blur(16px);border:1px solid rgba(4,120,87,0.28);border-radius:20px;padding:5px 12px;box-shadow:0 2px 10px rgba(4,120,87,0.1)}
 .ai-ind.on{display:flex}
-.ai-ind-dot{width:6px;height:6px;border-radius:50%;background:#059669;animation:livepulse 1s infinite}
-.ai-ind span{font-size:10px;font-weight:900;color:#059669;letter-spacing:1px}
+.ai-ind-dot{width:6px;height:6px;border-radius:50%;background:#047857;animation:livepulse 1s infinite}
+.ai-ind span{font-size:10px;font-weight:900;color:#047857;letter-spacing:1px}
 
-/* Controls */
-.ctrl{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(255,255,255,0.95));padding:16px 14px 12px;display:flex;align-items:center;gap:8px;z-index:10}
+/* Controls — luxury frosted glass */
+.ctrl{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(255,255,255,0.97));padding:16px 14px 12px;display:flex;align-items:center;gap:8px;z-index:10}
 .dots{display:flex;gap:5px;flex:1;align-items:center}
-.dot{height:4px;border-radius:3px;background:rgba(99,102,241,0.12);cursor:pointer;transition:all .3s;flex:1;max-width:50px;position:relative;overflow:hidden}
-.dot::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#4f46e5,#6366f1);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.dot{height:4px;border-radius:3px;background:rgba(91,79,207,0.1);cursor:pointer;transition:all .3s;flex:1;max-width:50px;position:relative;overflow:hidden}
+.dot::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#5b4fcf,#8b7fd4);transform:scaleX(0);transform-origin:left;transition:transform .4s}
 .dot.done::after{transform:scaleX(1)}
-.dot.active::after{background:linear-gradient(90deg,#059669,#34d399);transform:scaleX(1);animation:dpulse .9s ease-in-out infinite}
+.dot.active::after{background:linear-gradient(90deg,#c97c1a,#f0a832);transform:scaleX(1);animation:dpulse .9s ease-in-out infinite}
 @keyframes dpulse{0%,100%{opacity:1}50%{opacity:.5}}
-.cbtn{padding:6px 13px;border-radius:20px;border:1.5px solid rgba(99,102,241,0.2);background:rgba(99,102,241,0.08);color:#4f46e5;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:4px}
-.cbtn:hover{background:rgba(99,102,241,0.16);transform:translateY(-2px);box-shadow:0 3px 10px rgba(99,102,241,0.18)}
-.cbtn.on{background:linear-gradient(135deg,#4338ca,#6366f1);color:white;border-color:rgba(99,102,241,0.4);box-shadow:0 3px 10px rgba(79,70,229,0.3)}
-.cbtn.danger{border-color:rgba(220,38,38,0.3);color:#dc2626;background:rgba(220,38,38,0.06)}
-.cbtn.danger:hover{background:rgba(220,38,38,0.12)}
-.spd{padding:6px 10px;border-radius:20px;border:1.5px solid rgba(99,102,241,0.2);background:#fff;color:#3730a3;font-size:11px;font-weight:700;cursor:pointer;outline:none;font-family:'Plus Jakarta Sans',sans-serif;-webkit-appearance:none}
+.cbtn{padding:6px 13px;border-radius:20px;border:1.5px solid rgba(91,79,207,0.18);background:rgba(91,79,207,0.07);color:#5b4fcf;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:4px}
+.cbtn:hover{background:rgba(91,79,207,0.14);transform:translateY(-2px);box-shadow:0 3px 12px rgba(91,79,207,0.16)}
+.cbtn.on{background:linear-gradient(135deg,#4338ca,#5b4fcf);color:white;border-color:rgba(91,79,207,0.4);box-shadow:0 3px 10px rgba(91,79,207,0.28)}
+.cbtn.danger{border-color:rgba(220,38,38,0.28);color:#dc2626;background:rgba(220,38,38,0.05)}
+.cbtn.danger:hover{background:rgba(220,38,38,0.1)}
+.spd{padding:6px 10px;border-radius:20px;border:1.5px solid rgba(91,79,207,0.18);background:#fff;color:#3730a3;font-size:11px;font-weight:700;cursor:pointer;outline:none;font-family:'Plus Jakarta Sans',sans-serif;-webkit-appearance:none}
 
-/* Subtitle */
-.sub-bar{background:#ffffff;border:1px solid rgba(99,102,241,0.12);border-radius:14px;padding:13px 18px;min-height:52px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px rgba(99,102,241,0.08),0 1px 0 #fff inset}
-.sub-bar::before{content:'';width:4px;height:38px;background:linear-gradient(180deg,#4f46e5,#6366f1,#818cf8);border-radius:2px;flex-shrink:0;box-shadow:0 0 8px rgba(99,102,241,0.3)}
-#subText{font-size:13.5px;line-height:1.7;color:#1e1b4b;font-weight:700}
-.sub-hi{color:#4f46e5;font-weight:900}
+/* Subtitle — luxury gold accent bar */
+.sub-bar{background:rgba(255,255,255,0.98);border:1px solid rgba(91,79,207,0.1);border-radius:16px;padding:13px 18px;min-height:52px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 14px rgba(91,79,207,0.07),0 1px 0 #fff inset}
+.sub-bar::before{content:'';width:4px;height:38px;background:linear-gradient(180deg,#5b4fcf,#c97c1a);border-radius:2px;flex-shrink:0;box-shadow:0 0 10px rgba(91,79,207,0.25)}
+#subText{font-size:13.5px;line-height:1.7;color:#1e1a3c;font-weight:700;font-family:'DM Sans',sans-serif}
+.sub-hi{color:#5b4fcf;font-weight:900}
 
-/* Bottom panels */
+/* Bottom panels — ultra premium cards */
 .panels{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.panel{background:#ffffff;border:1px solid rgba(99,102,241,0.12);border-radius:16px;padding:18px;box-shadow:0 1px 0 #fff inset,0 0 0 1px rgba(99,102,241,0.07),0 4px 0 rgba(99,102,241,0.06),0 8px 20px rgba(99,102,241,0.08);position:relative;overflow:hidden}
-.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(99,102,241,0.25),transparent)}
-.panel-title{font-size:10.5px;font-weight:900;color:#4f46e5;letter-spacing:2px;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.panel{background:rgba(255,255,255,0.98);border:1px solid rgba(91,79,207,0.1);border-radius:18px;padding:18px;box-shadow:0 1px 0 #fff inset,0 0 0 1px rgba(91,79,207,0.06),0 4px 0 rgba(91,79,207,0.05),0 8px 24px rgba(91,79,207,0.07);position:relative;overflow:hidden}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(91,79,207,0.2),rgba(201,124,26,0.15),transparent)}
+.panel-title{font-size:10.5px;font-weight:900;color:#5b4fcf;letter-spacing:2px;margin-bottom:12px;display:flex;align-items:center;gap:7px}
 .kc-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.kc{background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.1);border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;transition:all .2s;cursor:default;color:#1e1b4b}
-.kc:hover{border-color:#4f46e5;background:rgba(99,102,241,0.09);box-shadow:0 2px 8px rgba(99,102,241,0.12)}
-.kcn{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4338ca,#6366f1);color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:10px;flex-shrink:0;box-shadow:0 2px 6px rgba(99,102,241,0.35)}
+.kc{background:rgba(91,79,207,0.04);border:1px solid rgba(91,79,207,0.09);border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;transition:all .2s;cursor:default;color:#1e1a3c}
+.kc:hover{border-color:#5b4fcf;background:rgba(91,79,207,0.08);box-shadow:0 2px 8px rgba(91,79,207,0.1)}
+.kcn{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4338ca,#5b4fcf);color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:10px;flex-shrink:0;box-shadow:0 2px 6px rgba(91,79,207,0.3)}
 .scene-list{display:flex;flex-direction:column;gap:5px}
-.sl-item{display:flex;align-items:center;gap:8px;padding:8px 11px;border-radius:10px;background:rgba(99,102,241,0.04);border:1px solid rgba(99,102,241,0.1);cursor:pointer;transition:all .2s;font-size:12px}
-.sl-item:hover{border-color:#4f46e5;background:rgba(99,102,241,0.09);transform:translateX(2px);box-shadow:0 2px 8px rgba(99,102,241,0.1)}
-.sl-num{font-size:9px;font-weight:900;color:rgba(79,70,229,0.5);font-family:'Sora',sans-serif;min-width:22px}
-.sl-label{flex:1;color:#1e1b4b;font-weight:700}
-.sl-type{font-size:9px;color:#4f46e5;font-weight:800;letter-spacing:.8px}
+.sl-item{display:flex;align-items:center;gap:8px;padding:8px 11px;border-radius:10px;background:rgba(91,79,207,0.03);border:1px solid rgba(91,79,207,0.09);cursor:pointer;transition:all .2s;font-size:12px}
+.sl-item:hover{border-color:#5b4fcf;background:rgba(91,79,207,0.08);transform:translateX(2px);box-shadow:0 2px 8px rgba(91,79,207,0.09)}
+.sl-num{font-size:9px;font-weight:900;color:rgba(91,79,207,0.45);font-family:'Sora',sans-serif;min-width:22px}
+.sl-label{flex:1;color:#1e1a3c;font-weight:700}
+.sl-type{font-size:9px;color:#5b4fcf;font-weight:800;letter-spacing:.8px}
 .explain-panel{grid-column:1/-1}
-#explainText p{margin-bottom:14px;font-size:13px;line-height:2.1;color:#1e1b4b;font-weight:600;border-left:2px solid rgba(99,102,241,0.3);padding-left:12px}
+#explainText p{margin-bottom:14px;font-size:13px;line-height:2.1;color:#1e1a3c;font-weight:600;border-left:2px solid rgba(91,79,207,0.25);padding-left:12px}
 
 /* ── SCENE CONTENT CARD ── */
 @keyframes scCardIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes scPtIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
-.modal{display:none;position:fixed;inset:0;background:rgba(99,102,241,0.12);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(16px)}
+/* ── MODAL — Luxury frosted glass ── */
+.modal{display:none;position:fixed;inset:0;background:rgba(91,79,207,0.1);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(20px)}
 .modal.show{display:flex}
-.mbox{background:#ffffff;border-radius:22px;padding:32px;max-width:480px;width:93%;position:relative;box-shadow:0 1px 0 #fff inset,0 0 0 1px rgba(99,102,241,0.12),0 8px 0 rgba(99,102,241,0.08),0 20px 60px rgba(99,102,241,0.18),0 40px 80px rgba(0,0,0,0.08);border:1px solid rgba(99,102,241,0.15)}
-.mbox-top{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4338ca,#6366f1,#818cf8,#6366f1,#4338ca);border-radius:22px 22px 0 0}
-.mtitle{font-family:'Sora',sans-serif;font-size:21px;font-weight:900;color:#1a1a3e;margin-bottom:5px}
-.msub{color:#64748b;font-size:12px;margin-bottom:20px;font-weight:600}
+.mbox{background:rgba(255,255,255,0.97);border-radius:24px;padding:32px;max-width:480px;width:93%;position:relative;box-shadow:0 1px 0 #fff inset,0 0 0 1px rgba(91,79,207,0.1),0 8px 0 rgba(91,79,207,0.07),0 20px 60px rgba(91,79,207,0.2),0 40px 80px rgba(0,0,0,0.07);border:1px solid rgba(91,79,207,0.13)}
+.mbox-top{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4338ca,#5b4fcf,#c97c1a,#5b4fcf,#4338ca);border-radius:24px 24px 0 0}
+.mtitle{font-family:'Sora',sans-serif;font-size:21px;font-weight:900;color:#1e1a3c;margin-bottom:5px}
+.msub{color:#6b7280;font-size:12px;margin-bottom:20px;font-weight:600}
 
 /* Exam type selector */
 .exam-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
-.exam-opt{padding:13px 10px;border:1.5px solid rgba(99,102,241,0.12);border-radius:14px;cursor:pointer;text-align:center;transition:all .22s;user-select:none;position:relative;background:rgba(99,102,241,0.03)}
-.exam-opt:hover{border-color:#4f46e5;background:rgba(99,102,241,0.07);box-shadow:0 3px 12px rgba(99,102,241,0.12)}
-.exam-opt.sel{border-color:#4f46e5;background:rgba(99,102,241,0.09);box-shadow:0 0 0 3px rgba(99,102,241,0.1),0 3px 12px rgba(99,102,241,0.14)}
-.exam-opt.sel::after{content:'✓';position:absolute;top:6px;right:8px;color:#4f46e5;font-size:11px;font-weight:900}
+.exam-opt{padding:13px 10px;border:1.5px solid rgba(91,79,207,0.1);border-radius:14px;cursor:pointer;text-align:center;transition:all .22s;user-select:none;position:relative;background:rgba(91,79,207,0.03)}
+.exam-opt:hover{border-color:#5b4fcf;background:rgba(91,79,207,0.06);box-shadow:0 3px 14px rgba(91,79,207,0.1)}
+.exam-opt.sel{border-color:#5b4fcf;background:rgba(91,79,207,0.08);box-shadow:0 0 0 3px rgba(91,79,207,0.1),0 3px 12px rgba(91,79,207,0.12)}
+.exam-opt.sel::after{content:'✓';position:absolute;top:6px;right:8px;color:#5b4fcf;font-size:11px;font-weight:900}
 .eo-icon{font-size:24px;margin-bottom:6px}
-.eo-label{font-size:11.5px;font-weight:800;color:#1a1a3e}
-.eo-sub{font-size:9.5px;color:#64748b;margin-top:2px;font-weight:600}
+.eo-label{font-size:11.5px;font-weight:800;color:#1e1a3c}
+.eo-sub{font-size:9.5px;color:#6b7280;margin-top:2px;font-weight:600}
 
 /* Lang selector */
 .lang-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:20px}
-.lang-opt{padding:9px 6px;border:1.5px solid rgba(99,102,241,0.12);border-radius:10px;cursor:pointer;text-align:center;transition:all .2s;user-select:none;font-size:11px;font-weight:700;color:#3730a3;background:rgba(99,102,241,0.04)}
-.lang-opt:hover{border-color:#4f46e5;color:#4f46e5;background:rgba(99,102,241,0.09)}
-.lang-opt.sel{border-color:#4f46e5;background:linear-gradient(135deg,#4338ca,#6366f1);color:white;box-shadow:0 3px 10px rgba(79,70,229,0.3)}
+.lang-opt{padding:9px 6px;border:1.5px solid rgba(91,79,207,0.1);border-radius:10px;cursor:pointer;text-align:center;transition:all .2s;user-select:none;font-size:11px;font-weight:700;color:#3730a3;background:rgba(91,79,207,0.03)}
+.lang-opt:hover{border-color:#5b4fcf;color:#5b4fcf;background:rgba(91,79,207,0.07)}
+.lang-opt.sel{border-color:#5b4fcf;background:linear-gradient(135deg,#4338ca,#5b4fcf);color:white;box-shadow:0 3px 10px rgba(91,79,207,0.28)}
 .lang-flag{font-size:18px;display:block;margin-bottom:3px}
 
-.closex{position:absolute;top:14px;right:16px;background:rgba(99,102,241,0.07);border:1.5px solid rgba(99,102,241,0.15);color:#4f46e5;font-size:16px;cursor:pointer;padding:5px 9px;border-radius:9px;transition:all .2s;font-weight:800}
-.closex:hover{background:rgba(220,38,38,0.08);color:#dc2626;border-color:rgba(220,38,38,0.25)}
+.closex{position:absolute;top:14px;right:16px;background:rgba(91,79,207,0.06);border:1.5px solid rgba(91,79,207,0.12);color:#5b4fcf;font-size:16px;cursor:pointer;padding:5px 9px;border-radius:9px;transition:all .2s;font-weight:800}
+.closex:hover{background:rgba(220,38,38,0.07);color:#dc2626;border-color:rgba(220,38,38,0.2)}
 
 /* ── LANGUAGE MODAL ── */
 #langModal .mbox{max-width:440px}
 
 /* ── FEEDBACK FORM ── */
 .fb-container{max-width:720px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:20px}
-.fb-header{background:linear-gradient(135deg,#4f46e5,#6366f1,#818cf8);border-radius:18px;padding:28px 32px;color:white;border:1px solid rgba(99,102,241,0.3);box-shadow:0 4px 0 rgba(67,56,202,0.3),0 8px 32px rgba(79,70,229,0.25),0 1px 0 rgba(255,255,255,0.2) inset;position:relative;overflow:hidden}
+.fb-header{background:linear-gradient(135deg,#4338ca 0%,#5b4fcf 50%,#c97c1a 100%);border-radius:18px;padding:28px 32px;color:white;border:1px solid rgba(91,79,207,0.3);box-shadow:0 4px 0 rgba(43,36,163,0.35),0 8px 36px rgba(91,79,207,0.28),0 1px 0 rgba(255,255,255,0.2) inset;position:relative;overflow:hidden}
 .fb-header::before{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.12),transparent 70%)}
 .fb-header-title{font-family:'Sora',sans-serif;font-size:24px;font-weight:900;margin-bottom:6px;text-shadow:0 1px 2px rgba(0,0,0,0.12)}
 .fb-header-sub{font-size:13px;opacity:0.92;line-height:1.7;font-weight:600}
@@ -374,8 +396,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .nps-btn[data-v="5"].active,.nps-btn[data-v="6"].active,.nps-btn[data-v="7"].active{background:rgba(180,83,9,0.1);box-shadow:0 0 10px rgba(180,83,9,0.2)}
 .nps-btn[data-v="8"].active,.nps-btn[data-v="9"].active,.nps-btn[data-v="10"].active{background:rgba(5,150,105,0.1);box-shadow:0 0 10px rgba(5,150,105,0.2)}
 .nps-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:#64748b;font-weight:700}
-.fb-submit{background:linear-gradient(135deg,#4338ca,#4f46e5,#6366f1);color:white;font-family:'Sora',sans-serif;font-weight:900;font-size:15px;letter-spacing:1px;border:none;border-radius:14px;padding:16px 32px;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;text-shadow:0 1px 2px rgba(0,0,0,0.15);box-shadow:0 1px 0 rgba(255,255,255,0.2) inset,0 4px 0 rgba(55,48,163,0.55),0 6px 20px rgba(79,70,229,0.32);margin-top:8px}
-.fb-submit:hover{transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,0.2) inset,0 6px 0 rgba(55,48,163,0.55),0 10px 28px rgba(79,70,229,0.42)}
+.fb-submit{background:linear-gradient(135deg,#4338ca,#5b4fcf,#c97c1a);color:white;font-family:'Sora',sans-serif;font-weight:900;font-size:15px;letter-spacing:1px;border:none;border-radius:14px;padding:16px 32px;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;text-shadow:0 1px 2px rgba(0,0,0,0.15);box-shadow:0 1px 0 rgba(255,255,255,0.2) inset,0 4px 0 rgba(43,36,163,0.5),0 6px 24px rgba(91,79,207,0.35);margin-top:8px}
+.fb-submit:hover{transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,0.2) inset,0 6px 0 rgba(43,36,163,0.5),0 10px 32px rgba(91,79,207,0.42)}
 .fb-submit:active{transform:translateY(2px)}
 .fb-success{display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:48px 32px;text-align:center}
 .fb-success.show{display:flex}
@@ -388,41 +410,41 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 /* Required field note */
 .fb-required-note{font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px}
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:22px;right:22px;background:#ffffff;color:#1a1a3e;border-radius:14px;padding:13px 18px;display:flex;align-items:center;gap:10px;font-size:13px;z-index:9999;transform:translateY(70px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 1px 0 #fff inset,0 0 0 1px rgba(99,102,241,0.12),0 8px 32px rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.15);font-weight:700}
+/* ── TOAST — luxury frosted ── */
+.toast{position:fixed;bottom:22px;right:22px;background:rgba(255,255,255,0.97);color:#1e1a3c;border-radius:16px;padding:13px 18px;display:flex;align-items:center;gap:10px;font-size:13px;z-index:9999;transform:translateY(70px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 1px 0 #fff inset,0 0 0 1px rgba(91,79,207,0.1),0 8px 36px rgba(91,79,207,0.16);border:1px solid rgba(91,79,207,0.12);font-weight:700}
 .toast.show{transform:translateY(0);opacity:1}
 
 /* ── HISTORY ── */
 .hist-item{background:#ffffff;border:1px solid rgba(99,102,241,0.12);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 10px rgba(99,102,241,0.08)}
 .hist-num{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#4338ca,#6366f1);border:2px solid rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:13px;flex-shrink:0;box-shadow:0 2px 8px rgba(99,102,241,0.3)}
-.hist-topic{font-weight:800;color:#1a1a3e;font-size:14px}
-.hist-meta{color:#64748b;font-size:11px;margin-top:2px;font-weight:600}
+.hist-topic{font-weight:800;color:#1e1a3c;font-size:14px}
+.hist-meta{color:#6b7280;font-size:11px;margin-top:2px;font-weight:600}
 .hist-item{cursor:pointer;transition:all .2s}
-.hist-item:hover{border-color:#4f46e5;transform:translateX(3px)}
+.hist-item:hover{border-color:#5b4fcf;transform:translateX(3px)}
 
 /* ── ACTION BUTTONS ROW ── */
 .action-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
-.act-btn{display:flex;align-items:center;gap:6px;padding:9px 16px;border-radius:12px;border:1.5px solid rgba(99,102,241,0.18);background:rgba(99,102,241,0.07);color:#4f46e5;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap}
-.act-btn:hover{background:rgba(99,102,241,0.14);transform:translateY(-2px);box-shadow:0 4px 14px rgba(99,102,241,0.18)}
-.act-btn.green{border-color:rgba(5,150,105,0.25);color:#059669;background:rgba(5,150,105,0.06)}
-.act-btn.green:hover{background:rgba(5,150,105,0.12);box-shadow:0 4px 12px rgba(5,150,105,0.15)}
-.act-btn.gold{border-color:rgba(180,83,9,0.25);color:#b45309;background:rgba(180,83,9,0.06)}
-.act-btn.gold:hover{background:rgba(180,83,9,0.12);box-shadow:0 4px 12px rgba(180,83,9,0.15)}
+.act-btn{display:flex;align-items:center;gap:6px;padding:9px 16px;border-radius:12px;border:1.5px solid rgba(91,79,207,0.16);background:rgba(91,79,207,0.06);color:#5b4fcf;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap}
+.act-btn:hover{background:rgba(91,79,207,0.12);transform:translateY(-2px);box-shadow:0 4px 16px rgba(91,79,207,0.16)}
+.act-btn.green{border-color:rgba(4,120,87,0.22);color:#047857;background:rgba(4,120,87,0.05)}
+.act-btn.green:hover{background:rgba(4,120,87,0.1);box-shadow:0 4px 12px rgba(4,120,87,0.14)}
+.act-btn.gold{border-color:rgba(201,124,26,0.22);color:#c97c1a;background:rgba(201,124,26,0.05)}
+.act-btn.gold:hover{background:rgba(201,124,26,0.1);box-shadow:0 4px 12px rgba(201,124,26,0.14)}
 
-/* ── SCENE PROGRESS BAR ── */
-.scene-progress{height:3px;background:rgba(99,102,241,0.1);border-radius:3px;overflow:hidden;margin-bottom:2px}
-.scene-progress-fill{height:100%;background:linear-gradient(90deg,#4f46e5,#059669);border-radius:3px;transition:width .5s ease;width:0%}
+/* ── SCENE PROGRESS BAR — gold fill ── */
+.scene-progress{height:3px;background:rgba(91,79,207,0.08);border-radius:3px;overflow:hidden;margin-bottom:2px}
+.scene-progress-fill{height:100%;background:linear-gradient(90deg,#5b4fcf,#c97c1a);border-radius:3px;transition:width .5s ease;width:0%}
 
-/* ── IMPROVED SUBTITLE ── */
-.sub-speaker{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:900;color:#4f46e5;letter-spacing:1.5px;margin-bottom:4px;opacity:0.7}
-.sub-speaker-dot{width:6px;height:6px;border-radius:50%;background:#4f46e5;animation:livepulse 1.2s infinite}
+/* ── SUBTITLE SPEAKER ── */
+.sub-speaker{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:900;color:#5b4fcf;letter-spacing:1.5px;margin-bottom:4px;opacity:0.7}
+.sub-speaker-dot{width:6px;height:6px;border-radius:50%;background:#5b4fcf;animation:livepulse 1.2s infinite}
 .sub-bar-inner{display:flex;flex-direction:column;flex:1}
 
 /* ── EXPLAIN PANEL TABS ── */
-.exp-tabs{display:flex;gap:0;border-radius:10px;overflow:hidden;border:1.5px solid rgba(99,102,241,0.14);margin-bottom:12px;flex-shrink:0}
-.exp-tab{flex:1;padding:8px 12px;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s;text-align:center;color:#64748b;background:transparent;border:none;font-family:'Plus Jakarta Sans',sans-serif}
-.exp-tab.on{background:linear-gradient(135deg,#4338ca,#4f46e5);color:white;box-shadow:0 2px 8px rgba(79,70,229,0.28)}
-.exp-tab:hover:not(.on){color:#4f46e5;background:rgba(99,102,241,0.07)}
+.exp-tabs{display:flex;gap:0;border-radius:10px;overflow:hidden;border:1.5px solid rgba(91,79,207,0.12);margin-bottom:12px;flex-shrink:0}
+.exp-tab{flex:1;padding:8px 12px;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s;text-align:center;color:#6b7280;background:transparent;border:none;font-family:'Plus Jakarta Sans',sans-serif}
+.exp-tab.on{background:linear-gradient(135deg,#4338ca,#5b4fcf);color:white;box-shadow:0 2px 8px rgba(91,79,207,0.25)}
+.exp-tab:hover:not(.on){color:#5b4fcf;background:rgba(91,79,207,0.06)}
 
 /* ── HINGLISH TEXT FORMATTING ── */
 .hint-box{
@@ -1740,124 +1762,137 @@ async function startGen(){
   const currentTopic = G.topicText || 'the uploaded topic';
 
   // ── Hinglish narration guide (Jennie — sweet desi teacher voice) ──
-  const HINGLISH_GUIDE = `JENNIE KI AWAAZ — HINGLISH RULES (MUST FOLLOW EVERY RULE):
+  const HINGLISH_GUIDE = `JENNIE IS A REAL HUMAN TEACHER — NOT A ROBOT.
 
-SENTENCE STRUCTURE:
-- MAX 10-12 words per sentence. Short = sweet = clear voice.
-- Pattern: [Hindi opener] + [English term] + [Hindi explanation in same breath]
-- Example GOOD: "Dekho na yaar, photosynthesis matlab plants ka food banana!"
-- Example GOOD: "Arre suno, velocity aur speed mein ek bada farak hai!"
-- Example BAD: "Photosynthesis is a process by which plants make food using sunlight." (too formal, no Hinglish)
+She speaks exactly like a beloved didi/bhaiya who studied the same syllabus and GENUINELY knows this topic. Her Hinglish is natural, warm, and specific to the topic — never generic.
 
-HINDI OPENERS (rotate these — don't repeat same opener in consecutive scenes):
-"Dekho na yaar," / "Arre suno," / "Accha bhai," / "Haan toh," / "Samjho ek baar," / "Chalo ab," / "Yaar sun," / "Okay toh,"
+NATURAL HINGLISH PATTERN (follow exactly):
+- Mix Hindi grammar + English nouns/verbs naturally — like real students speak
+- SHORT sentences: 8-12 words max. Pause. Then next idea.
+- She does NOT say "ek aisa process hai jahan kuch hota hai" — NEVER generic filler
+- Every sentence must teach a REAL FACT about the actual topic
 
-HINDI CONNECTORS (use 3-4 per scene narration):
-"Matlab yeh hai ki" / "Toh basically" / "Isliye dekho," / "Kyunki yaar," / "Aur suno," / "Lekin dhyan raho," / "Waise bhi," / "Phir kya hua," / "Aur bhi interesting baat —"
+GOOD EXAMPLES OF JENNIE'S STYLE:
+✅ "Dekho na, photosynthesis mein plants sunlight ko pakad ke sugar banate hain — exactly jaise hum khaana khate hain energy ke liye!"
+✅ "Arre suno, chlorophyll woh green pigment hai jo leaves ko hara color deta hai aur saath mein light absorb karta hai!"
+✅ "Mitochondria ko 'powerhouse of the cell' bolte hain — yeh ATP energy banata hai bilkul ghar ki electricity ki tarah!"
+✅ "Newton ka pehla law bol raha hai ki agar koi cheez ruk rahi hai, toh woh rukhti rahegi — jaise sofe pe baitha student!"
 
-CHECK-IN QUESTIONS (1-2 per scene, rotate):
-"samjhe na?" / "clear hai?" / "pakka na?" / "haan na?" / "theek hai?" / "easy hai na?" / "ab clear?" / "bolo?"
+BAD EXAMPLES — NEVER DO THIS:
+❌ "Yeh ek aisa process hai jahan ek specific cheez hoti hai" — TOO GENERIC
+❌ "Input se output milta hai" — MEANS NOTHING
+❌ "Yeh topic bahut important hai" — WITHOUT saying WHY it matters specifically
+❌ "Step 1 mein ek condition chahiye" — WHAT condition? Be specific!
 
-INDIAN DAILY-LIFE EXAMPLES (minimum 2 different ones per scene):
-- Chai wali analogy: "Jaise chai mein sugar milate hain — ek step, ek result."
-- Mobile analogy: "Mobile ki battery jaisi — input se output."
-- Cricket analogy: "Cricket mein ek ek ball count hoti hai — yahan bhi aise."
-- Auto-rickshaw: "Auto mein jaise gear shift hota hai — same process."
-- Bijli: "Ghar mein bijli ka switch on karo — foran kaam shuru."
-- Roti analogy: "Roti banane jaise — pehle atta, phir paani, phir tawa."
-- School timetable: "School ka timetable jaise — ek ke baad ek, order mein."
-- Jugaad: "Jugaad ki tarah — simple solution, powerful result."
+HINDI OPENERS (rotate, never repeat consecutive):
+"Dekho na yaar," / "Arre suno," / "Accha bhai," / "Haan toh," / "Samjho ek baar," / "Chalo ab," / "Yaar sun," / "Okay toh," / "Suno dhyan se,"
 
-SCENE ENDINGS (rotate these — warm and encouraging):
-"Yeh toh easy tha na? Ekdum seedha!" / "Ab yeh concept pakka ho gaya — waah!" / "Bahut badhiya! Yeh yaad rehega." / "Perfect! Exam mein full marks aayenge." / "Shabash! Yeh tune ek dum samajh liya."
+CONNECTING PHRASES (use 2-3 per scene):
+"Matlab yeh hai ki" / "Toh basically" / "Isliye dekho," / "Kyunki yaar," / "Aur suno," / "Lekin dhyan raho," / "Interesting baat yeh hai ki" / "Aur bhi ek cheez —"
 
-ABSOLUTE RULES:
-✅ 10-12 sentences per scene — complete explanation, not 5-6 lines
-✅ Every sentence MUST be about the actual topic — no generic filler
-✅ Natural Hinglish flow — not forced
-✅ Warm like a didi/bhaiya who genuinely wants student to pass
-✗ NEVER: brackets (), asterisks *, phonetic guides like (fo-to-sin-the-sis)
-✗ NEVER: Devanagari script in narration field
+CHECK-IN QUESTIONS (1 per scene, natural):
+"samjhe na?" / "clear hai?" / "pakka na?" / "easy hai na?" / "ab clear hua?" / "theek hai?"
+
+INDIAN EXAMPLES — must be TOPIC-SPECIFIC, not random:
+For Biology: "Jaise hum sunlight mein kapde sukha te hain — plants bhi light use karti hain"
+For Physics: "Jaise cricket ball throw karo — force, direction, sab apply hota hai"
+For Chemistry: "Chai mein sugar dissolve hona — exactly wahi chemical mixing process"
+For Math: "Calculator mein 2+2=4 — same logic yahan apply hoti hai"
+For History: "Jaise aaj WhatsApp pe news viral hoti hai — waise rebellion uss zamane mein phailta tha"
+
+WARM ENDINGS (rotate, genuine not robotic):
+"Yeh toh ek dum easy tha na? Shabash!" / "Ab yeh concept pakka clear ho gaya — waah!" / "Bahut badhiya samjhe! Yeh exam mein zaroor kaam aayega." / "Perfect! Ab koi nahi rok sakta tumhe!"
+
+CRITICAL RULES:
+✅ 10-12 sentences per scene — full explanation, zero filler
+✅ EVERY sentence = one specific fact about THIS topic only
+✅ Pronounce-friendly: no complicated scientific jargon without instant Hinglish explanation
+✅ Warmth like didi who WANTS you to pass — not a textbook read aloud
+✗ NEVER: brackets (), asterisks *, Devanagari in narration
 ✗ NEVER: Same opener in 2 consecutive scenes
-✗ NEVER: Generic sentences like "yeh bahut important hai" without saying WHY`;
+✗ NEVER: Generic lines that could apply to ANY topic`;
 
   const HINDI_GUIDE = `PURE HINDI NARRATION (Roman script only — no Devanagari):
-- Bilkul Hindi mein bolo, Roman letters mein likho
-- Max 12 words per sentence
+- Bilkul aise bolo jaise ek caring teacher class mein samjhata hai
+- Max 10 words per sentence. Short aur clear.
+- Specific facts dalo — generic mat bolo
 - Warm desi style openers: "Dekho bhai,", "Suno na,", "Accha ji,", "Ab samjho,"
 - Check-ins: "samjhe?", "pakka?", "theek hai?", "haan?"
-- Indian examples: chai, pani, school, ghar, ped, mitti, bazaar
+- Indian examples: chai, pani, school, ghar, ped, mitti, bazaar — topic se connect karo
 - End warmly: "Bahut sahi!", "Shabash!", "Bilkul sahi samjha."
-- FORBIDDEN: Devanagari, brackets, asterisks`;
+- FORBIDDEN: Devanagari, brackets, asterisks, generic filler sentences`;
 
-  const ENGLISH_GUIDE = `INDIAN ENGLISH (Friendly coaching style — not British formal):
-- Like favourite didi/bhaiya teacher — warm, clear, encouraging
-- Indian flavour phrases: "So basically na,", "Now see,", "Think about it,", "Isn't it simple?"
-- Max 12 words per sentence
+  const ENGLISH_GUIDE = `INDIAN ENGLISH — Friendly coaching style (NOT British formal):
+- Like a beloved didi/bhaiya teacher who genuinely knows the topic
+- Natural Indian phrases: "So basically na,", "Now see,", "Think about it yaar,", "Isn't it simple?"
+- Max 10 words per sentence — clear and punchy
+- Specific facts every sentence — no fluff
 - Check-ins every 2-3 sentences: "Got it?", "Clear?", "Makes sense?", "Easy right?"
-- Real examples from Indian context: cricket, chai, monsoon, auto, jugaad, school
+- Indian context examples: cricket, chai, monsoon, auto, jugaad, school — tied to the topic
 - End warmly: "That was easy, right!", "Now you've got it!", "Excellent work!"
-- FORBIDDEN: brackets (), asterisks *, overly formal British English`;
+- FORBIDDEN: brackets (), asterisks *, overly formal textbook English, generic filler`;
 
   const langGuide = G.lang==='Hindi' ? HINDI_GUIDE : G.lang==='English' ? ENGLISH_GUIDE : HINGLISH_GUIDE;
 
   // ── MASTER SYSTEM PROMPT ──
-  const sys = `You are JENNIE — India's most beloved AI teacher. Before generating ANY scene, mentally master the full topic, then explain completely.
+  const sys = `You are JENNIE — India's most beloved AI teacher. You sound like a brilliant human teacher who has personally mastered this topic and genuinely wants students to understand and pass.
 
 OUTPUT: Return ONLY valid JSON. No markdown. No backticks. Start with { end with }.
 
 LANGUAGE: ${G.lang}. ${langGuide}
 
-TOPIC: "${currentTopic}" — EXPLAIN THIS COMPLETELY. Never default to photosynthesis or any other topic.
+TOPIC: "${currentTopic}" — YOU MUST TEACH THIS SPECIFIC TOPIC ONLY. Never default to photosynthesis or any other topic.
 
-MENTAL PREPARATION (do this before writing JSON):
-Think through: full definition, mechanism/process, all key components, Indian daily analogies, common student mistakes, exact ${G.examType} exam points.
+BEFORE WRITING: Mentally recall everything you know about "${currentTopic}" — its definition, how it works, key components, why it matters, Indian daily-life analogies specific to this topic, common student mistakes, and exact ${G.examType} exam requirements. THEN write scenes based on YOUR actual knowledge of this topic.
 
 JSON SCHEMA (follow EXACTLY):
 {
   "topic_name": "exact topic name",
   "scenes": [
     {
-      "title": "Scene title (5-7 words)",
+      "title": "Scene title (5-7 words, specific to topic)",
       "visual_type": "intro|concept|diagram|example|summary",
       "color_theme": "blue|green|orange|purple|red",
-      "narration": "Jennie narration — 10-12 sentences in ${G.lang}. Each sentence max 12 words. Warm Alexa-style. SPECIFIC facts about the topic. Indian daily-life examples. Check-in questions.",
+      "narration": "JENNIE NARRATION — 10-12 sentences. EVERY sentence must be a REAL SPECIFIC FACT about '${currentTopic}'. Warm, natural Hinglish. NO generic filler like 'ek aisa process hai'. Indian daily-life analogies RELATED to this topic. 1 check-in question. Warm ending.",
       "visual_data": {
-        "heading": "Short heading (4-6 words)",
-        "icon": "single emoji matching topic",
+        "heading": "Short heading (4-6 words, topic-specific)",
+        "icon": "single emoji matching THIS topic",
         "color_theme": "blue|green|orange|purple|red",
-        "points": ["Specific fact 1 about this topic", "Specific fact 2", "Specific fact 3", "Specific fact 4", "Specific fact 5"],
+        "points": ["Specific REAL fact 1 about ${currentTopic}", "Specific REAL fact 2", "Specific REAL fact 3", "Specific REAL fact 4", "Specific REAL fact 5"],
         "diagram_type": "flowchart|mindmap|comparison|timeline|steps|equation|none",
         "diagram_nodes": ["node1", "node2", "node3"],
         "highlight_term": "most important term in this scene",
-        "exam_tip": "One-line ${G.examType} exam tip"
+        "exam_tip": "One specific ${G.examType} exam tip for THIS topic"
       }
     }
   ],
-  "key_concepts": ["Term: definition", "Term: definition", "Term: definition", "Term: definition", "Term: definition"],
-  "full_explanation": "4-5 detailed paragraphs covering the complete topic — definition, mechanism, types, examples, importance. No generic filler.",
-  "quick_notes": ["Specific note 1", "Specific note 2", "Specific note 3", "Specific note 4", "Specific note 5"],
-  "exam_tips": ["Specific ${G.examType} tip 1", "Tip 2", "Tip 3"]
+  "key_concepts": ["Term: specific definition", "Term: specific definition", "Term: specific definition", "Term: specific definition", "Term: specific definition"],
+  "full_explanation": "4-5 detailed paragraphs about '${currentTopic}' specifically — real definition, real mechanism, real types, real examples from India, real importance. ZERO generic filler.",
+  "quick_notes": ["Specific note about ${currentTopic} 1", "Specific note 2", "Specific note 3", "Specific note 4", "Specific note 5"],
+  "exam_tips": ["Specific ${G.examType} tip for ${currentTopic} 1", "Tip 2", "Tip 3"]
 }
 
 SCENE STRUCTURE (ALL 8 mandatory):
-1. intro   — Hook: why topic matters for ${G.examType}. color_theme:blue
-2. concept — Complete definition + full mechanism. Indian analogy. color_theme:purple
-3. diagram — 5-6 key terms with definitions. diagram_type:mindmap. color_theme:blue
-4. concept — Step-by-step process. diagram_type:steps. color_theme:green
-5. example — 3 vivid Indian daily-life examples. color_theme:orange
-6. concept — Common mistakes + correct understanding. color_theme:red
-7. example — Exam answer strategy + marks trick. color_theme:green
-8. summary — Full recap + mnemonic + motivation. color_theme:purple
+1. intro   — Hook: what IS "${currentTopic}" and why it matters for ${G.examType}. color_theme:blue
+2. concept — Complete definition + FULL mechanism/working of this exact topic. Indian analogy specific to topic. color_theme:purple
+3. diagram — 5-6 key terms specific to this topic with real definitions. diagram_type:mindmap. color_theme:blue
+4. concept — Step-by-step process OF THIS TOPIC specifically. diagram_type:steps. color_theme:green
+5. example — 3 vivid Indian daily-life examples that truly connect to THIS topic. color_theme:orange
+6. concept — Common mistakes students make SPECIFICALLY about this topic + correct understanding. color_theme:red
+7. example — Exam answer strategy + marks trick FOR THIS TOPIC. color_theme:green
+8. summary — Full recap + mnemonic specific to this topic + motivation. color_theme:purple
 
-NARRATION RULES (every scene):
-✓ 10-12 sentences, each max 12 words
-✓ Specific to "${currentTopic}" — every line teaches something real
-✓ Warm opener each scene: "Dekho na,", "Suno yaar,", "Accha toh,"
-✓ 2+ Indian daily-life examples per scene
-✓ 1-2 check-in questions: "samjhe?", "clear hai na?"
-✓ Warm ending: "Yeh toh easy tha na?" / "Ab pakka ho gaya!"
-✗ NO photosynthesis default, NO brackets (), NO asterisks *, NO Devanagari in narration`;
+NARRATION QUALITY RULES (NON-NEGOTIABLE):
+✓ 10-12 sentences per scene — every sentence teaches a REAL fact about "${currentTopic}"
+✓ Sound like a human teacher who loves this subject — NOT a textbook being read aloud
+✓ Warm opener each scene (rotate from language guide)
+✓ 2+ Indian analogies PER SCENE — analogies must logically connect to how "${currentTopic}" actually works
+✓ 1 check-in question per scene (natural, not forced)
+✓ Warm encouraging ending per scene
+✗ ZERO generic sentences like: "ek aisa process hai", "input se output milta hai", "bahut important hai" (without specifics)
+✗ NO photosynthesis default, NO brackets (), NO asterisks *, NO Devanagari in narration
+✗ NEVER copy a sentence that could apply to any other topic — every line must be specific to "${currentTopic}"`;
+
 
   // ── USER PROMPT ──
   const makeUserPrompt = (topic) => `TOPIC: "${topic}"
@@ -1984,20 +2019,63 @@ Make ALL 8 scenes. Language: ${G.lang}. Topic: "${G.topicText||'the topic'}". St
       }
     }
 
-    // ── LAYER 3: LOCAL AI — Always works, no internet needed ──
+    // ── LAYER 3: CLAUDE AI FALLBACK — High quality, no Groq needed ──
     if(!parsed){
-      document.getElementById('loadTxt').textContent = '📚 LOCAL AI SE BAN RAHA HAI...';
-      console.log('[Local] Generating lesson locally — no API needed');
+      document.getElementById('loadTxt').textContent = '✨ CLAUDE AI SE GENERATE HO RAHA HAI...';
+      console.log('[Claude] Groq failed — using Claude API as fallback');
+      apiUsed = 'claude';
+      try{
+        const claudeSys = `You are JENNIE — India's most beloved AI teacher. Generate a detailed, topic-specific 8-scene animated lesson about "${G.topicText||'the topic'}" in ${G.lang}.
+
+CRITICAL: Every narration sentence must teach a REAL SPECIFIC FACT about "${G.topicText||'the topic'}". No generic filler. Speak like a warm desi didi/bhaiya teacher who knows this topic deeply.
+
+Return ONLY valid JSON (no markdown, no backticks) with this exact structure:
+{"topic_name":"${G.topicText||'the topic'}","scenes":[{"title":"scene title","visual_type":"intro","color_theme":"blue","narration":"10-12 SPECIFIC sentences about this topic in ${G.lang}. Warm Hinglish. Every sentence = real fact. Include Indian daily-life analogy tied to this topic. End warmly.","visual_data":{"heading":"heading","icon":"emoji","color_theme":"blue","points":["Specific real fact 1","Specific real fact 2","Specific real fact 3","Specific real fact 4","Specific real fact 5"],"diagram_type":"none","diagram_nodes":[],"highlight_term":"key term","exam_tip":"exam tip for ${G.examType}"}}],"key_concepts":["Term: real definition"],"full_explanation":"4 detailed paragraphs about the actual topic","quick_notes":["real note 1","real note 2","real note 3"],"exam_tips":["specific tip 1","tip 2"]}
+
+Make ALL 8 scenes: 1=intro(blue) 2=concept(purple) 3=diagram/keyterms(blue) 4=process(green) 5=examples(orange) 6=mistakes(red) 7=examstrategy(green) 8=summary(purple)`;
+
+        const claudeResp = await fetch('https://api.anthropic.com/v1/messages',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            model:'claude-sonnet-4-6',
+            max_tokens:6000,
+            system: claudeSys,
+            messages:[{role:'user',content:`Generate complete 8-scene lesson for: "${G.topicText||'the topic'}". Exam: ${G.examType||'CBSE'}. Language: ${G.lang||'Hinglish'}. Return ONLY JSON starting with {`}]
+          })
+        });
+        if(claudeResp.ok){
+          const cd = await claudeResp.json();
+          const craw = (cd.content&&cd.content[0]&&cd.content[0].text)||'';
+          const cp = safeJSON(craw);
+          if(cp&&cp.topic_name&&cp.scenes&&cp.scenes.length>0){
+            parsed = cp; apiUsed = 'claude';
+            console.log('[Claude] ✅ Success | Scenes:'+cp.scenes.length);
+          } else {
+            console.warn('[Claude] Parse failed, raw:', craw.slice(0,300));
+          }
+        } else {
+          console.warn('[Claude] API error:', claudeResp.status);
+        }
+      }catch(ce){
+        console.warn('[Claude] Exception:', ce.message);
+      }
+    }
+
+    // ── LAYER 4: LOCAL AI — Last resort ──
+    if(!parsed){
+      document.getElementById('loadTxt').textContent = '📚 OFFLINE MODE MEIN BAN RAHA HAI...';
+      console.log('[Local] All APIs failed — using local generation');
       apiUsed = 'local';
       parsed = buildLocalLesson(G.topicText||'the topic', G.examType||'CBSE', G.lang||'Hinglish');
     }
-
-    clearInterval(mt);
 
     if(!parsed){
       // This should NEVER happen since local always works
       parsed = buildLocalLesson('General Science', G.examType||'CBSE', G.lang||'Hinglish');
     }
+
+    clearInterval(mt);
 
     console.log('[EduSphere] ✅ Generated via: '+apiUsed+' | Scenes:'+(parsed.scenes&&parsed.scenes.length||0));
     document.getElementById('loadOv').classList.add('hide');
@@ -2942,26 +3020,26 @@ function playScene(idx){
 // VOICE ENGINE v4 — Alexa-Style Sweet Hinglish Voice
 // ══════════════════════════════════════════════════════════════
 
-// ── Voice profiles ──
+// ── Voice profiles — Tuned for crystal-clear Hinglish pronunciation ──
 const VOICE_PROFILES = {
   'Hinglish': {
     langCode: 'en-IN',
-    rate: 0.88,       // Alexa-like natural pace — clear, confident, not rushed
-    pitch: 1.12,      // Slightly higher = sweet, warm feminine tone
+    rate: 0.82,       // Slightly slower = more natural teacher pace, better clarity
+    pitch: 1.08,      // Warm, natural feminine tone (not too high = sounds robotic)
     volume: 1.0,
-    // Best Indian English voices (sweetest first)
+    // Priority: Google Indian voices are clearest for Hinglish
     prefer: [
       'google hindi','aditi','rishi','neerja','lekha',
       'priya','asha','kalpana','heera','divya',
       'english india','en-in','indian english','en_in'
     ],
-    penalize: ['zira','hazel','david','mark','alex','fred','daniel','karen','moira','tessa','fiona','samantha','victoria','junior','albert'],
+    penalize: ['zira','hazel','david','mark','alex','fred','daniel','karen','moira','tessa','fiona','samantha','victoria','junior','albert','siri'],
     fallbackLang: 'en-IN'
   },
   'Hindi': {
     langCode: 'hi-IN',
-    rate: 0.75,
-    pitch: 1.08,
+    rate: 0.72,       // Hindi needs slower pace for clarity
+    pitch: 1.05,
     volume: 1.0,
     prefer: ['lekha','aditi','neerja','priya','asha','kalpana','google hindi','hindi india'],
     penalize: ['zira','hazel','david','mark','alex','fred','daniel','karen','moira','tessa','fiona','samantha'],
@@ -2969,8 +3047,8 @@ const VOICE_PROFILES = {
   },
   'English': {
     langCode: 'en-IN',
-    rate: 0.85,
-    pitch: 1.08,
+    rate: 0.83,
+    pitch: 1.05,
     volume: 1.0,
     prefer: ['rishi','aditi','neerja','google english india','english india','en-in'],
     penalize: ['zira','hazel','david','fred','moira','tessa','fiona','samantha','daniel','karen'],
@@ -2978,44 +3056,71 @@ const VOICE_PROFILES = {
   }
 };
 
-// ── Alexa-style Hinglish text cleaner ──
-// Makes text sound natural when spoken — adds pauses, fixes pronunciation
+// ── Premium Hinglish Speech Cleaner v5 ──
+// Makes narration sound like a real warm teacher — natural pauses, clear pronunciation
 function cleanForSpeech(text) {
   if(!text) return '';
   return text
-    // Remove parentheses / phonetic guides / markdown
-    .replace(/\([^)]*\)/g, '')
-    .replace(/[*_~`#]/g, '')
-    // ── Hinglish words → better TTS pronunciation ──
-    // Check-ins get clear pause
-    .replace(/\bsamjhe\b\??/gi, 'samjhe?')
-    .replace(/\bclear hai na\b\??/gi, 'clear hai na?')
-    .replace(/\bhaan na\b\??/gi, 'haan na?')
-    .replace(/\btheek hai na\b\??/gi, 'theek hai na?')
-    .replace(/\btheek hai\b/gi, 'theek hai.')
-    .replace(/\bsamajh gaye\b/gi, 'samajh gaye.')
-    .replace(/\bho gaya\b/gi, 'ho gaya.')
-    // Connectors get micro-pause
-    .replace(/\btoh\b/gi, 'toh,')
-    .replace(/\bna\b(?!\?)/gi, 'na,')
-    .replace(/\baur\b/gi, 'aur,')
-    .replace(/\bwaise\b/gi, 'waise,')
-    .replace(/\bdekhiye\b/gi, 'dekhiye,')
-    .replace(/\bdekho na\b/gi, 'dekho na,')
-    .replace(/\bsuno na\b/gi, 'suno na,')
-    .replace(/\bsamjho\b/gi, 'samjho,')
-    .replace(/\bkyunki\b/gi, 'kyunki,')
-    .replace(/\bisliye\b/gi, 'isliye,')
-    .replace(/\bmatlab\b/gi, 'matlab,')
-    .replace(/\bbasically\b/gi, 'basically,')
-    .replace(/\bactually\b/gi, 'actually,')
-    // Warm openers get rising tone cue (comma)
-    .replace(/^(Dekho|Suno|Accha|Samjho|Yaad rakho)/i, '$1,')
-    // Numbers get pause after
-    .replace(/(\d+)/g, '$1 ')
-    // Clean double punctuation
-    .replace(/[,]{2,}/g, ',').replace(/[.]{2,}/g, '.').replace(/,\s*\./g, '.')
-    .replace(/\s+/g, ' ').trim();
+    // ── Remove non-speakable chars ──
+    .replace(/\([^)]*\)/g, '')              // remove (brackets)
+    .replace(/[*_~`#]/g, '')               // remove markdown
+    .replace(/[\u2018\u2019]/g, "'")       // curly apostrophes → straight
+    .replace(/[\u201C\u201D]/g, '"')       // curly quotes → straight
+    .replace(/—/g, ', ')                   // em dash → pause
+    .replace(/\.\.\./g, '... ')            // ellipsis gets breathing room
+
+    // ── Hinglish openers — natural rising tone via comma ──
+    .replace(/^(Dekho na yaar|Dekho na|Arre suno|Accha bhai|Haan toh|Samjho ek baar|Chalo ab|Yaar sun|Okay toh|Suno dhyan se|Samjho|Dekho|Suno),?\s*/i, '$1, ')
+
+    // ── Check-in questions — add natural pause before ──
+    .replace(/\b(samjhe na|samjhe|clear hai na|clear hai|pakka na|pakka|easy hai na|haan na|theek hai na|theek hai|ab clear|samajh gaye)\b\??/gi, '... $1?')
+
+    // ── Connectors — add micro-comma-pause for naturalness ──
+    .replace(/\b(Matlab yeh hai ki|Toh basically|Isliye dekho|Kyunki yaar|Aur suno|Lekin dhyan raho|Interesting baat yeh hai ki|Aur bhi ek cheez)\b/gi, '$1,')
+    .replace(/\b(toh)\b(?!,)/gi, 'toh,')
+    .replace(/\b(matlab)\b(?!,)/gi, 'matlab,')
+    .replace(/\b(kyunki)\b(?!,)/gi, 'kyunki,')
+    .replace(/\b(isliye)\b(?!,)/gi, 'isliye,')
+    .replace(/\b(lekin)\b(?!,)/gi, 'lekin,')
+    .replace(/\b(basically)\b(?!,)/gi, 'basically,')
+    .replace(/\b(actually)\b(?!,)/gi, 'actually,')
+    .replace(/\b(waise)\b(?!,)/gi, 'waise,')
+    .replace(/\b(aur)\b(?! bhi)(?!,)/gi, 'aur,')
+
+    // ── Indian exclamations — natural tone ──
+    .replace(/\bwaah\b!?/gi, 'waah!')
+    .replace(/\bshabash\b!?/gi, 'shabash!')
+    .replace(/\barre\b/gi, 'arre,')
+    .replace(/\byaar\b(?!,)/gi, 'yaar,')
+
+    // ── Numbers — space after for clarity ──
+    .replace(/(\d+)/g, ' $1 ')
+
+    // ── Scientific terms — add phonetic space hint for TTS ──
+    // These are hard for en-IN voices — spacing helps pronunciation
+    .replace(/\bDNA\b/g, 'D N A')
+    .replace(/\bRNA\b/g, 'R N A')
+    .replace(/\bATP\b/g, 'A T P')
+    .replace(/\bCO2\b/gi, 'C O 2')
+    .replace(/\bH2O\b/gi, 'H 2 O')
+    .replace(/\bO2\b/gi, 'O 2')
+    .replace(/\bpH\b/g, 'p H')
+    .replace(/\bBC\b/g, 'B C')
+    .replace(/\bAD\b/g, 'A D')
+    .replace(/\bBCA\b/g, 'B C A')
+    .replace(/\bJEE\b/g, 'J E E')
+    .replace(/\bCBSE\b/g, 'C B S E')
+
+    // ── "mein" phrase — natural pause cadence ──
+    .replace(/\bexam mein\b/gi, 'exam mein,')
+    .replace(/\blife mein\b/gi, 'life mein,')
+
+    // ── Clean up double punctuation ──
+    .replace(/[,]{2,}/g, ',')
+    .replace(/[.]{2,}/g, '...')
+    .replace(/,\s*\./g, '.')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
 }
 
 // ── Smart Hinglish sentence builder for subtitle display ──
